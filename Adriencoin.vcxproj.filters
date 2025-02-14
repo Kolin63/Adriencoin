@@ -18,5 +18,22 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="onReady.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="botToken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="onReady.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="job.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
