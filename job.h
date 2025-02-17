@@ -14,6 +14,8 @@ namespace adr {
     };
 
     extern const std::array<adr::Job, 14> jobs;
+
+    void doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcommand_t& event);
 }
 
 #endif

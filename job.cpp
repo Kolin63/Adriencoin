@@ -1,4 +1,7 @@
+#pragma warning(disable: 4251) // disables a silly warning from dpp
+
 #include <array>
+#include <dpp/dpp.h>
 #include "item.h"
 #include "job.h"
 
@@ -20,4 +23,13 @@ namespace adr {
         { "thaumaturgist", "enchant", adr::Item{adr::Item::book, 20}, 0xAB5CFF },
         { "alchemist", "brew", adr::Item{adr::Item::potion, 10}, 0xE81C9D }
     } };
+
+    void doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcommand_t& event)
+    {
+        const std::string& commandName{ event.command.get_command_name() };
+
+        for (adr::Job i : adr::jobs) if (commandName == i.action){
+            event.reply(i.action);
+        }
+    }
 }

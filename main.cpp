@@ -3,6 +3,7 @@
 #include <dpp/dpp.h>
 #include "botToken.h"
 #include "onReady.h"
+#include "job.h"
 
 int main()
 {
@@ -17,6 +18,9 @@ int main()
         { 
             addRoles(bot, event.command.guild_id);
             event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
+        }
+        else {
+            adr::doJob(bot, event);
         }
     });
 
