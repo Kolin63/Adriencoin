@@ -1,5 +1,7 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
+#include <unordered_map>
+#include <algorithm>
 #include <string>
 #include <dpp/dpp.h>
 #include "onReady.h"
@@ -17,10 +19,9 @@ static void addSlashCommands(dpp::cluster& bot)
     //add.add_option(dpp::command_option{ dpp::co_integer, "x", "first number", true });
     //add.add_option(dpp::command_option{ dpp::co_integer, "y", "second number", true });
 
-    for (const Job::Job& i : Job::jobs)
+    for (const adr::Job& i : adr::jobs)
     {
-        std::cout << i.name << ' ' << i.action << '\n';
-        dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + Item::names[i.item.id]), bot.me.id};
+        dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::names[i.item.id]), bot.me.id};
         bot.global_command_create(slashcommand);
     }
 
@@ -32,23 +33,30 @@ static void addSlashCommands(dpp::cluster& bot)
 
 void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)
 {
-    std::cout << "making roles!\n";
+    std::cout << "checking and creating roles!\n";
 
-    auto makeRole = [&bot, &guildID](std::string name, uint32_t color) {
-        dpp::role role{};
-        role.set_name(name);
-        role.set_color(color);
-        role.set_guild_id(guildID);
-        bot.role_create(role);
-    };
+    bot.roles_get(guildID, [&bot, &guildID](const dpp::confirmation_callback_t& event) {
+        if (event.is_error()) {
+            std::cerr << "Failed to get roles: " << event.get_error().message << '\n';
+            return;
+        }
 
-    makeRole("farmer", 0xFF9D23);
-    makeRole("miner", 0x226bc9);
-    makeRole("lumberjack", 0x78412e);
-    makeRole("fisherman", 0x37e6b4);
-    makeRole("warrior", 0xbd1209);
-    makeRole("enchanter", 0xab5cff);
-    makeRole("brewer", 0xe81c9d);
+        const auto& roles = std::get<dpp::role_map>(event.value);
+        for (const adr::Job& i : adr::jobs) {
+            auto it = std::find_if(roles.begin(), roles.end(), [&i](const auto& pair) {
+                return pair.second.name == i.name;
+            });
+
+            if (it == roles.end()) {
+                dpp::role role{};
+                role.set_name(i.name);
+                role.set_color(i.color);
+                role.set_guild_id(guildID);
+
+                bot.role_create(role);
+            }
+        }
+    });
 }
 
 void onReady(dpp::cluster& bot)
