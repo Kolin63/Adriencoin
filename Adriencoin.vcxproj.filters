@@ -21,6 +21,12 @@
     <ClCompile Include="onReady.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="job.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h">

@@ -21,7 +21,7 @@ static void addSlashCommands(dpp::cluster& bot)
 
     for (const adr::Job& i : adr::jobs)
     {
-        dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::names[i.item.id]), bot.me.id};
+        dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::Item::names[i.item.id]), bot.me.id};
         bot.global_command_create(slashcommand);
     }
 

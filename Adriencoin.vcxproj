@@ -141,6 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="item.cpp" />
+    <ClCompile Include="job.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="onReady.cpp" />
   </ItemGroup>

@@ -6,31 +6,23 @@
 
 namespace adr
 {
-    enum Id
-    {
-        carrot,
-        gemstone,
-        wood,
-        fish,
-        rotten_flesh,
-        book,
-        potion,
-
-        MAX
-    };
-
-    std::array<std::string, MAX> names{
-        "carrot",
-        "gemstone",
-        "wood",
-        "fish",
-        "rotten flesh",
-        "book",
-        "potion"
-    };
-
     struct Item
     {
+        enum Id
+        {
+            carrot,
+            gemstone,
+            wood,
+            fish,
+            rotten_flesh,
+            book,
+            potion,
+
+            MAX
+        };
+
+        static const std::array<std::string, MAX> names;
+
         Id id{};
         int amount{};
     };
