@@ -14,10 +14,13 @@ int main()
     bot.on_slashcommand([&bot](const dpp::slashcommand_t& event)
     {
         const std::string& commandName{ event.command.get_command_name() };
-        if (commandName == "addroles")
-        { 
-            addRoles(bot, event.command.guild_id);
+        if (commandName == "addroles") { 
+            adr::addRoles(bot, event.command.guild_id);
             event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
+        }
+        else if (commandName == "addcommands") {
+            bot.global_bulk_command_delete();
+            adr::addSlashCommands(bot);
         }
         else {
             adr::doJob(bot, event);
@@ -28,7 +31,7 @@ int main()
     {
         if (dpp::run_once<struct register_bot_commands>())
         {
-            onReady(bot);
+            adr::onReady(bot);
         }
     });
 
