@@ -23,6 +23,7 @@ namespace adr {
         for (const adr::Job& i : adr::jobs)
         {
             dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::Item::names[i.item.id]), bot.me.id };
+            std::cout << i.name << ' ' << i.action << '\n';
             bot.global_command_create(slashcommand);
         }
 
@@ -65,7 +66,6 @@ namespace adr {
 
     void onReady(dpp::cluster& bot)
     {
-        bot.global_bulk_command_delete();
         addSlashCommands(bot);
     }
 }

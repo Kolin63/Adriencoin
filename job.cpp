@@ -28,8 +28,9 @@ namespace adr {
     {
         const std::string& commandName{ event.command.get_command_name() };
 
-        for (adr::Job i : adr::jobs) if (commandName == i.action){
-            event.reply(i.action);
+        for (const adr::Job& i : adr::jobs) if (commandName == i.action) {
+            dpp::snowflake uuid{ event.command.usr.id };
+            event.reply(i.action + std::to_string(uuid));
         }
     }
 }

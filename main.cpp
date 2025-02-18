@@ -19,8 +19,8 @@ int main()
             event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
         }
         else if (commandName == "addcommands") {
-            bot.global_bulk_command_delete();
             adr::addSlashCommands(bot);
+            event.reply(dpp::message("Attempted to register commands").set_flags(dpp::m_ephemeral));
         }
         else {
             adr::doJob(bot, event);
