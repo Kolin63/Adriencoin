@@ -10,6 +10,7 @@ namespace adr
     {
         enum Id
         {
+            adriencoin,
             carrot,
             gemstone,
             wood,

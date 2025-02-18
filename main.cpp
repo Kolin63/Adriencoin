@@ -4,6 +4,7 @@
 #include "botToken.h"
 #include "onReady.h"
 #include "job.h"
+#include "player.h"
 
 int main()
 {
@@ -21,6 +22,15 @@ int main()
         else if (commandName == "addcommands") {
             adr::addSlashCommands(bot);
             event.reply(dpp::message("Attempted to register commands").set_flags(dpp::m_ephemeral));
+        }
+        else if (commandName == "printuserinv") {
+            adr::Player{ event.command.usr.id }.print();
+            event.reply(dpp::message("Data printed to console").set_flags(dpp::m_ephemeral));
+        }
+        else if (commandName == "setjob") {
+            adr::Job::Id job = static_cast<adr::Job::Id>(std::get<int64_t>(event.get_parameter("job")));
+            adr::Player{ event.command.usr.id }.setJob(job);
+            event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
         }
         else {
             adr::doJob(bot, event);

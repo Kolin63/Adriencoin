@@ -20,12 +20,20 @@ namespace adr {
         //add.add_option(dpp::command_option{ dpp::co_integer, "x", "first number", true });
         //add.add_option(dpp::command_option{ dpp::co_integer, "y", "second number", true });
 
-        for (const adr::Job& i : adr::jobs)
+        dpp::slashcommand setJob{ "setjob", "sets the job of a user", bot.me.id };
+        setJob.default_member_permissions = dpp::p_administrator;
+        dpp::command_option setJobOption{ dpp::co_integer, "job", "the job to assign", true };
+
+        for (const adr::Job& i : adr::Job::jobs)
         {
             dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::Item::names[i.item.id]), bot.me.id };
             std::cout << i.name << ' ' << i.action << '\n';
             bot.global_command_create(slashcommand);
+
+            setJobOption.add_choice(dpp::command_option_choice{ i.name, i.id });
         }
+
+        setJob.add_option(setJobOption);
 
         dpp::slashcommand addRoles{ "addroles", "roles", bot.me.id };
         addRoles.default_member_permissions = dpp::p_administrator;
@@ -33,7 +41,10 @@ namespace adr {
         dpp::slashcommand addCommands{ "addcommands", "re-register the commands if theyre not loading", bot.me.id };
         addCommands.default_member_permissions = dpp::p_administrator;
 
-        bot.global_bulk_command_create({ addRoles, addCommands });
+        dpp::slashcommand printUserInv{ "printuserinv", "print the inventory of a user", bot.me.id };
+        printUserInv.default_member_permissions = dpp::p_administrator;
+
+        bot.global_bulk_command_create({ addRoles, addCommands, printUserInv, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)
@@ -47,7 +58,7 @@ namespace adr {
             }
 
             const auto& roles = std::get<dpp::role_map>(event.value);
-            for (const adr::Job& i : adr::jobs) {
+            for (const adr::Job& i : adr::Job::jobs) {
                 auto it = std::find_if(roles.begin(), roles.end(), [&i](const auto& pair) {
                     return pair.second.name == i.name;
                     });

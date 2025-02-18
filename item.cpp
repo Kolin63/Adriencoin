@@ -4,6 +4,7 @@
 
 const std::array<std::string, adr::Item::MAX> adr::Item::names
 {
+    "adriencoin",
     "carrot",
     "gemstone",
     "wood",

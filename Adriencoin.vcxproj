@@ -145,12 +145,14 @@
     <ClCompile Include="job.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="onReady.cpp" />
+    <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="job.h" />
     <ClInclude Include="onReady.h" />
+    <ClInclude Include="player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
