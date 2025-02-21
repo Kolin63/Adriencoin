@@ -14,6 +14,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         adr::addRoles(bot, event.command.guild_id);
         event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
     }
+    else if (commandName == "addemojis") {
+        adr::addEmojis(bot, event.command.guild_id);
+        event.reply(dpp::message("Attempted to create required emojis " + dpp::emoji{ "adriencoin", 1342319536300621876 }.get_mention()).set_flags(dpp::m_ephemeral));
+    }
     else if (commandName == "addcommands") {
         adr::addSlashCommands(bot);
         event.reply(dpp::message("Attempted to register commands").set_flags(dpp::m_ephemeral));

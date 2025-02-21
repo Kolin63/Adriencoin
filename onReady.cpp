@@ -1,8 +1,8 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
-#include <unordered_map>
-#include <algorithm>
 #include <string>
+#include <string_view>
+#include <filesystem>
 #include <dpp/dpp.h>
 #include "onReady.h"
 #include "job.h"
@@ -30,17 +30,23 @@ namespace adr {
 
         dpp::slashcommand addRoles{ "addroles", "roles", bot.me.id };
         addRoles.default_member_permissions = dpp::p_administrator;
+        bot.global_command_create(addRoles);
 
         dpp::slashcommand addCommands{ "addcommands", "re-register the commands if theyre not loading", bot.me.id };
         addCommands.default_member_permissions = dpp::p_administrator;
+        bot.global_command_create(addCommands);
 
         dpp::slashcommand printUserInv{ "printuserinv", "print the inventory of a user", bot.me.id };
         printUserInv.default_member_permissions = dpp::p_administrator;
+        bot.global_command_create(printUserInv);
 
         dpp::slashcommand jobEmbed{ "jobembed", "send an embed for choosing a job", bot.me.id };
         jobEmbed.default_member_permissions = dpp::p_administrator;
+        bot.global_command_create(jobEmbed);
 
-        bot.global_bulk_command_create({ jobEmbed, addRoles, addCommands, printUserInv, setJob });
+        dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
+        addEmojis.default_member_permissions = dpp::p_administrator;
+        bot.global_command_create(addEmojis);
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)
@@ -69,6 +75,32 @@ namespace adr {
                 }
             }
             });
+    }
+
+    void addEmojis(dpp::cluster& bot, const dpp::snowflake& guildID)
+    {
+        auto addEmoji = [&bot, &guildID](const std::string& emojiName, const dpp::snowflake& emojiID) {
+            dpp::emoji emoji{ emojiName, emojiID };
+            std::filesystem::path path{ std::filesystem::current_path() / "art" / (emojiName + ".png") };
+            std::cout << "PATH: " << path << '\n';
+
+            // Load the image from a file
+            std::ifstream file(path, std::ios::binary);
+            if (!file) {
+                std::cerr << "Failed to open emoji file.\n";
+                return;
+            }
+
+            std::ostringstream oss;
+            oss << file.rdbuf();
+            std::string imageData = oss.str();
+
+            emoji.load_image(imageData, dpp::i_png);
+
+            bot.guild_emoji_create(guildID, emoji);
+        };
+
+        addEmoji("adriencoin", 1342319536300621876);
     }
 
     void onReady(dpp::cluster& bot)

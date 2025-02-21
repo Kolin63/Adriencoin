@@ -8,6 +8,8 @@ namespace adr {
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID);
 
+    void addEmojis(dpp::cluster& bot, const dpp::snowflake& guildID);
+
     void addSlashCommands(dpp::cluster& bot);
 }
 
