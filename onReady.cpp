@@ -30,23 +30,20 @@ namespace adr {
 
         dpp::slashcommand addRoles{ "addroles", "roles", bot.me.id };
         addRoles.default_member_permissions = dpp::p_administrator;
-        bot.global_command_create(addRoles);
 
         dpp::slashcommand addCommands{ "addcommands", "re-register the commands if theyre not loading", bot.me.id };
         addCommands.default_member_permissions = dpp::p_administrator;
-        bot.global_command_create(addCommands);
 
         dpp::slashcommand printUserInv{ "printuserinv", "print the inventory of a user", bot.me.id };
         printUserInv.default_member_permissions = dpp::p_administrator;
-        bot.global_command_create(printUserInv);
 
         dpp::slashcommand jobEmbed{ "jobembed", "send an embed for choosing a job", bot.me.id };
         jobEmbed.default_member_permissions = dpp::p_administrator;
-        bot.global_command_create(jobEmbed);
 
         dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
         addEmojis.default_member_permissions = dpp::p_administrator;
-        bot.global_command_create(addEmojis);
+
+        bot.global_bulk_command_create({ jobEmbed, addRoles, addEmojis, addCommands, printUserInv, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)
@@ -81,7 +78,7 @@ namespace adr {
     {
         auto addEmoji = [&bot, &guildID](const std::string& emojiName, const dpp::snowflake& emojiID) {
             dpp::emoji emoji{ emojiName, emojiID };
-            std::filesystem::path path{ std::filesystem::current_path() / "art" / (emojiName + ".png") };
+            std::filesystem::path path{ std::filesystem::current_path() / "art" / "item" / (emojiName + ".png")};
             std::cout << "PATH: " << path << '\n';
 
             // Load the image from a file
@@ -100,7 +97,10 @@ namespace adr {
             bot.guild_emoji_create(guildID, emoji);
         };
 
-        addEmoji("adriencoin", 1342319536300621876);
+        for (std::size_t i {}; i < adr::Item::emojiIDs.size(); ++i)
+        {
+            addEmoji(adr::Item::names[i], adr::Item::emojiIDs[i]);
+        }
     }
 
     void onReady(dpp::cluster& bot)
