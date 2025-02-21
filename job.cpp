@@ -27,7 +27,6 @@ namespace adr {
 
     adr::Job::Id Job::getId(std::string_view jobName)
     {
-        std::cout << "getId(): " << jobName << '\n';
         for (const adr::Job& i : adr::Job::jobs) {
             if (i.name == jobName) return i.id;
         }
