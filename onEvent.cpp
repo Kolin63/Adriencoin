@@ -76,6 +76,11 @@ void adr::onButtonClick(const dpp::button_click_t& event)
 {
     if (event.custom_id == "jobconfirm") {
         Player player{ event.command.usr.id };
+        if (player.job() != adr::Job::MAX) {
+            event.reply(dpp::message("You already have a job!").set_flags(dpp::m_ephemeral));
+            return;
+        }
+
         player.setJob(player.tempJob());
         event.reply(dpp::message("Job confirmed to " + adr::Job::jobs[player.job()].name + ". Run /" + adr::Job::jobs[player.job()].action + " to work.").set_flags(dpp::m_ephemeral));
     }

@@ -25,6 +25,7 @@ namespace adr {
 
             setJobOption.add_choice(dpp::command_option_choice{ i.name, i.id });
         }
+        setJobOption.add_choice(dpp::command_option_choice{ "MAX", adr::Job::MAX });
 
         setJob.add_option(setJobOption);
 
