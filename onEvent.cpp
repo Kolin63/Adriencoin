@@ -10,7 +10,12 @@
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
-    if (commandName == "addroles") { 
+    if (commandName == "view") {
+        adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };
+        player.print();
+        event.reply("printed to console.");
+    }
+    else if (commandName == "addroles") { 
         adr::addRoles(bot, event.command.guild_id);
         event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
     }
@@ -77,7 +82,7 @@ void adr::onButtonClick(const dpp::button_click_t& event)
     if (event.custom_id == "jobconfirm") {
         Player player{ event.command.usr.id };
         if (player.job() != adr::Job::MAX) {
-            event.reply(dpp::message("You already have a job!").set_flags(dpp::m_ephemeral));
+            event.reply(dpp::message("You already have a job! (" + adr::Job::jobs[player.job()].name + ")").set_flags(dpp::m_ephemeral));
             return;
         }
 
