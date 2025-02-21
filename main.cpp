@@ -4,7 +4,7 @@
 #include "botToken.h"
 #include "onReady.h"
 #include "player.h"
-#include "onSlashcommand.h"
+#include "onEvent.h"
 
 int main()
 {
@@ -16,6 +16,15 @@ int main()
         {
             adr::onSlashcommand(bot, event);
         });
+    bot.on_select_click([&bot](const dpp::select_click_t& event)
+        {
+            adr::onSelectClick(event);
+        });
+    bot.on_button_click([&bot](const dpp::button_click_t& event)
+        {
+            adr::onButtonClick(event);
+        });
+
 
     bot.on_ready([&bot]([[maybe_unused]] const dpp::ready_t& event)
     {

@@ -25,4 +25,12 @@ namespace adr {
         { adr::Job::alchemist, "alchemist", "brew", adr::Item{adr::Item::potion, 10}, 10, 0xE81C9D },
     } };
 
+    adr::Job::Id Job::getId(std::string_view jobName)
+    {
+        std::cout << "getId(): " << jobName << '\n';
+        for (const adr::Job& i : adr::Job::jobs) {
+            if (i.name == jobName) return i.id;
+        }
+        return adr::Job::MAX;
+    }
 }

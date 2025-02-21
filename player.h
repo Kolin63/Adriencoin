@@ -17,6 +17,9 @@ namespace adr {
         short m_version{};
         const dpp::snowflake m_uuid{};
         adr::Job::Id m_job{ adr::Job::MAX };
+
+        adr::Job::Id m_tempJob{ adr::Job::MAX }; // used for when the player is selecting a job
+
         // the player's inventory, where the index is the item ID and the value is the amount (int)
         Inventory m_inv{};
 
@@ -33,6 +36,8 @@ namespace adr {
 
         adr::Job::Id job() const { return m_job; }
         void setJob(adr::Job::Id job) { m_job = job; }
+        adr::Job::Id tempJob() const { return m_tempJob; }
+        void setTempJob(adr::Job::Id job) { m_tempJob = job; }
 
         int& operator[](int index);
         const int& operator[](int index) const;

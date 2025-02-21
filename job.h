@@ -2,6 +2,7 @@
 #define JOB_H
 
 #include <string>
+#include <string_view>
 #include <array>
 #include "item.h"
 
@@ -30,6 +31,9 @@ namespace adr {
         };
 
         static const std::array<adr::Job, 14> jobs;
+        static constexpr std::size_t tierOneJobsSize{ adr::Job::brewer + 1 };
+
+        static Id getId(std::string_view jobName);
 
         Id id{};
         std::string name{};
@@ -38,8 +42,6 @@ namespace adr {
         int adriencoin{};
         uint32_t color{};
     };
-
-    void doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcommand_t& event);
 }
 
 #endif

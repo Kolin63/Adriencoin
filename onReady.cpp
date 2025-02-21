@@ -37,7 +37,10 @@ namespace adr {
         dpp::slashcommand printUserInv{ "printuserinv", "print the inventory of a user", bot.me.id };
         printUserInv.default_member_permissions = dpp::p_administrator;
 
-        bot.global_bulk_command_create({ addRoles, addCommands, printUserInv, setJob });
+        dpp::slashcommand jobEmbed{ "jobembed", "send an embed for choosing a job", bot.me.id };
+        jobEmbed.default_member_permissions = dpp::p_administrator;
+
+        bot.global_bulk_command_create({ jobEmbed, addRoles, addCommands, printUserInv, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)

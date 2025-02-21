@@ -30,7 +30,7 @@
     <ClCompile Include="item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="onSlashcommand.cpp">
+    <ClCompile Include="onEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="onSlashcommand.h">
+    <ClInclude Include="onEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

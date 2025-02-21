@@ -42,6 +42,7 @@ void adr::Player::save() const
 
     fs.write(reinterpret_cast<const char*>(&m_version), sizeof m_version);
     fs.write(reinterpret_cast<const char*>(&m_job), sizeof m_job);
+    fs.write(reinterpret_cast<const char*>(&m_tempJob), sizeof m_tempJob);
 
     for (const int i : m_inv) {
         fs.write(reinterpret_cast<const char*>(&i), sizeof i);
@@ -61,6 +62,7 @@ void adr::Player::load()
 
     fs.read(reinterpret_cast<char*>(&m_version), sizeof m_version);
     fs.read(reinterpret_cast<char*>(&m_job), sizeof m_job);
+    fs.read(reinterpret_cast<char*>(&m_tempJob), sizeof m_tempJob);
     for (int& i : m_inv) {
         fs.read(reinterpret_cast<char*>(&i), sizeof i);
     }
