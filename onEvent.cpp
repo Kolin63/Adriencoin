@@ -32,7 +32,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
     }
     else if (commandName == "jobembed") {
-        dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed") };
+        dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed").
+            set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg?token=GHSAT0AAAAAAC6CA7OU2LUHS2CDSSTJ4MUSZ5YBC5Q")};
 
         dpp::component select{};
         select.set_type(dpp::cot_selectmenu);
@@ -41,7 +42,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
         for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
             select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name, (
-                std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") });
+                std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
+                .set_emoji(adr::Item::names[i+1], adr::Item::emojiIDs[i+1]));
         }
 
         dpp::component confirm{};
