@@ -2,6 +2,7 @@
 
 #include <array>
 #include <string>
+#include <dpp/dpp.h>
 #include "item.h"
 
 const std::array<std::string, adr::Item::MAX> adr::Item::names
