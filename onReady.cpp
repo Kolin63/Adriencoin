@@ -29,6 +29,9 @@ namespace adr {
 
         setJob.add_option(setJobOption);
 
+        dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
+        view.add_option({ dpp::co_user, "player", "the player to view", true });
+
         dpp::slashcommand addRoles{ "addroles", "roles", bot.me.id };
         addRoles.default_member_permissions = dpp::p_administrator;
 
@@ -44,7 +47,7 @@ namespace adr {
         dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
         addEmojis.default_member_permissions = dpp::p_administrator;
 
-        bot.global_bulk_command_create({ jobEmbed, addRoles, addEmojis, addCommands, printUserInv, setJob });
+        bot.global_bulk_command_create({ view, jobEmbed, addRoles, addEmojis, addCommands, printUserInv, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)
