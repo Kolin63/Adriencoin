@@ -25,24 +25,4 @@ namespace adr {
         { adr::Job::alchemist, "alchemist", "brew", adr::Item{adr::Item::potion, 10}, 10, 0xE81C9D },
     } };
 
-    void doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcommand_t& event)
-    {
-        // turns true if the player can do a job, and stays false otherwise
-        // if it stays false, then the bot will tell them that they couldn't do anything
-        bool didAJob{ false };
-
-        adr::Player player{ event.command.usr.id };
-
-        for (const adr::Job& i : adr::Job::jobs) if (player.job() == i.id) {
-            didAJob = true;
-            player[i.item.id] += i.item.amount;
-            player[adr::Item::adriencoin] += i.adriencoin;
-
-            event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + adr::Item::names[i.item.id] + " and +" + std::to_string(i.adriencoin) + " Adriencoin.");
-        }
-
-        if (!didAJob) {
-            event.reply("You could not do that! If you were trying to do a job, do you have a job assigned?");
-        }
-    }
 }

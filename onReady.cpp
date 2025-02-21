@@ -13,13 +13,6 @@ namespace adr {
     {
         std::cout << "making commands!\n";
 
-        //dpp::slashcommand echo{ "echo", "Have the bot echo your message", bot.me.id };
-        //echo.add_option(dpp::command_option{ dpp::co_string, "input", "add input here", true });
-
-        //dpp::slashcommand add{ "add", "Add two numbers", bot.me.id };
-        //add.add_option(dpp::command_option{ dpp::co_integer, "x", "first number", true });
-        //add.add_option(dpp::command_option{ dpp::co_integer, "y", "second number", true });
-
         dpp::slashcommand setJob{ "setjob", "sets the job of a user", bot.me.id };
         setJob.default_member_permissions = dpp::p_administrator;
         dpp::command_option setJobOption{ dpp::co_integer, "job", "the job to assign", true };
