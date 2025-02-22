@@ -80,6 +80,9 @@ void adr::onSelectClick(const dpp::select_click_t& event)
         player.setTempJob(adr::Job::getId(event.values[0]));
         event.reply(dpp::message("Job selected, please confirm").set_flags(dpp::m_ephemeral));
     }
+    else if (event.custom_id == "shopselect") {
+        event.reply(adr::shop::getMessage(adr::shop::getId(event.values[0])).set_flags(dpp::m_ephemeral));
+    }
 }
 
 void adr::onButtonClick(const dpp::button_click_t& event)
