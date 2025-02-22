@@ -156,6 +156,9 @@
     <ClInclude Include="onEvent.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="playerdata\488335709883727882.bin" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
