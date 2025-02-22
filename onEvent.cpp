@@ -6,6 +6,7 @@
 #include "onReady.h"
 #include "job.h"
 #include "player.h"
+#include "shop.h"
 
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
@@ -49,7 +50,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
             select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name, (
                 std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
-                .set_emoji(adr::Item::names[i+1], adr::Item::emojiIDs[i+1]));
+                .set_emoji(adr::Item::names[i], adr::Item::emojiIDs[i]));
         }
 
         dpp::component confirm{};
@@ -63,6 +64,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         msg.add_component(dpp::component{}.add_component(confirm));
 
         event.reply(msg);
+    }
+    else if (commandName == "shopembed") {
+        event.reply(adr::shop::getMessage());
     }
     else {
         adr::doJob(bot, event);

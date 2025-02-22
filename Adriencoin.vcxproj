@@ -147,6 +147,7 @@
     <ClCompile Include="onReady.cpp" />
     <ClCompile Include="onEvent.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="shop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="onReady.h" />
     <ClInclude Include="onEvent.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="shop.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="playerdata\488335709883727882.bin" />

@@ -44,10 +44,13 @@ namespace adr {
         dpp::slashcommand jobEmbed{ "jobembed", "send an embed for choosing a job", bot.me.id };
         jobEmbed.default_member_permissions = dpp::p_administrator;
 
+        dpp::slashcommand shopEmbed{ "shopembed", "shop embed", bot.me.id };
+        jobEmbed.default_member_permissions = dpp::p_administrator;
+
         dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
         addEmojis.default_member_permissions = dpp::p_administrator;
 
-        bot.global_bulk_command_create({ view, jobEmbed, addRoles, addEmojis, addCommands, printUserInv, setJob });
+        bot.global_bulk_command_create({ view, jobEmbed, shopEmbed, addRoles, addEmojis, addCommands, printUserInv, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)

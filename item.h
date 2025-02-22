@@ -11,7 +11,6 @@ namespace adr
     {
         enum Id
         {
-            adriencoin,
             carrot,
             gemstone,
             wood,
@@ -19,12 +18,16 @@ namespace adr
             rottenflesh,
             book,
             potion,
+            adriencoin,
+            gaydriencoin,
+            adriresource,
 
             MAX
         };
 
         static const std::array<std::string, MAX> names;
         static const std::array<dpp::snowflake, MAX> emojiIDs;
+        static std::string getEmojiMention(adr::Item::Id id);
 
         Id id{};
         int amount{};
