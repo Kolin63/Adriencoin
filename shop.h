@@ -25,7 +25,7 @@ namespace adr {
         const std::array<dpp::embed, adr::shop::MAX> makeEmbedsList();
         extern const std::array<dpp::embed, adr::shop::MAX> embeds;
 
-        dpp::message getMessage(adr::shop::Id screen = adr::shop::resource);
+        dpp::message getMessage(adr::shop::Id screen = adr::shop::everything);
     }
 }
 
