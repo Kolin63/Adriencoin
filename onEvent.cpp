@@ -13,7 +13,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     if (commandName == "view") {
         adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };
         player.print();
-        event.reply("printed to console.");
+        event.reply(dpp::message{ player.viewEmbed(bot) });
     }
     else if (commandName == "addroles") { 
         adr::addRoles(bot, event.command.guild_id);

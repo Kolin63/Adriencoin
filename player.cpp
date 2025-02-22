@@ -80,6 +80,31 @@ void adr::Player::print() const
     std::cout << '\n';
 }
 
+const dpp::embed adr::Player::viewEmbed(dpp::cluster& bot) const
+{
+    dpp::embed embed{};
+    bot.user_get_cached(m_uuid, [&](const dpp::confirmation_callback_t& callback){
+        if (callback.is_error()) {
+            embed.set_title("Error").set_description("There was an error retrieving that data.").set_color(0xFF0000);
+            return;
+        }
+
+        dpp::user_identified userIdent{ std::get<dpp::user_identified>(callback.value) };
+
+        embed.set_title(userIdent.username + "'s Inventory");
+        embed.set_image(userIdent.get_avatar_url());
+
+        std::string desc{ "**Job:** " + adr::Job::jobs[m_job].name + "\n\n**Inventory:**\n" };
+        for (std::size_t i{}; i < m_inv.size(); ++i) {
+            desc += adr::Item::names[i] + ": " + std::to_string(m_inv[i]) + '\n';
+        }
+
+        embed.set_description(desc);
+    });
+
+    return embed;
+}
+
 bool adr::Player::exists() const
 {
     return std::filesystem::exists("playerdata/" + std::to_string(m_uuid) + ".bin");

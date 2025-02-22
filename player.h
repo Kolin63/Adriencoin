@@ -31,6 +31,7 @@ namespace adr {
         void save() const;
         void load();
         void print() const;
+        const dpp::embed viewEmbed(dpp::cluster& bot) const;
         bool exists() const;
         static bool exists(const dpp::snowflake& uuid);
 
