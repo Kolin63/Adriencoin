@@ -68,7 +68,7 @@ const std::array<dpp::embed, adr::shop::MAX> adr::shop::makeEmbedsList() {
         arr[adr::shop::adriresource].set_description(arr[adr::shop::adriresource].description
             + "\n* " + std::to_string(adr::Job::jobs[i].item.amount) + adr::Item::getEmojiMention(adr::Job::jobs[i].item.id));
 
-        arr[adr::shop::resource].set_description(arr[adr::shop::adriresource].description
+        arr[adr::shop::resource].set_description(arr[adr::shop::resource].description
             + "\n* " + std::to_string(adr::Job::jobs[i].item.amount * 5) + adr::Item::getEmojiMention(adr::Job::jobs[i].item.id));
     }
 
