@@ -22,7 +22,7 @@ namespace adr {
         {
             dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::Item::names[i.item.id]), bot.me.id };
             std::cout << i.name << ' ' << i.action << '\n';
-            bot.global_command_create(slashcommand);
+            bot.global_bulk_command_create({ slashcommand });
 
             setJobOption.add_choice(dpp::command_option_choice{ i.name, i.id });
         }
@@ -39,6 +39,12 @@ namespace adr {
 
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });
+
+        dpp::slashcommand setInv{ "setinv", "set the amount of an item a player has", bot.me.id };
+        setInv.default_member_permissions = dpp::p_administrator;
+        setInv.add_option({ dpp::co_user, "player", "the player to modify", true });
+        setInv.add_option({ dpp::co_integer, "itemid", "the item to modify", true });
+        setInv.add_option({ dpp::co_integer, "amount", "the amount of item to set to", true });
 
         dpp::slashcommand addRoles{ "addroles", "roles", bot.me.id };
         addRoles.default_member_permissions = dpp::p_administrator;
@@ -58,7 +64,7 @@ namespace adr {
         dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
         addEmojis.default_member_permissions = dpp::p_administrator;
 
-        bot.global_bulk_command_create({ buy, view, jobEmbed, shopEmbed, addRoles, addEmojis, addCommands, setJob });
+        bot.global_bulk_command_create({ buy, view, jobEmbed, shopEmbed, setInv, addRoles, addEmojis, addCommands, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)

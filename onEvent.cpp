@@ -41,6 +41,11 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         adr::Player{ event.command.usr.id }.setJob(job);
         event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
     }
+    else if (commandName == "setinv") {
+        adr::Player{ std::get<dpp::snowflake>(event.get_parameter("player")) }
+        .setInv(static_cast<adr::Item::Id>(std::get<int64_t>(event.get_parameter("itemid"))), static_cast<int>(std::get<int64_t>(event.get_parameter("amount"))));
+        event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+    }
     else if (commandName == "jobembed") {
         dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed")
             .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg")
