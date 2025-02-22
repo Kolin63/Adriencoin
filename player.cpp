@@ -91,12 +91,14 @@ const dpp::embed adr::Player::viewEmbed(dpp::cluster& bot) const
 
         dpp::user_identified userIdent{ std::get<dpp::user_identified>(callback.value) };
 
-        embed.set_title(userIdent.username + "'s Inventory");
-        embed.set_image(userIdent.get_avatar_url());
+        embed.set_title(userIdent.username + "'s Inventory")
+            .set_image(userIdent.get_avatar_url())
+            .set_color(0x0088FF);
 
         std::string desc{ "**Job:** " + adr::Job::jobs[m_job].name + "\n\n**Inventory:**\n" };
         for (std::size_t i{}; i < m_inv.size(); ++i) {
-            desc += adr::Item::names[i] + ": " + std::to_string(m_inv[i]) + '\n';
+            desc += dpp::emoji{ adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() + 
+                ' ' + adr::Item::names[i] + ": " + std::to_string(m_inv[i]) + '\n';
         }
 
         embed.set_description(desc);

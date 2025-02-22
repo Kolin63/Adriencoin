@@ -37,8 +37,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
     }
     else if (commandName == "jobembed") {
-        dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed").
-            set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg")};
+        dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed")
+            .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg")
+            .set_color(0x55ff99) };
 
         dpp::component select{};
         select.set_type(dpp::cot_selectmenu);
