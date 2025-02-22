@@ -110,3 +110,147 @@ dpp::message adr::shop::getMessage(adr::shop::Id id)
 
     return msg;
 }
+
+extern const std::array<std::string, adr::shop::product::MAX> adr::shop::product::names{
+    "gaytocoin",
+    "adriresourcetrade",
+    "tierupgrade",
+    "jobchange",
+    "resourceexchange"
+};
+
+void adr::shop::buy(adr::Player& player, const std::string& productName, const dpp::slashcommand_t& event)
+{
+    adr::shop::product::Id id{};
+    for (std::size_t i{}; i < adr::shop::product::names.size(); ++i)
+        if (adr::shop::product::names[i] == productName) id = static_cast<adr::shop::product::Id>(i);
+
+    switch (id) {
+    case adr::shop::product::gaytocoin:
+        if (player.inv(adr::Item::gaydriencoin) >= 1) {
+            player.changeInv(adr::Item::gaydriencoin, -1);
+            player.changeInv(adr::Item::adriencoin, 1000);
+            event.reply(event.command.usr.get_mention() + " traded a " + adr::Item::getEmojiMention(adr::Item::gaydriencoin) + " for 1000 " + adr::Item::getEmojiMention(adr::Item::adriencoin));
+        }
+        else {
+            event.reply("You don't have any " + adr::Item::getEmojiMention(adr::Item::gaydriencoin) + '!');
+        }
+        break;
+
+    case adr::shop::product::adriresourcetrade:
+        if (player.inv(adr::Item::adriresource) >= 1) {
+            dpp::message msg{};
+            msg.add_embed(dpp::embed{}.set_title("Select a Resource")
+                .set_description("Select a Resource to trade your " + adr::Item::getEmojiMention(adr::Item::adriresource) + " Adri-Resource to.")
+                .set_color(adr::shop::embeds[adr::shop::adriresource].color.value_or(0))
+                .set_thumbnail(adr::shop::embeds[adr::shop::adriresource].thumbnail.value().url)
+            );
+
+            dpp::component select{};
+            select.set_type(dpp::cot_selectmenu)
+                .set_placeholder("select")
+                .set_id("adriresourcetradeselect");
+
+            for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
+                select.add_select_option(dpp::select_option{ std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[i], adr::Item::names[i] }
+                .set_emoji( adr::Item::names[i], adr::Item::emojiIDs[i]) );
+            }
+
+            dpp::component confirm{};
+            confirm.set_type(dpp::cot_button)
+                .set_label("Confirm")
+                .set_emoji("\xE2\x9C\x85")
+                .set_style(dpp::cos_success)
+                .set_id("adriresourcetradeconfirm");
+
+            msg.add_component(select);
+            msg.add_component(confirm);
+
+            event.reply(msg);
+        }
+        else {
+            event.reply("You don't have any " + adr::Item::getEmojiMention(adr::Item::adriresource) + '!');
+        }
+        break;
+
+    case adr::shop::product::tierupgrade:
+        if (player.inv(adr::Item::adriencoin) >= 100 && player.inv(adr::Item::book) >= 70) {
+            player.changeInv(adr::Item::adriencoin, -100);
+            player.changeInv(adr::Item::book, -70);
+            player.setJob(static_cast<adr::Job::Id>(player.job() + adr::Job::tierOneJobsSize));
+        }
+        else {
+            event.reply("You don't have enough " + adr::Item::getEmojiMention(adr::Item::adriencoin) + " or " + adr::Item::getEmojiMention(adr::Item::book) + '!');
+        }
+        break;
+
+    case adr::shop::product::jobchange:
+        if (player.inv(adr::Item::adriencoin) >= 100) {
+            dpp::message msg{};
+            msg.add_embed(dpp::embed{}.set_title("Select a Job")
+                .set_description("Select a Job to change to")
+                .set_color(adr::shop::embeds[adr::shop::job].color.value_or(0))
+                .set_thumbnail(adr::shop::embeds[adr::shop::job].thumbnail.value().url));
+
+            dpp::component select{};
+            select.set_type(dpp::cot_selectmenu)
+                .set_placeholder("select")
+                .set_id("jobchangeselect");
+
+            for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
+                select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name}
+                .set_emoji( adr::Item::names[i], adr::Item::emojiIDs[i]) );
+            }
+
+            dpp::component confirm{};
+            confirm.set_type(dpp::cot_button)
+                .set_label("Confirm")
+                .set_emoji("\xE2\x9C\x85")
+                .set_style(dpp::cos_success)
+                .set_id("jobchangeconfirm");
+
+            msg.add_component(select);
+            msg.add_component(confirm);
+
+            event.reply(msg);
+        }
+        else {
+            event.reply("You don't have enough " + adr::Item::getEmojiMention(adr::Item::adriencoin) + '!');
+        }
+        break;
+    case adr::shop::product::resourceexchange:
+        if (player.inv(adr::Item::adriencoin) >= 10) {
+            dpp::message msg{};
+            msg.add_embed(dpp::embed{}.set_title("Select a Resource")
+                .set_description("Select a Resource to trade your " + adr::Item::getEmojiMention(adr::Item::adriencoin) + " Adriencoin to.")
+                .set_color(adr::shop::embeds[adr::shop::resource].color.value_or(0))
+                .set_thumbnail(adr::shop::embeds[adr::shop::resource].thumbnail.value().url));
+
+            dpp::component select{};
+            select.set_type(dpp::cot_selectmenu)
+                .set_placeholder("select")
+                .set_id("resourceexchangeselect");
+
+            for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
+                select.add_select_option(dpp::select_option{ std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[i], adr::Item::names[i] }
+                .set_emoji( adr::Item::names[i], adr::Item::emojiIDs[i]) );
+            }
+
+            dpp::component confirm{};
+            confirm.set_type(dpp::cot_button)
+                .set_label("Confirm")
+                .set_emoji("\xE2\x9C\x85")
+                .set_style(dpp::cos_success)
+                .set_id("resourceexchangeconfirm");
+
+            msg.add_component(select);
+            msg.add_component(confirm);
+
+            event.reply(msg);
+        }
+        else {
+            event.reply("You don't have enough " + adr::Item::getEmojiMention(adr::Item::adriencoin) + '!');
+        }
+    }
+}
+

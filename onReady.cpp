@@ -7,6 +7,7 @@
 #include "onReady.h"
 #include "job.h"
 #include "item.h"
+#include "shop.h"
 
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
@@ -29,6 +30,13 @@ namespace adr {
 
         setJob.add_option(setJobOption);
 
+        dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
+        dpp::command_option buyCommandOption{ dpp::co_string, "id", "what you are buying", true };
+        for (const std::string& name : adr::shop::product::names) {
+            buyCommandOption.add_choice(dpp::command_option_choice{ name, name });
+        }
+        buy.add_option(buyCommandOption);
+
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });
 
@@ -50,7 +58,7 @@ namespace adr {
         dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
         addEmojis.default_member_permissions = dpp::p_administrator;
 
-        bot.global_bulk_command_create({ view, jobEmbed, shopEmbed, addRoles, addEmojis, addCommands, printUserInv, setJob });
+        bot.global_bulk_command_create({ buy, view, jobEmbed, shopEmbed, addRoles, addEmojis, addCommands, setJob });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)

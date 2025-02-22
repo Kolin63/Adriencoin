@@ -40,6 +40,14 @@ namespace adr {
         adr::Job::Id tempJob() const { return m_tempJob; }
         void setTempJob(adr::Job::Id job) { m_tempJob = job; }
 
+        void setInv(const Inventory& inv) { m_inv = inv; }
+        void setInv(const adr::Item& item) { m_inv[item.id] = item.amount; }
+        void setInv(const adr::Item::Id& id, int amount) { m_inv[id] = amount; }
+        void changeInv(const adr::Item::Id& id, int difference) { m_inv[id] += difference; }
+
+        Inventory inv() const { return m_inv; }
+        int inv(adr::Item::Id id) const { return m_inv[id]; }
+
         int& operator[](int index);
         const int& operator[](int index) const;
     };

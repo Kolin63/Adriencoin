@@ -11,7 +11,11 @@
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
-    if (commandName == "view") {
+    if (commandName == "buy") {
+        adr::Player player{ event.command.usr.id };
+        adr::shop::buy(player, std::get<std::string>(event.get_parameter("id")), event);
+    }
+    else if (commandName == "view") {
         adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };
         player.print();
         event.reply(dpp::message{ player.viewEmbed(bot) });
