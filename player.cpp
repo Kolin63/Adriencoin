@@ -96,10 +96,13 @@ const dpp::embed adr::Player::viewEmbed(dpp::cluster& bot) const
             .set_color(0x0088FF)
             .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/skew-wide.jpg");
 
-        std::string desc{ "**Job:** " + adr::Job::jobs[m_job].name + "\n\n**Inventory:**\n" };
+        std::string desc{ "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name) 
+            + "\n\n**Inventory:**\n"};
+
         for (std::size_t i{}; i < m_inv.size(); ++i) {
-            desc += dpp::emoji{ adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() + 
-                ' ' + adr::Item::names[i] + ": " + std::to_string(m_inv[i]) + '\n';
+            desc += dpp::emoji{ 
+                adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() + ' ' + adr::Item::names[i] + ": " 
+                + std::to_string(m_inv[i]) + '\n';
         }
 
         embed.set_description(desc);
