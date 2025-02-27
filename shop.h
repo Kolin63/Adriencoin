@@ -28,22 +28,6 @@ namespace adr {
         extern const std::array<dpp::embed, adr::shop::MAX> embeds;
 
         dpp::message getMessage(adr::shop::Id screen = adr::shop::everything);
-
-        namespace product {
-            enum Id {
-                gaytocoin,
-                adriresourcetrade,
-                tierupgrade,
-                jobchange,
-                resourceexchange,
-
-                MAX
-            };
-
-            extern const std::array<std::string, MAX> names;
-        };
-
-        void buy(adr::Player& player, const std::string& productName, const dpp::slashcommand_t& event);
     }
 }
 

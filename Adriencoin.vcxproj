@@ -147,6 +147,7 @@
     <ClCompile Include="onReady.cpp" />
     <ClCompile Include="onEvent.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="product.cpp" />
     <ClCompile Include="shop.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="onReady.h" />
     <ClInclude Include="onEvent.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="product.h" />
     <ClInclude Include="shop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

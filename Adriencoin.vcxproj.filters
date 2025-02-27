@@ -36,6 +36,9 @@
     <ClCompile Include="shop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="product.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="product.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

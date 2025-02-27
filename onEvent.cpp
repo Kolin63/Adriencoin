@@ -7,13 +7,14 @@
 #include "job.h"
 #include "player.h"
 #include "shop.h"
+#include "product.h"
 
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
-        adr::Player player{ event.command.usr.id };
-        adr::shop::buy(player, std::get<std::string>(event.get_parameter("id")), event);
+        std::string resultName{ std::get<std::string>(event.get_parameter("result")) };
+        event.reply(adr::Product::buy(adr::Player{ event.command.usr.id }, std::get<std::string>(event.get_parameter("product")), (resultName == "") ? NULL : resultName));
     }
     else if (commandName == "view") {
         adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };

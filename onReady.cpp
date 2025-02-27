@@ -8,6 +8,7 @@
 #include "job.h"
 #include "item.h"
 #include "shop.h"
+#include "product.h"
 
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
@@ -22,11 +23,16 @@ namespace adr {
         }
 
         dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
-        dpp::command_option buyCommandOption{ dpp::co_string, "id", "what you are buying", true };
-        for (const std::string& name : adr::shop::product::names) {
-            buyCommandOption.add_choice(dpp::command_option_choice{ name, name });
+        dpp::command_option buyCommandOption{ dpp::co_string, "product", "the product / trade / deal", true };
+        for (const adr::Product& product : adr::Product::products) {
+            buyCommandOption.add_choice(dpp::command_option_choice{ product.name, product.name });
+        }
+        dpp::command_option buyResultOption{ dpp::co_string, "result", "what you are getting, if applicable", false };
+        for (const std::string& name : adr::Item::names) {
+            buyResultOption.add_choice(dpp::command_option_choice{ name, name });
         }
         buy.add_option(buyCommandOption);
+        buy.add_option(buyResultOption);
 
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });
