@@ -14,21 +14,12 @@ namespace adr {
     {
         std::cout << "making commands!\n";
 
-        dpp::slashcommand setJob{ "setjob", "sets the job of a user", bot.me.id };
-        setJob.default_member_permissions = dpp::p_administrator;
-        dpp::command_option setJobOption{ dpp::co_integer, "job", "the job to assign", true };
-
         for (const adr::Job& i : adr::Job::jobs)
         {
             dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::Item::names[i.item.id]), bot.me.id };
             std::cout << i.name << ' ' << i.action << '\n';
-            bot.global_bulk_command_create({ slashcommand });
-
-            setJobOption.add_choice(dpp::command_option_choice{ i.name, i.id });
+            bot.global_command_create(slashcommand);
         }
-        setJobOption.add_choice(dpp::command_option_choice{ "MAX", adr::Job::MAX });
-
-        setJob.add_option(setJobOption);
 
         dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
         dpp::command_option buyCommandOption{ dpp::co_string, "id", "what you are buying", true };
@@ -40,31 +31,21 @@ namespace adr {
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });
 
-        dpp::slashcommand setInv{ "setinv", "set the amount of an item a player has", bot.me.id };
-        setInv.default_member_permissions = dpp::p_administrator;
-        setInv.add_option({ dpp::co_user, "player", "the player to modify", true });
-        setInv.add_option({ dpp::co_integer, "itemid", "the item to modify", true });
-        setInv.add_option({ dpp::co_integer, "amount", "the amount of item to set to", true });
+        dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
+        admin.default_member_permissions = dpp::p_administrator;
+        admin.add_option(
+            dpp::command_option{ dpp::co_string, "command", "the command to run", true }
+            .add_choice(dpp::command_option_choice{ "addroles", "addroles" })
+            .add_choice(dpp::command_option_choice{ "jobembed", "jobembed" })
+            .add_choice(dpp::command_option_choice{ "shopembed", "shopembed" })
+            .add_choice(dpp::command_option_choice{ "addemojis", "addemojis" })
+            .add_choice(dpp::command_option_choice{ "setinv", "setinv" })
+            .add_choice(dpp::command_option_choice{ "setjob", "setjob" }));
+        admin.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
+        admin.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
+        admin.add_option(dpp::command_option{ dpp::co_integer, "amount", "amount of item", false });
 
-        dpp::slashcommand addRoles{ "addroles", "roles", bot.me.id };
-        addRoles.default_member_permissions = dpp::p_administrator;
-
-        dpp::slashcommand addCommands{ "addcommands", "re-register the commands if theyre not loading", bot.me.id };
-        addCommands.default_member_permissions = dpp::p_administrator;
-
-        dpp::slashcommand printUserInv{ "printuserinv", "print the inventory of a user", bot.me.id };
-        printUserInv.default_member_permissions = dpp::p_administrator;
-
-        dpp::slashcommand jobEmbed{ "jobembed", "send an embed for choosing a job", bot.me.id };
-        jobEmbed.default_member_permissions = dpp::p_administrator;
-
-        dpp::slashcommand shopEmbed{ "shopembed", "shop embed", bot.me.id };
-        jobEmbed.default_member_permissions = dpp::p_administrator;
-
-        dpp::slashcommand addEmojis{ "addemojis", "add the emojis", bot.me.id };
-        addEmojis.default_member_permissions = dpp::p_administrator;
-
-        bot.global_bulk_command_create({ buy, view, jobEmbed, shopEmbed, setInv, addRoles, addEmojis, addCommands, setJob });
+        bot.global_bulk_command_create({ buy, view, admin });
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)

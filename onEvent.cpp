@@ -20,62 +20,58 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         player.print();
         event.reply(dpp::message{ player.viewEmbed(bot) });
     }
-    else if (commandName == "addroles") { 
-        adr::addRoles(bot, event.command.guild_id);
-        event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
-    }
-    else if (commandName == "addemojis") {
-        adr::addEmojis(bot, event.command.guild_id);
-        event.reply(dpp::message("Attempted to create required emojis " + dpp::emoji{ "adriencoin", 1342319536300621876 }.get_mention()).set_flags(dpp::m_ephemeral));
-    }
-    else if (commandName == "addcommands") {
-        adr::addSlashCommands(bot);
-        event.reply(dpp::message("Attempted to register commands").set_flags(dpp::m_ephemeral));
-    }
-    else if (commandName == "printuserinv") {
-        adr::Player{ event.command.usr.id }.print();
-        event.reply(dpp::message("Data printed to console").set_flags(dpp::m_ephemeral));
-    }
-    else if (commandName == "setjob") {
-        adr::Job::Id job = static_cast<adr::Job::Id>(std::get<int64_t>(event.get_parameter("job")));
-        adr::Player{ event.command.usr.id }.setJob(job);
-        event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
-    }
-    else if (commandName == "setinv") {
-        adr::Player{ std::get<dpp::snowflake>(event.get_parameter("player")) }
-        .setInv(static_cast<adr::Item::Id>(std::get<int64_t>(event.get_parameter("itemid"))), static_cast<int>(std::get<int64_t>(event.get_parameter("amount"))));
-        event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
-    }
-    else if (commandName == "jobembed") {
-        dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed")
-            .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg")
-            .set_color(0x55ff99) };
-
-        dpp::component select{};
-        select.set_type(dpp::cot_selectmenu);
-        select.set_placeholder("Choose a Job");
-        select.set_id("jobselect");
-
-        for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
-            select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name, (
-                std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
-                .set_emoji(adr::Item::names[i], adr::Item::emojiIDs[i]));
+    else if (commandName == "admin") {
+        const std::string subcmd{ std::get<std::string>(event.get_parameter("command")) };
+        std::cout << "admin subcommand name: " << subcmd << '\n';
+        if (subcmd == "addroles") { 
+            adr::addRoles(bot, event.command.guild_id);
+            event.reply(dpp::message("Attempted to create required roles").set_flags(dpp::m_ephemeral));
         }
+        else if (subcmd == "addemojis") {
+            adr::addEmojis(bot, event.command.guild_id);
+            event.reply(dpp::message("Attempted to create required emojis " + dpp::emoji{ "adriencoin", 1342319536300621876 }.get_mention()).set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "setjob") {
+            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
+            .setJob(static_cast<adr::Job::Id>(std::get<int64_t>(event.get_parameter("index"))));
+            event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "setinv") {
+            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
+            .setInv(static_cast<adr::Item::Id>(std::get<int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<int64_t>(event.get_parameter("amount"))));
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "shopembed") {
+            event.reply(adr::shop::getMessage());
+        }
+        else if (subcmd == "jobembed") {
+            dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed")
+                .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg")
+                .set_color(0x55ff99) };
 
-        dpp::component confirm{};
-        confirm.set_type(dpp::cot_button);
-        confirm.set_label("Confirm");
-        confirm.set_emoji("\xE2\x9C\x85");
-        confirm.set_style(dpp::cos_success);
-        confirm.set_id("jobconfirm");
+            dpp::component select{};
+            select.set_type(dpp::cot_selectmenu);
+            select.set_placeholder("Choose a Job");
+            select.set_id("jobselect");
 
-        msg.add_component(dpp::component{}.add_component(select));
-        msg.add_component(dpp::component{}.add_component(confirm));
+            for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
+                select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name, (
+                    std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
+                    .set_emoji(adr::Item::names[i], adr::Item::emojiIDs[i]));
+            }
 
-        event.reply(msg);
-    }
-    else if (commandName == "shopembed") {
-        event.reply(adr::shop::getMessage());
+            dpp::component confirm{};
+            confirm.set_type(dpp::cot_button);
+            confirm.set_label("Confirm");
+            confirm.set_emoji("\xE2\x9C\x85");
+            confirm.set_style(dpp::cos_success);
+            confirm.set_id("jobconfirm");
+
+            msg.add_component(dpp::component{}.add_component(select));
+            msg.add_component(dpp::component{}.add_component(confirm));
+
+            event.reply(msg);
+        }
     }
     else {
         adr::doJob(bot, event);
