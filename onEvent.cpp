@@ -119,7 +119,8 @@ void adr::doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcomman
         player[i.item.id] += i.item.amount;
         player[adr::Item::adriencoin] += i.adriencoin;
 
-        event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + adr::Item::names[i.item.id] + " and +" + std::to_string(i.adriencoin) + " Adriencoin.");
+        event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + dpp::emoji{ adr::Item::names[i.item.id], adr::Item::emojiIDs[i.item.id] }.get_mention()
+            + " and +" + std::to_string(i.adriencoin) + ' ' + dpp::emoji{adr::Item::names[adr::Item::adriencoin], adr::Item::emojiIDs[adr::Item::adriencoin]}.get_mention());
     }
 
     if (!didAJob) {
