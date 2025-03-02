@@ -52,18 +52,17 @@ dpp::message adr::Product::buy(const dpp::snowflake& uuid, const std::string& pr
     if (resultType == adr::Product::r_none)
         return dpp::message{ "There was an error getting the result type." }.set_flags(dpp::m_ephemeral);
 
-    // Gets the result choice
-    int resultChoice{ -1 };
-    if (resultType == adr::Product::r_one)
-        for (const adr::Product& product : adr::Product::products)
-            for (int i{}; i < product.result.size(); ++i)
-                if (adr::Item::names[product.result[i].id] == resultName)
-                    resultChoice = i;
-
     // Returns from the function if the player can't afford this
     for (const adr::Item& item : adr::Product::products[productId].cost) 
         if (player.inv(item.id) < item.amount)
             return dpp::message{ "You can't afford this!" };
+
+    // Gets the result choice
+    int resultChoice{ -1 };
+    if (resultType == adr::Product::r_one)
+        for (int i{}; i < adr::Product::products[productId].result.size(); ++i)
+            if (adr::Item::names[adr::Product::products[productId].result[i].id] == resultName)
+                resultChoice = i;
 
     // If it is something that does not need to be handled in code
     if (adr::Product::products[productId].result[0].amount != 0) { 
