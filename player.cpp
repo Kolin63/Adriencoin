@@ -111,7 +111,7 @@ const dpp::embed adr::Player::viewEmbed(dpp::cluster& bot) const
         std::string desc{
             "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
             + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
-            + "\nCan Work " + nextWorkTimestamp()
+            + "\nCan Work Next " + nextWorkTimestamp()
             + "\n\n**Inventory:**\n"};
 
         for (std::size_t i{}; i < m_inv.size(); ++i) {
@@ -134,6 +134,12 @@ bool adr::Player::exists() const
 bool adr::Player::exists(const dpp::snowflake& uuid)
 {
     return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".bin");
+}
+
+std::string adr::Player::nextWorkTimestamp() const
+{ 
+    std::time_t t{ std::time(0) + nextWork() };
+    return dpp::utility::timestamp(t, dpp::utility::tf_relative_time) + " (" + dpp::utility::timestamp(t, dpp::utility::tf_short_time) + ")";
 }
 
 int& adr::Player::operator[](int index)

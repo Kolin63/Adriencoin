@@ -47,7 +47,7 @@ namespace adr {
         void updateLastWorked() { m_lastWorked = std::time(0); }
         void setLastWorked(const std::time_t t) { m_lastWorked = t; }
         std::time_t nextWork() const { return m_lastWorked - std::time(0) + workCooldownSeconds; } // relative time, not since epoch
-        std::string nextWorkTimestamp() const { return dpp::utility::timestamp(std::time(0) + nextWork(), dpp::utility::tf_relative_time); }
+        std::string nextWorkTimestamp() const;
 
         void setInv(const Inventory& inv) { m_inv = inv; }
         void setInv(const adr::Item& item) { m_inv[item.id] = item.amount; }
