@@ -48,6 +48,11 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             .setInv(static_cast<adr::Item::Id>(std::get<int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
+        else if (subcmd == "resetworktimer") {
+            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
+            .setLastWorked(0);
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
         else if (subcmd == "shopembed") {
             event.reply(adr::shop::getMessage());
         }
@@ -121,10 +126,15 @@ void adr::doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcomman
 
     adr::Player player{ event.command.usr.id };
 
+    if (player.nextWork() >= 0) {
+        event.reply("You can work next " + player.nextWorkTimestamp());
+    }
+
     for (const adr::Job& i : adr::Job::jobs) if (player.job() == i.id && commandName == i.action) {
         didAJob = true;
         player[i.item.id] += i.item.amount;
         player[adr::Item::adriencoin] += i.adriencoin;
+        player.updateLastWorked();
 
         event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + dpp::emoji{ adr::Item::names[i.item.id], adr::Item::emojiIDs[i.item.id] }.get_mention()
             + " and +" + std::to_string(i.adriencoin) + ' ' + dpp::emoji{adr::Item::names[adr::Item::adriencoin], adr::Item::emojiIDs[adr::Item::adriencoin]}.get_mention());

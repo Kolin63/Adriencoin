@@ -55,7 +55,8 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "shopembed", "shopembed" })
             .add_choice(dpp::command_option_choice{ "addemojis", "addemojis" })
             .add_choice(dpp::command_option_choice{ "setinv", "setinv" })
-            .add_choice(dpp::command_option_choice{ "setjob", "setjob" }));
+            .add_choice(dpp::command_option_choice{ "setjob", "setjob" })
+            .add_choice(dpp::command_option_choice{ "resetworktimer", "resetworktimer" }));
         admin.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "amount", "amount of item", false });

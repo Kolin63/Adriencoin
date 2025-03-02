@@ -1,5 +1,6 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
+#include <time.h>
 #include "player.h"
 #include "item.h"
 #include "job.h"
@@ -43,6 +44,7 @@ void adr::Player::save() const
     fs.write(reinterpret_cast<const char*>(&m_version), sizeof m_version);
     fs.write(reinterpret_cast<const char*>(&m_job), sizeof m_job);
     fs.write(reinterpret_cast<const char*>(&m_tempJob), sizeof m_tempJob);
+    fs.write(reinterpret_cast<const char*>(&m_lastWorked), sizeof m_lastWorked);
 
     for (const int i : m_inv) {
         fs.write(reinterpret_cast<const char*>(&i), sizeof i);
@@ -63,6 +65,7 @@ void adr::Player::load()
     fs.read(reinterpret_cast<char*>(&m_version), sizeof m_version);
     fs.read(reinterpret_cast<char*>(&m_job), sizeof m_job);
     fs.read(reinterpret_cast<char*>(&m_tempJob), sizeof m_tempJob);
+    fs.read(reinterpret_cast<char*>(&m_lastWorked), sizeof m_lastWorked);
     for (int& i : m_inv) {
         fs.read(reinterpret_cast<char*>(&i), sizeof i);
     }
@@ -71,8 +74,17 @@ void adr::Player::load()
 
 void adr::Player::print() const
 {
+    char lastWorkedString[100];
+    std::tm tm{};
+    if (localtime_s(&tm, &m_lastWorked) != 0) {
+        std::cerr << "Error converting time.\n";
+        return;
+    }
+
     std::cout << m_uuid << "'s Inventory:\n"
-     << ((m_job != adr::Job::MAX) ? adr::Job::jobs[m_job].name : "no job") << '\n';
+        << ((m_job != adr::Job::MAX) ? adr::Job::jobs[m_job].name : "no job")
+        << " last worked: " << (std::strftime(lastWorkedString, sizeof lastWorkedString, "%c", &tm) ? lastWorkedString : "error")
+        << '\n';
 
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         std::cout << adr::Item::names[i] << " (" << i << "):\t" << m_inv[i] << '\n';
@@ -96,7 +108,10 @@ const dpp::embed adr::Player::viewEmbed(dpp::cluster& bot) const
             .set_color(0x0088FF)
             .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/skew-wide.jpg");
 
-        std::string desc{ "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name) 
+        std::string desc{
+            "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
+            + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
+            + "\nCan Work " + nextWorkTimestamp()
             + "\n\n**Inventory:**\n"};
 
         for (std::size_t i{}; i < m_inv.size(); ++i) {
