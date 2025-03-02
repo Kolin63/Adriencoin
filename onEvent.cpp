@@ -1,6 +1,7 @@
 ﻿#pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <string>
+#include <algorithm>
 #include <dpp/dpp.h>
 #include "onEvent.h"
 #include "onReady.h"
@@ -20,7 +21,19 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             resultName = ""; 
         }
 
-        event.reply(adr::Product::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName));
+        std::int64_t times{ 1 };
+        try { times = std::get<std::int64_t>(event.get_parameter("times")); }
+        catch (const std::bad_variant_access& e) { 
+            std::cout << "buy error: " << e.what() << '\n'; 
+            times = 1;
+        }
+
+        if (times > 100) {
+            event.reply(dpp::message{ "You can not buy something more than 100 times." });
+            return;
+        }
+
+        event.reply(adr::Product::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
     }
     else if (commandName == "view") {
         adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };
@@ -40,12 +53,12 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "setjob") {
             adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
-            .setJob(static_cast<adr::Job::Id>(std::get<int64_t>(event.get_parameter("index"))));
+            .setJob(static_cast<adr::Job::Id>(std::get<std::int64_t>(event.get_parameter("index"))));
             event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "setinv") {
             adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
-            .setInv(static_cast<adr::Item::Id>(std::get<int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<int64_t>(event.get_parameter("amount"))));
+            .setInv(static_cast<adr::Item::Id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "resetworktimer") {

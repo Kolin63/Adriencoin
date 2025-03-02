@@ -24,7 +24,8 @@ namespace adr
         enum ResultType {
             r_all,
             r_one,
-            r_none
+            r_none,
+            r_custom
         };
 
         const Id id{ adr::Product::MAX };
@@ -35,7 +36,7 @@ namespace adr
 
         const static std::array<adr::Product, adr::Product::MAX> products;
 
-        static dpp::message buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName = "");
+        static dpp::message buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName = "", int times = 1);
     };
 }
 

@@ -38,8 +38,12 @@ namespace adr {
         for (const std::string& name : adr::Item::names) {
             buyResultOption.add_choice(dpp::command_option_choice{ name, name });
         }
+        for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
+            buyResultOption.add_choice(dpp::command_option_choice{ adr::Job::jobs[i].name, adr::Job::jobs[i].name });
+        }
         buy.add_option(buyCommandOption);
         buy.add_option(buyResultOption);
+        buy.add_option(dpp::command_option{ dpp::co_integer, "times", "how many times to buy this (max 100)", false });
         commandList.push_back(buy);
 
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
