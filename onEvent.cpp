@@ -13,8 +13,14 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
-        std::string resultName{ std::get<std::string>(event.get_parameter("result")) };
-        event.reply(adr::Product::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), (resultName == "") ? NULL : resultName));
+        std::string resultName{};
+        try { resultName = std::get<std::string>(event.get_parameter("result")); }
+        catch (const std::bad_variant_access& e) { 
+            std::cout << "buy error: " << e.what() << '\n'; 
+            resultName = ""; 
+        }
+
+        event.reply(adr::Product::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName));
     }
     else if (commandName == "view") {
         adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };
