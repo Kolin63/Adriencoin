@@ -13,13 +13,20 @@
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
     {
+        constexpr std::size_t commandsAmount{ adr::Job::tierOneJobsSize + 3 };
+
         std::cout << "making commands!\n";
 
-        for (const adr::Job& i : adr::Job::jobs)
+        std::vector<dpp::slashcommand> commandList{};
+        commandList.reserve(commandsAmount);
+        commandList.resize(0);
+        std::cout << "commandList capacity: " << commandList.capacity() << " size: " << commandList.size() << '\n';
+
+        for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i)
         {
-            dpp::slashcommand slashcommand{ i.action, (i.action + ' ' + adr::Item::names[i.item.id]), bot.me.id };
-            std::cout << i.name << ' ' << i.action << '\n';
-            bot.global_command_create(slashcommand);
+            dpp::slashcommand slashcommand{ adr::Job::jobs[i].action, (adr::Job::jobs[i].action + ' ' + adr::Item::names[adr::Job::jobs[i].item.id]), bot.me.id};
+            std::cout << adr::Job::jobs[i].name << ' ' << adr::Job::jobs[i].action << '\n';
+            commandList.push_back(slashcommand);
         }
 
         dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
@@ -33,9 +40,11 @@ namespace adr {
         }
         buy.add_option(buyCommandOption);
         buy.add_option(buyResultOption);
+        commandList.push_back(buy);
 
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });
+        commandList.push_back(view);
 
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
         admin.default_member_permissions = dpp::p_administrator;
@@ -50,8 +59,11 @@ namespace adr {
         admin.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "amount", "amount of item", false });
+        commandList.push_back(admin);
 
-        bot.global_bulk_command_create({ buy, view, admin });
+        std::cout << "commandList capacity: " << commandList.capacity() << " size: " << commandList.size() << '\n';
+        for (std::size_t i{}; i < commandList.size(); ++i) { std::cout << i << ": " << commandList[i].name << '\n'; }
+        bot.global_bulk_command_create(commandList);
     }
 
     void addRoles(dpp::cluster& bot, const dpp::snowflake& guildID)
