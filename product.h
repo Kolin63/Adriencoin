@@ -35,7 +35,7 @@ namespace adr
 
         const static std::array<adr::Product, adr::Product::MAX> products;
 
-        static dpp::message buy(adr::Player player, const std::string& productName, const std::string& resultName = NULL);
+        static dpp::message buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName = NULL);
     };
 }
 

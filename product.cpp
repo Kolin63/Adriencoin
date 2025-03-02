@@ -31,8 +31,12 @@ const std::array<adr::Product, adr::Product::MAX> adr::Product::products{
         adr::Item{ adr::Item::potion, 5 } } }
 };
 
-dpp::message adr::Product::buy(adr::Player player, const std::string& productName, const std::string& resultName)
+dpp::message adr::Product::buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName)
 {
+    std::cout << "buy: " << uuid << ' ' << productName << ' ' << resultName << '\n';
+
+    adr::Player player{ uuid };
+
     // Gets the product ID and Result Type
     adr::Product::Id productId{ adr::Product::MAX };
     adr::Product::ResultType resultType{ adr::Product::r_none };
