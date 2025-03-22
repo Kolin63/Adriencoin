@@ -16,10 +16,9 @@ namespace adr {
     private:
         // the savedata version, so that the data can be converted if needed
         int m_version{};
-        const dpp::snowflake m_uuid{};
+        const dpp::snowflake& m_uuid{};
 
         adr::Job::Id m_job{ adr::Job::MAX };
-        adr::Job::Id m_tempJob{ adr::Job::MAX }; // used for when the player is selecting a job
         std::time_t m_lastWorked{ 0 };
         static constexpr std::time_t workCooldownSeconds{ 60 * 60 * 6 }; // 6 hours
 
@@ -34,14 +33,12 @@ namespace adr {
         void save() const;
         void load();
         void print() const;
-        const dpp::embed viewEmbed(dpp::cluster& bot) const;
+        const dpp::embed viewEmbed() const;
         bool exists() const;
         static bool exists(const dpp::snowflake& uuid);
 
         adr::Job::Id job() const { return m_job; }
         void setJob(adr::Job::Id job) { m_job = job; }
-        adr::Job::Id tempJob() const { return m_tempJob; }
-        void setTempJob(adr::Job::Id job) { m_tempJob = job; }
 
         std::time_t lastWorked() const { return m_lastWorked; }
         void updateLastWorked() { m_lastWorked = std::time(0); }

@@ -4,6 +4,7 @@
 #include "player.h"
 #include "item.h"
 #include "job.h"
+#include "cache.h"
 
 adr::Player::Player(const dpp::snowflake& uuid) 
     : m_uuid{ uuid }
@@ -43,7 +44,6 @@ void adr::Player::save() const
 
     fs.write(reinterpret_cast<const char*>(&m_version), sizeof m_version);
     fs.write(reinterpret_cast<const char*>(&m_job), sizeof m_job);
-    fs.write(reinterpret_cast<const char*>(&m_tempJob), sizeof m_tempJob);
     fs.write(reinterpret_cast<const char*>(&m_lastWorked), sizeof m_lastWorked);
 
     for (const int i : m_inv) {
@@ -64,7 +64,6 @@ void adr::Player::load()
 
     fs.read(reinterpret_cast<char*>(&m_version), sizeof m_version);
     fs.read(reinterpret_cast<char*>(&m_job), sizeof m_job);
-    fs.read(reinterpret_cast<char*>(&m_tempJob), sizeof m_tempJob);
     fs.read(reinterpret_cast<char*>(&m_lastWorked), sizeof m_lastWorked);
     for (int& i : m_inv) {
         fs.read(reinterpret_cast<char*>(&i), sizeof i);
@@ -92,36 +91,28 @@ void adr::Player::print() const
     std::cout << '\n';
 }
 
-const dpp::embed adr::Player::viewEmbed(dpp::cluster& bot) const
+const dpp::embed adr::Player::viewEmbed() const
 {
+    adr::playerCacheElement playerCache{ adr::cache::getPlayerElementFromCache(m_uuid) };
     dpp::embed embed{};
-    bot.user_get_cached(m_uuid, [&](const dpp::confirmation_callback_t& callback){
-        if (callback.is_error()) {
-            embed.set_title("Error").set_description("There was an error retrieving that data.").set_color(0xFF0000);
-            return;
-        }
+    embed.set_title(playerCache.username + "'s Inventory")
+        .set_thumbnail(playerCache.avatarURL)
+        .set_color(0x0088FF)
+        .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/skew-wide.jpg");
 
-        dpp::user_identified userIdent{ std::get<dpp::user_identified>(callback.value) };
+    std::string desc{
+        "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
+        + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
+        + "\nCan Work Next " + nextWorkTimestamp()
+        + "\n\n**Inventory:**\n"};
 
-        embed.set_title(userIdent.username + "'s Inventory")
-            .set_thumbnail(userIdent.get_avatar_url())
-            .set_color(0x0088FF)
-            .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/skew-wide.jpg");
+    for (std::size_t i{}; i < m_inv.size(); ++i) {
+        desc += dpp::emoji{ 
+            adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() + ' ' + adr::Item::names[i] + ": " 
+            + std::to_string(m_inv[i]) + '\n';
+    }
 
-        std::string desc{
-            "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
-            + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
-            + "\nCan Work Next " + nextWorkTimestamp()
-            + "\n\n**Inventory:**\n"};
-
-        for (std::size_t i{}; i < m_inv.size(); ++i) {
-            desc += dpp::emoji{ 
-                adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() + ' ' + adr::Item::names[i] + ": " 
-                + std::to_string(m_inv[i]) + '\n';
-        }
-
-        embed.set_description(desc);
-    });
+    embed.set_description(desc);
 
     return embed;
 }

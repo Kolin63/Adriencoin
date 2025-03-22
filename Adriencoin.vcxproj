@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cache.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="job.cpp" />
     <ClCompile Include="main.cpp" />
@@ -152,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h" />
+    <ClInclude Include="cache.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="job.h" />
     <ClInclude Include="onReady.h" />

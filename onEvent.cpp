@@ -9,6 +9,7 @@
 #include "player.h"
 #include "shop.h"
 #include "product.h"
+#include "cache.h"
 
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
@@ -36,9 +37,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         event.reply(adr::Product::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
     }
     else if (commandName == "view") {
-        adr::Player player{ std::get<dpp::snowflake>(event.get_parameter("player")) };
+        const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };
         player.print();
-        event.reply(dpp::message{ player.viewEmbed(bot) });
+        event.reply(dpp::message{ player.viewEmbed() });
     }
     else if (commandName == "admin") {
         const std::string subcmd{ std::get<std::string>(event.get_parameter("command")) };
@@ -52,12 +53,12 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(dpp::message("Attempted to create required emojis " + dpp::emoji{ "adriencoin", 1342319536300621876 }.get_mention()).set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "setjob") {
-            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
+            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
             .setJob(static_cast<adr::Job::Id>(std::get<std::int64_t>(event.get_parameter("index"))));
             event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "setinv") {
-            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
+            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
             .setInv(static_cast<adr::Item::Id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
@@ -106,8 +107,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 void adr::onSelectClick(const dpp::select_click_t& event)
 {
     if (event.custom_id == "jobselect") {
-        adr::Player player{ event.command.usr.id };
-        player.setTempJob(adr::Job::getId(event.values[0]));
+        adr::cache::getPlayerElementFromCache(event.command.usr.id).tempJob = adr::Job::getId(event.values[0]);
         event.reply(dpp::message("Job selected, please confirm").set_flags(dpp::m_ephemeral));
     }
     else if (event.custom_id == "shopselect") {
@@ -124,7 +124,7 @@ void adr::onButtonClick(const dpp::button_click_t& event)
             return;
         }
 
-        player.setJob(player.tempJob());
+        player.setJob(adr::cache::getPlayerElementFromCache(event.command.usr.id).tempJob);
         event.reply(dpp::message("Job confirmed to " + adr::Job::jobs[player.job()].name + ". Run /" + adr::Job::jobs[player.job()].action + " to work.").set_flags(dpp::m_ephemeral));
     }
 }

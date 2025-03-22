@@ -3,6 +3,7 @@
 #include <array>
 #include "product.h"
 #include "item.h"
+#include "cache.h"
 
 const std::array<adr::Product, adr::Product::MAX> adr::Product::products{
     // Gay to Coin
@@ -38,7 +39,7 @@ dpp::message adr::Product::buy(const dpp::snowflake& uuid, const std::string& pr
     if (times > 100)
         return dpp::message{ "You can not buy something more than 100 times." };
 
-    adr::Player player{ uuid };
+    adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
     // Gets the product ID and Result Type
     adr::Product::Id productId{ adr::Product::MAX };

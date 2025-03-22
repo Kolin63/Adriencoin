@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-std::string getBotToken()
+inline std::string getBotToken()
 {
     std::string filename{ "C:\\discordtokens\\adriencoin.txt" };
     std::ifstream fs{ filename, std::ios::binary };
