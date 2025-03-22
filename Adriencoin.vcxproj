@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="botToken.h" />
     <ClInclude Include="cache.h" />
+    <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="job.h" />
     <ClInclude Include="onReady.h" />

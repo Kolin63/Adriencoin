@@ -106,11 +106,7 @@ const dpp::embed adr::Player::viewEmbed() const
         + "\nCan Work Next " + nextWorkTimestamp()
         + "\n\n**Inventory:**\n"};
 
-    for (std::size_t i{}; i < m_inv.size(); ++i) {
-        desc += dpp::emoji{ 
-            adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() + ' ' + adr::Item::names[i] + ": " 
-            + std::to_string(m_inv[i]) + '\n';
-    }
+    desc += adr::getNonZeroItems(m_inv);
 
     embed.set_description(desc);
 

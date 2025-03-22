@@ -6,8 +6,8 @@
 #include <ctime>
 #include "item.h"
 #include "job.h"
+#include "inventory.h"
 
-using Inventory = std::array<int, adr::Item::MAX>;
 static constexpr int CURRENT_SAVE_VERSION{ 1 };
 
 namespace adr {
