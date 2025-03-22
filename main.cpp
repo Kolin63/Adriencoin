@@ -8,7 +8,7 @@
 
 int main()
 {
-    dpp::cluster bot(getBotToken());
+    dpp::cluster bot{ getBotToken() };
 
     bot.on_log(dpp::utility::cout_logger());
 
