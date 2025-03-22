@@ -111,6 +111,19 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             adr::cache::saveCache();
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
+        else if (subcmd == "getindices") {
+            std::string body{ "items:\n" };
+            for (std::size_t i{}; i < adr::Item::names.size(); ++i) {
+                body += std::to_string(i) + ": " + adr::Item::names[i] + '\n';
+            }
+
+            body += "\njobs:\n";
+            for (std::size_t i{}; i < adr::Job::jobs.size(); ++i) {
+                body += std::to_string(i) + ": " + adr::Job::jobs[i].name + '\n';
+            }
+
+            event.reply(dpp::message(body).set_flags(dpp::m_ephemeral));
+        }
     }
     else {
         adr::doJob(event);
