@@ -5,6 +5,7 @@
 #include "onReady.h"
 #include "player.h"
 #include "onEvent.h"
+#include "cache.h"
 
 int main()
 {
@@ -31,6 +32,8 @@ int main()
         if (dpp::run_once<struct register_bot_commands>())
         {
             adr::onReady(bot);
+
+            bot.start_timer(adr::cache::saveCache, adr::cache::SAVE_FREQUENCY_SECONDS, adr::cache::saveCache);
         }
     });
 

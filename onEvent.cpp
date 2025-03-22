@@ -52,21 +52,6 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             adr::addEmojis(bot, event.command.guild_id);
             event.reply(dpp::message("Attempted to create required emojis " + dpp::emoji{ "adriencoin", 1342319536300621876 }.get_mention()).set_flags(dpp::m_ephemeral));
         }
-        else if (subcmd == "setjob") {
-            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
-            .setJob(static_cast<adr::Job::Id>(std::get<std::int64_t>(event.get_parameter("index"))));
-            event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
-        }
-        else if (subcmd == "setinv") {
-            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
-            .setInv(static_cast<adr::Item::Id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
-            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
-        }
-        else if (subcmd == "resetworktimer") {
-            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
-            .setLastWorked(0);
-            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
-        }
         else if (subcmd == "shopembed") {
             event.reply(adr::shop::getMessage());
         }
@@ -99,8 +84,36 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(msg);
         }
     }
+    else if (commandName == "owner") {
+        if (event.command.usr.id != 488335709883727882) {
+            event.reply(dpp::message("you cant do that!").set_flags(dpp::m_ephemeral));
+            return;
+        }
+        const std::string subcmd{ std::get<std::string>(event.get_parameter("command")) };
+        std::cout << "owner subcommand name: " << subcmd << '\n';
+
+        if (subcmd == "setjob") {
+            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
+            .setJob(static_cast<adr::Job::Id>(std::get<std::int64_t>(event.get_parameter("index"))));
+            event.reply(dpp::message("Set the job").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "setinv") {
+            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
+            .setInv(static_cast<adr::Item::Id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "resetworktimer") {
+            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
+            .setLastWorked(0);
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "save") {
+            adr::cache::saveCache();
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+    }
     else {
-        adr::doJob(bot, event);
+        adr::doJob(event);
     }
 }
 
@@ -129,7 +142,7 @@ void adr::onButtonClick(const dpp::button_click_t& event)
     }
 }
 
-void adr::doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcommand_t& event)
+void adr::doJob(const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
 
@@ -137,7 +150,7 @@ void adr::doJob([[maybe_unused]] const dpp::cluster& bot, const dpp::slashcomman
     // if it stays false, then the bot will tell them that they couldn't do anything
     bool didAJob{ false };
 
-    adr::Player player{ event.command.usr.id };
+    adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
 
     if (player.nextWork() >= 0) {
         event.reply("You can work next " + player.nextWorkTimestamp());

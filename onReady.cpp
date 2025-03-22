@@ -13,7 +13,7 @@
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
     {
-        constexpr std::size_t commandsAmount{ adr::Job::tierOneJobsSize + 3 };
+        constexpr std::size_t commandsAmount{ adr::Job::tierOneJobsSize + 4 };
 
         std::cout << "making commands!\n";
 
@@ -57,14 +57,24 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "addroles", "addroles" })
             .add_choice(dpp::command_option_choice{ "jobembed", "jobembed" })
             .add_choice(dpp::command_option_choice{ "shopembed", "shopembed" })
-            .add_choice(dpp::command_option_choice{ "addemojis", "addemojis" })
-            .add_choice(dpp::command_option_choice{ "setinv", "setinv" })
-            .add_choice(dpp::command_option_choice{ "setjob", "setjob" })
-            .add_choice(dpp::command_option_choice{ "resetworktimer", "resetworktimer" }));
+            .add_choice(dpp::command_option_choice{ "addemojis", "addemojis" }));
         admin.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "amount", "amount of item", false });
         commandList.push_back(admin);
+
+        dpp::slashcommand owner{ "owner", "various owner tools in one command, only meant for kolin63", bot.me.id };
+        owner.default_member_permissions = dpp::p_administrator;
+        owner.add_option(
+            dpp::command_option{ dpp::co_string, "command", "the command to run", true }
+            .add_choice(dpp::command_option_choice{ "setinv", "setinv" })
+            .add_choice(dpp::command_option_choice{ "setjob", "setjob" })
+            .add_choice(dpp::command_option_choice{ "save", "save" })
+            .add_choice(dpp::command_option_choice{ "resetworktimer", "resetworktimer" }));
+        owner.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
+        owner.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
+        owner.add_option(dpp::command_option{ dpp::co_integer, "amount", "amount of item", false });
+        commandList.push_back(owner);
 
         std::cout << "commandList capacity: " << commandList.capacity() << " size: " << commandList.size() << '\n';
         for (std::size_t i{}; i < commandList.size(); ++i) { std::cout << i << ": " << commandList[i].name << '\n'; }

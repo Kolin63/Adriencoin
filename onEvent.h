@@ -8,7 +8,7 @@ namespace adr {
     void onSelectClick(const dpp::select_click_t& event);
     void onButtonClick(const dpp::button_click_t& event);
 
-    void doJob(const dpp::cluster& bot, const dpp::slashcommand_t& event);
+    void doJob(const dpp::slashcommand_t& event);
 }
 
 #endif

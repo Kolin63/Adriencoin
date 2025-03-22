@@ -32,3 +32,12 @@ adr::playerCacheElement& adr::cache::getPlayerElementFromCache(const dpp::snowfl
 
     return found;
 }
+
+void adr::cache::saveCache([[maybe_unused]] const dpp::timer& timer)
+{
+    std::cout << "Saving Cache... Do Not Exit Program\n";
+    for (const auto& i : adr::cache::playerCache) {
+        i.second.player.save();
+    }
+    std::cout << "Finished Saving Cache!\n";
+}
