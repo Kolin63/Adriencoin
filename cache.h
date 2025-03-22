@@ -30,7 +30,7 @@ namespace adr
         static playerCacheElement& getPlayerElementFromCache(const dpp::snowflake& uuid);
         static Player& getPlayerFromCache(const dpp::snowflake& uuid) { return getPlayerElementFromCache(uuid).player; }
 
-        static constexpr std::uint64_t SAVE_FREQUENCY_SECONDS{ 60 * 30 }; // 30 Minutes
+        static constexpr std::uint64_t SAVE_FREQUENCY_SECONDS{ 60 * 10 }; // 10 Minutes
         static void saveCache(const dpp::timer& = {});
     };
 } 
