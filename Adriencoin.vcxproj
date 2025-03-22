@@ -150,6 +150,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="product.cpp" />
     <ClCompile Include="shop.cpp" />
+    <ClCompile Include="trade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h" />
@@ -161,7 +162,9 @@
     <ClInclude Include="onEvent.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="product.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="shop.h" />
+    <ClInclude Include="trade.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

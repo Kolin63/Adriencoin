@@ -50,6 +50,9 @@ namespace adr {
         view.add_option({ dpp::co_user, "player", "the player to view", true });
         commandList.push_back(view);
 
+        dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
+        trade.add_option({ dpp::co_user, "player", "the player to trade with", true });
+
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
         admin.default_member_permissions = dpp::p_administrator;
         admin.add_option(

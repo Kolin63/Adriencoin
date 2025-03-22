@@ -16,7 +16,7 @@ namespace adr
         std::string avatarURL{};
         adr::Job::Id tempJob{ adr::Job::MAX };
 
-        static constexpr int MAX_TRADE_OFFERS{ 5 };
+        static constexpr int MAX_TRADE_OFFERS{ 3 };
         std::array<Inventory, MAX_TRADE_OFFERS> tradeOffers{};
     };
 
