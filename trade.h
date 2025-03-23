@@ -2,7 +2,6 @@
 #define TRADE_H
 
 #include <dpp/dpp.h>
-#include "Random.h"
 #include "inventory.h"
 
 namespace adr {
