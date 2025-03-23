@@ -52,10 +52,8 @@ adr::playerCacheElement& adr::cache::getElementFromCache(const dpp::snowflake& u
 
     cacheUsernameAndAvatar(elem);
 
-    if (elem.username != "") {
-        adr::cache::playerCache.emplace(uuid, elem);
-        std::cout << "Done creating player " << uuid << " in cache.\n";
-    }
+    adr::cache::playerCache.emplace(uuid, elem);
+    std::cout << "Done creating player " << uuid << " in cache.\n";
 
     return adr::cache::getElementFromCache(uuid);
 }
