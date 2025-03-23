@@ -93,7 +93,7 @@ void adr::Player::print() const
 
 const dpp::embed adr::Player::viewEmbed() const
 {
-    adr::playerCacheElement playerCache{ adr::cache::getPlayerElementFromCache(m_uuid) };
+    adr::playerCacheElement playerCache{ adr::cache::getElementFromCache(m_uuid) };
     dpp::embed embed{};
     embed.set_title(playerCache.username + "'s Inventory")
         .set_thumbnail(playerCache.avatarURL)
@@ -127,6 +127,13 @@ std::string adr::Player::nextWorkTimestamp() const
 { 
     std::time_t t{ std::time(0) + nextWork() };
     return dpp::utility::timestamp(t, dpp::utility::tf_relative_time) + " (" + dpp::utility::timestamp(t, dpp::utility::tf_short_time) + ")";
+}
+
+void adr::Player::changeInv(const Inventory& difference)
+{
+    for (std::size_t i{}; i < m_inv.size(); ++i) {
+        m_inv[i] += difference[i];
+    }
 }
 
 int& adr::Player::operator[](int index)

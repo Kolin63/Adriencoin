@@ -9,29 +9,39 @@ namespace adr {
     class TradeOffer 
     {
     private:
+        bool m_active{ false };
         const dpp::snowflake& m_giverUUID;
-        const dpp::snowflake& m_receiverUUID;
+        dpp::snowflake m_receiverUUID{ m_giverUUID };
         Inventory m_giverGives{};
         Inventory m_receiverGives{};
         std::string m_seed{};
 
     public:
-        TradeOffer(dpp::snowflake& senderUUID, dpp::snowflake& receiverUUID)
-            : m_giverUUID{ senderUUID }
-            , m_receiverUUID{ receiverUUID }
+        TradeOffer(const dpp::snowflake& giverUUID)
+            : m_giverUUID{ giverUUID }
         {
         }
 
+        void setReceiverUUID(const dpp::snowflake& uuid);
+        const dpp::snowflake& getReceiverUUID() { return m_receiverUUID; }
+
+        bool isActive() const { return m_active; }
+        void activate() { m_active = true; }
+        void clear();
+
         enum invTypes {
             give,
-            send
+            receive
         };
 
-        void setInventory(invTypes invType, std::size_t index, int amount) {
-            (invType == give ? m_giverGives : m_receiverGives).at(index) = amount;
-        }
+        void setInventory(invTypes invType, std::size_t index, int amount);
+        bool isValid() const;
+        // make sure to check isValid() beforehand
+        void executeTrade();
 
-        std::string encodeDecimal(int64_t decimal);
+    private:
+        static std::string encodeDecimal(int64_t decimal);
+    public:
         const std::string& generateSeed();
         const std::string& getSeed() { return m_seed; }
 

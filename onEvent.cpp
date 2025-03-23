@@ -2,6 +2,7 @@
 
 #include <string>
 #include <algorithm>
+#include <utility>
 #include <dpp/dpp.h>
 #include "onEvent.h"
 #include "onReady.h"
@@ -11,16 +12,22 @@
 #include "product.h"
 #include "cache.h"
 
+template <typename T>
+std::optional<T> getOptionalParam(const std::string& name, const dpp::slashcommand_t& event) {
+    T x{};
+    try { x = std::get<T>(event.get_parameter(name)); }
+    catch (const std::bad_variant_access& e) { 
+        std::cout << "error getting optional parameter: " << e.what() << '\n'; 
+        return {};
+    }
+    return x;
+}
+
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
-        std::string resultName{};
-        try { resultName = std::get<std::string>(event.get_parameter("result")); }
-        catch (const std::bad_variant_access& e) { 
-            std::cout << "buy error: " << e.what() << '\n'; 
-            resultName = ""; 
-        }
+        std::string resultName{ getOptionalParam<std::string>("result", event).value_or("")};
 
         std::int64_t times{ 1 };
         try { times = std::get<std::int64_t>(event.get_parameter("times")); }
@@ -40,6 +47,56 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };
         player.print();
         event.reply(dpp::message{ player.viewEmbed() });
+    }
+    else if (commandName == "trade") {
+        std::string action{ std::get<std::string>(event.get_parameter("action")) };
+        dpp::snowflake receiverUUID{ getOptionalParam<dpp::snowflake>("player", event).value_or(event.command.usr.id)};
+        std::size_t slot{ std::min(static_cast<std::size_t>( getOptionalParam<int64_t>("slot", event).value_or(1) ) - 1, adr::playerCacheElement::MAX_TRADE_OFFERS - 1)};
+        adr::playerCacheElement& pce{ adr::cache::getElementFromCache(event.command.usr.id) };
+
+        if (pce.tradeOffers[slot].getReceiverUUID() != receiverUUID && receiverUUID != event.command.usr.id) 
+            pce.tradeOffers[slot].setReceiverUUID(receiverUUID);
+
+        if (action == "make") {
+            pce.tradeOffers[slot].clear();
+            pce.tradeOffers[slot].activate();
+
+            event.reply(dpp::message{ "Created a new trade offer in slot " + std::to_string(slot) }.set_flags(dpp::m_ephemeral));
+            return;
+        }
+        else if (action == "give" || action == "receive") {
+            std::size_t index{};
+            int amount{};
+            if (!(index = static_cast<std::size_t>(getOptionalParam<int64_t>("item", event).has_value())) && 
+                !(amount = static_cast<int>(getOptionalParam<int64_t>("amount", event).has_value()))) 
+            {
+                event.reply(dpp::message{ "You need to set an item and an amount" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+
+            pce.tradeOffers[slot].setInventory(("give" ? adr::TradeOffer::give : adr::TradeOffer::receive), index, amount);
+            event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() }.set_flags(dpp::m_ephemeral));
+            return;
+        }
+        else if (action == "send") {
+            if (receiverUUID == event.command.usr.id) {
+                event.reply(dpp::message{ "You need to define a player to receive the trade." }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+
+            event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() });
+        }
+        else if (action == "accept") {
+            if (receiverUUID == pce.tradeOffers[slot].getReceiverUUID() && pce.tradeOffers[slot].isValid()) {
+                event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed().set_title("Trade Complete!") });
+                return;
+            }
+            event.reply(dpp::message{ "Something went wrong." }.set_flags(dpp::m_ephemeral));
+        }
+        else if (action == "view") {
+            event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() }.set_flags(dpp::m_ephemeral));
+            return;
+        }
     }
     else if (commandName == "admin") {
         const std::string subcmd{ std::get<std::string>(event.get_parameter("command")) };
@@ -133,7 +190,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 void adr::onSelectClick(const dpp::select_click_t& event)
 {
     if (event.custom_id == "jobselect") {
-        adr::cache::getPlayerElementFromCache(event.command.usr.id).tempJob = adr::Job::getId(event.values[0]);
+        adr::cache::getElementFromCache(event.command.usr.id).tempJob = adr::Job::getId(event.values[0]);
         event.reply(dpp::message("Job selected, please confirm").set_flags(dpp::m_ephemeral));
     }
     else if (event.custom_id == "shopselect") {
@@ -150,7 +207,7 @@ void adr::onButtonClick(const dpp::button_click_t& event)
             return;
         }
 
-        player.setJob(adr::cache::getPlayerElementFromCache(event.command.usr.id).tempJob);
+        player.setJob(adr::cache::getElementFromCache(event.command.usr.id).tempJob);
         event.reply(dpp::message("Job confirmed to " + adr::Job::jobs[player.job()].name + ". Run /" + adr::Job::jobs[player.job()].action + " to work.").set_flags(dpp::m_ephemeral));
     }
 }

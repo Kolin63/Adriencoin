@@ -30,6 +30,8 @@ namespace adr {
         Player(const dpp::snowflake& uuid, const Inventory& inv);
         ~Player();
 
+        const dpp::snowflake& uuid() { return m_uuid; }
+
         void save() const;
         void load();
         void print() const;
@@ -50,6 +52,7 @@ namespace adr {
         void setInv(const adr::Item& item) { m_inv[item.id] = item.amount; }
         void setInv(const adr::Item::Id& id, int amount) { m_inv[id] = amount; }
         void changeInv(const adr::Item::Id& id, int difference) { m_inv[id] += difference; }
+        void changeInv(const Inventory& difference);
 
         Inventory inv() const { return m_inv; }
         int inv(adr::Item::Id id) const { return m_inv[id]; }

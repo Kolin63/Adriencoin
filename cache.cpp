@@ -8,7 +8,7 @@
 
 std::unordered_map<dpp::snowflake, adr::playerCacheElement> adr::cache::playerCache;
 
-adr::playerCacheElement& adr::cache::getPlayerElementFromCache(const dpp::snowflake& uuid)
+adr::playerCacheElement& adr::cache::getElementFromCache(const dpp::snowflake& uuid)
 {
     std::cout << "Searching cache for Player " << uuid << '\n';
     if (auto search = adr::cache::playerCache.find(uuid); search != adr::cache::playerCache.end()) {

@@ -13,7 +13,7 @@
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
     {
-        constexpr std::size_t commandsAmount{ adr::Job::tierOneJobsSize + 4 };
+        constexpr std::size_t commandsAmount{ adr::Job::tierOneJobsSize + 5 };
 
         std::cout << "making commands!\n";
 
@@ -51,7 +51,24 @@ namespace adr {
         commandList.push_back(view);
 
         dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
-        trade.add_option({ dpp::co_user, "player", "the player to trade with", true });
+        trade.add_option(
+            dpp::command_option{ dpp::co_string, "action", "make, edit, send, or accept a trade offer", true }
+            .add_choice(dpp::command_option_choice{ "make", "make" })
+            .add_choice(dpp::command_option_choice{ "give", "give" })
+            .add_choice(dpp::command_option_choice{ "receive", "receive" })
+            .add_choice(dpp::command_option_choice{ "send", "send" })
+            .add_choice(dpp::command_option_choice{ "accept", "accept" })
+            .add_choice(dpp::command_option_choice{ "view", "view" }));
+
+        dpp::command_option tradeItemOption{ dpp::co_string, "item", "the item that is being changed" };
+        for (const std::string& i : adr::Item::names)
+            tradeItemOption.add_choice(dpp::command_option_choice{ i, i });
+        trade.add_option(tradeItemOption);
+        trade.add_option({ dpp::co_integer, "amount", "the amount of the item", false });
+        trade.add_option({ dpp::co_user, "player", "the player to trade with", false });
+        trade.add_option({ dpp::co_integer, "slot", "the trade offer slot that is being acted on, if there are multiple active", false });
+        trade.add_option({ dpp::co_string, "seed", "the seed of the trade offer, only used for accepting", false });
+        commandList.push_back(trade);
 
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
         admin.default_member_permissions = dpp::p_administrator;
