@@ -41,11 +41,9 @@ namespace adr {
         // make sure to check isValid() beforehand
         void executeTrade();
 
-    private:
-        static std::string encodeDecimal(int64_t decimal);
-    public:
         const std::string& generateSeed();
         const std::string& getSeed() { return m_seed; }
+        void clearSeed() { m_seed = ""; }
 
         dpp::embed getEmbed();
     };

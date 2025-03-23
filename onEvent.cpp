@@ -54,6 +54,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         adr::playerCacheElement& pce{ adr::cache::getElementFromCache(event.command.usr.id) };
 
         if (subcommand.name == "item") {
+            pce.tradeOffers[slot].clearSeed();
+
             pce.tradeOffers[slot].setInventory(
                 (std::get<std::string>(event.get_parameter("type")) == "give" ? adr::TradeOffer::give : adr::TradeOffer::receive), 
                 adr::Item::getId(std::get<std::string>(event.get_parameter("item"))),
@@ -64,6 +66,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             return;
         }
         else if (subcommand.name == "propose") {
+            pce.tradeOffers[slot].generateSeed();
+
             pce.tradeOffers[slot].setReceiverUUID(std::get<dpp::snowflake>(event.get_parameter("player")));
             if (!pce.tradeOffers[slot].isValid()) {
                 event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
@@ -89,6 +93,11 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 
             if (!giverPCE.tradeOffers[slot].isValid()) {
                 event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+
+            if (std::get<std::string>(event.get_parameter("seed")) != giverPCE.tradeOffers[slot].getSeed()) {
+                event.reply(dpp::message{ "That seed was incorrect. Has the trade been updated since you copied it?" }.set_flags(dpp::m_ephemeral));
                 return;
             }
             
