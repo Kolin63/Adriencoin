@@ -79,13 +79,12 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             return;
         }
         else if (action == "propose") {
-            if (receiverUUID == event.command.usr.id && pce.tradeOffers[slot].getReceiverUUID() == event.command.usr.id) {
+            if (pce.tradeOffers[slot].getReceiverUUID() == event.command.usr.id) {
                 event.reply(dpp::message{ "You need to define a player to receive the trade." }.set_flags(dpp::m_ephemeral));
                 return;
             }
 
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() });
-            event.reply(dpp::message{ pce.tradeOffers[slot].getSeed()  });
         }
         else if (action == "accept") {
             if (!receiverUUID.has_value()) {
