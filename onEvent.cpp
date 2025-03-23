@@ -74,7 +74,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 return;
             }
 
-            event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() });
+            event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed()
+                .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/highfive-wide.jpg") });
         }
         else if (subcommand.name == "accept") {
             const dpp::snowflake& tradeReceiverUUID{ event.command.usr.id };
@@ -101,7 +102,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 return;
             }
             
-            event.reply(dpp::message{ giverPCE.tradeOffers[slot].getEmbed().set_title("Trade Complete!") });
+            event.reply(dpp::message{ giverPCE.tradeOffers[slot].getEmbed().set_title("Trade Complete!")
+                .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/hello-wide.jpg") });
             giverPCE.tradeOffers[slot].executeTrade();
         }
         else if (subcommand.name == "view") {
