@@ -21,8 +21,9 @@ namespace adr
             adriencoin,
             gaydriencoin,
             adriresource,
-
             null,
+            stockofstonks,
+
             MAX
         };
 

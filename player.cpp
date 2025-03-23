@@ -14,7 +14,7 @@ adr::Player::Player(const dpp::snowflake& uuid)
         load();
     }
     else {
-        m_version = adr::playerData::CURRENT_SAVE_VERSION;
+        m_version = adr::CURRENT_SAVE_VERSION;
         save();
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
     }
@@ -25,7 +25,7 @@ adr::Player::Player(const dpp::snowflake& uuid, const Inventory& inv)
 {
     if (!exists()) {
         m_inv = inv;
-        m_version = adr::playerData::CURRENT_SAVE_VERSION;
+        m_version = adr::CURRENT_SAVE_VERSION;
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
     }
     save();
@@ -65,15 +65,15 @@ void adr::Player::load()
 
     std::ifstream fs(filename, std::ios::binary);
 
-    playerData pd{ upgradeSave({m_version, m_job, m_lastWorked, m_inv }) };
-
-    fs.read(reinterpret_cast<char*>(&pd.version), sizeof pd.version);
-    fs.read(reinterpret_cast<char*>(&pd.job), sizeof pd.job);
-    fs.read(reinterpret_cast<char*>(&pd.lastWorked), sizeof pd.lastWorked);
-    for (int& i : pd.inv) {
+    fs.read(reinterpret_cast<char*>(&m_version), sizeof m_version);
+    fs.read(reinterpret_cast<char*>(&m_job), sizeof m_job);
+    fs.read(reinterpret_cast<char*>(&m_lastWorked), sizeof m_lastWorked);
+    for (int& i : m_inv) {
         fs.read(reinterpret_cast<char*>(&i), sizeof i);
     }
     fs.close();
+
+    adr::upgradeSave(m_inv, m_version);
 }
 
 void adr::Player::print() const

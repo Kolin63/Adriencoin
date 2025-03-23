@@ -2,16 +2,21 @@
 
 #include "upgradeSave.h"
 
-adr::playerData adr::upgradeSave(playerData pd)
+void adr::upgradeSave(Inventory& inv, uint32_t& version)
 {
-    const uint32_t& CURRENT{ adr::playerData::CURRENT_SAVE_VERSION };
+    const uint32_t& CURRENT{ adr::CURRENT_SAVE_VERSION };
 
-    switch (pd.version) 
+    switch (version) 
     {
+    case 0:
+        inv[adr::Item::stockofstonks] = 0;
+        version = 1;
+        [[fallthrough]];
+
     case CURRENT:
-        return pd;
+        return;
     default:
-        std::cout << "!!! ERROR !!! Player Data Version " << pd.version << " unaccounted for in upgradeSave()\n";
-        return pd;
+        std::cout << "!!! ERROR !!! Player Data Version " << version << " unaccounted for in upgradeSave()\n";
+        return;
     }
 }

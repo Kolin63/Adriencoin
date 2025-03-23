@@ -17,22 +17,24 @@ const std::array<std::string, adr::Item::MAX> adr::Item::names
     "adriencoin",
     "gaydriencoin",
     "adriresource",
-    "null"
+    "null",
+    "stockofstonks",
 };
 
 const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
 {
-    1342341829894471811,
-    1342341843181899900,
-    1342341866464739359,
-    1342341836949295106,
-    1342341859984543764,
-    1342341814979657788,
-    1342341851440615454,
-    1342319536300621876,
-    1342730469640376352,
-    1342730457414111273,
-    1342341836949295106,
+    1342341829894471811, // carrot
+    1342341843181899900, // gemstone
+    1342341866464739359, // wood
+    1342341836949295106, // fish
+    1342341859984543764, // rottenflesh
+    1342341814979657788, // book
+    1342341851440615454, // potion
+    1342319536300621876, // adriencoin
+    1342730469640376352, // gaydriencoin
+    1342730457414111273, // adriresource
+    1342341836949295106, // null (fish texture)
+    1353479698021224488, // stockofstonks
 };
 
 adr::Item::Id adr::Item::getId(const std::string& name)
