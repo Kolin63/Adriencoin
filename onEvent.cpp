@@ -51,7 +51,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     else if (commandName == "trade") {
         std::string action{ std::get<std::string>(event.get_parameter("action")) };
         std::optional<dpp::snowflake> receiverUUID{ getOptionalParam<dpp::snowflake>("player", event) };
-        std::size_t slot{ std::min(static_cast<std::size_t>( getOptionalParam<int64_t>("slot", event).value_or(1) ) - 1, adr::playerCacheElement::MAX_TRADE_OFFERS - 1)};
+        std::size_t slot{ static_cast<std::size_t>( getOptionalParam<int64_t>("slot", event).value_or(0) ) };
         adr::playerCacheElement& pce{ adr::cache::getElementFromCache(event.command.usr.id) };
 
         if (receiverUUID.has_value() && action != "view")

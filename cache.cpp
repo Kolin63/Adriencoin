@@ -48,7 +48,7 @@ adr::playerCacheElement& adr::cache::getElementFromCache(const dpp::snowflake& u
     }
 
     std::cout << "Could not find Player " << uuid << " in cache, creating new element\n";
-    adr::playerCacheElement elem{ { uuid }, "", "", adr::Job::MAX, {{ { uuid }, { uuid }, { uuid } }} };
+    adr::playerCacheElement elem{ { uuid }, "", "", adr::Job::MAX, {{ { uuid, 0 }, { uuid, 1 }, { uuid, 2 } }} };
 
     cacheUsernameAndAvatar(elem);
 

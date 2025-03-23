@@ -15,10 +15,12 @@ namespace adr {
         Inventory m_giverGives{};
         Inventory m_receiverGives{};
         std::string m_seed{};
+        std::size_t m_slot{};
 
     public:
-        TradeOffer(const dpp::snowflake& giverUUID)
+        TradeOffer(const dpp::snowflake& giverUUID, std::size_t slot)
             : m_giverUUID{ giverUUID }
+            , m_slot{ slot }
         {
         }
 
