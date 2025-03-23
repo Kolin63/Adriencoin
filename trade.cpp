@@ -38,8 +38,15 @@ bool adr::TradeOffer::isValid() const
 
 void adr::TradeOffer::executeTrade()
 {
-    adr::cache::getPlayerFromCache(m_receiverUUID).changeInv(m_giverGives);
-    adr::cache::getPlayerFromCache(m_giverUUID).changeInv(m_receiverGives);
+    adr::Player giver{ adr::cache::getPlayerFromCache(m_giverUUID) };
+    adr::Player receiver{ adr::cache::getPlayerFromCache(m_receiverUUID) };
+
+    giver.subtractInv(m_giverGives);
+    giver.changeInv(m_receiverGives);
+
+    receiver.subtractInv(m_receiverGives);
+    receiver.changeInv(m_giverGives);
+
     clear();
 }
 

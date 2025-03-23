@@ -36,24 +36,26 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
     future.wait();
 
     std::cout << elem.player.uuid() << ' ' << elem.username << ' ' << elem.avatarURL << ": " 
-        << (elem.username == "Unknown" ? "Failure\n" : "Success! " + elem.username + '\n');
+        << (elem.username == "" ? "Failure\n" : "Success! " + elem.username + '\n');
 }
 
 adr::playerCacheElement& adr::cache::getElementFromCache(const dpp::snowflake& uuid)
 {
     std::cout << "Searching cache for Player " << uuid << '\n';
     if (auto search = adr::cache::playerCache.find(uuid); search != adr::cache::playerCache.end()) {
-        std::cout << "Returing Player " << uuid << " from Cache\n";
+        std::cout << "Returning Player " << uuid << " from Cache\n";
         return search->second;
     }
 
     std::cout << "Could not find Player " << uuid << " in cache, creating new element\n";
-    adr::playerCacheElement elem{ uuid };
+    adr::playerCacheElement elem{ { uuid }, "", "", adr::Job::MAX, {{ { uuid }, { uuid }, { uuid } }} };
 
     cacheUsernameAndAvatar(elem);
 
-    adr::cache::playerCache.emplace(uuid, elem);
-    std::cout << "Done creating player " << uuid << " in cache.\n";
+    if (elem.username != "") {
+        adr::cache::playerCache.emplace(uuid, elem);
+        std::cout << "Done creating player " << uuid << " in cache.\n";
+    }
 
     return adr::cache::getElementFromCache(uuid);
 }

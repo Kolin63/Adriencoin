@@ -16,7 +16,7 @@ namespace adr {
     private:
         // the savedata version, so that the data can be converted if needed
         int m_version{};
-        const dpp::snowflake& m_uuid{};
+        const dpp::snowflake m_uuid{};
 
         adr::Job::Id m_job{ adr::Job::MAX };
         std::time_t m_lastWorked{ 0 };
@@ -53,6 +53,7 @@ namespace adr {
         void setInv(const adr::Item::Id& id, int amount) { m_inv[id] = amount; }
         void changeInv(const adr::Item::Id& id, int difference) { m_inv[id] += difference; }
         void changeInv(const Inventory& difference);
+        void subtractInv(const Inventory& difference);
 
         Inventory inv() const { return m_inv; }
         int inv(adr::Item::Id id) const { return m_inv[id]; }

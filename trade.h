@@ -10,7 +10,7 @@ namespace adr {
     {
     private:
         bool m_active{ false };
-        const dpp::snowflake& m_giverUUID;
+        const dpp::snowflake m_giverUUID;
         dpp::snowflake m_receiverUUID{ m_giverUUID };
         Inventory m_giverGives{};
         Inventory m_receiverGives{};

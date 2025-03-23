@@ -37,7 +37,7 @@ adr::Player::~Player()
 
 void adr::Player::save() const
 {
-    std::cout << "Writing player " << m_uuid << '\n';
+    std::cout << "Saving player " << m_uuid << '\n';
     std::filesystem::create_directory("playerdata");
 
     const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
@@ -55,7 +55,7 @@ void adr::Player::save() const
 
 void adr::Player::load()
 {
-    std::cout << "Reading player " << m_uuid << '\n';
+    std::cout << "Loading player " << m_uuid << '\n';
     const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
     if (!exists()) {
         std::cerr << "Error: " << filename << " does not exist.\n";
@@ -103,7 +103,8 @@ const dpp::embed adr::Player::viewEmbed() const
         .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/skew-wide.jpg");
 
     std::string desc{
-        "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
+        '*' + std::to_string(m_uuid) + "*\n\n" 
+        + "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
         + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
         + "\nCan Work Next " + nextWorkTimestamp()
         + "\n\n**Inventory:**\n"};
@@ -135,6 +136,13 @@ void adr::Player::changeInv(const Inventory& difference)
 {
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         m_inv[i] += difference[i];
+    }
+}
+
+void adr::Player::subtractInv(const Inventory& difference)
+{
+    for (std::size_t i{}; i < m_inv.size(); ++i) {
+        m_inv[i] -= difference[i];
     }
 }
 
