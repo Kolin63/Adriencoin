@@ -151,6 +151,7 @@
     <ClCompile Include="product.cpp" />
     <ClCompile Include="shop.cpp" />
     <ClCompile Include="trade.cpp" />
+    <ClCompile Include="upgradeSave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="product.h" />
     <ClInclude Include="shop.h" />
     <ClInclude Include="trade.h" />
+    <ClInclude Include="upgradeSave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
