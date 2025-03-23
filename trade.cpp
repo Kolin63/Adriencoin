@@ -38,9 +38,9 @@ bool adr::TradeOffer::isValid() const
 
 void adr::TradeOffer::executeTrade()
 {
-    adr::cache::getPlayerFromCache(m_giverUUID).changeInv(m_giverGives);
-    adr::cache::getPlayerFromCache(m_receiverUUID).changeInv(m_receiverGives);
-    m_active = false;
+    adr::cache::getPlayerFromCache(m_receiverUUID).changeInv(m_giverGives);
+    adr::cache::getPlayerFromCache(m_giverUUID).changeInv(m_receiverGives);
+    clear();
 }
 
 std::string adr::TradeOffer::encodeDecimal(int64_t decimal)
@@ -63,6 +63,7 @@ std::string adr::TradeOffer::encodeDecimal(int64_t decimal)
 
 const std::string& adr::TradeOffer::generateSeed()
 {
+    m_seed = "";
     for (std::size_t i{}; i < m_giverGives.size(); ++i) {
         m_seed += encodeDecimal(m_giverGives[i]) + encodeDecimal(m_receiverGives[i]);
     }
@@ -81,7 +82,7 @@ dpp::embed adr::TradeOffer::getEmbed()
         .set_description("Between " + giverUsername + " and " + receiverUsername
             + "\n\n" + giverUsername + " is offering:\n"
             + adr::getNonZeroItems(m_giverGives)
-            + '\n' + receiverUsername + " is offering:\n"
+            + '\n' + receiverUsername + " will give:\n"
             + adr::getNonZeroItems(m_receiverGives)
             + "\nSeed: ```" + generateSeed() + "```");
 

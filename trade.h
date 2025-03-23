@@ -23,7 +23,8 @@ namespace adr {
         }
 
         void setReceiverUUID(const dpp::snowflake& uuid);
-        const dpp::snowflake& getReceiverUUID() { return m_receiverUUID; }
+        const dpp::snowflake& getReceiverUUID() const { return m_receiverUUID; }
+        const dpp::snowflake& getGiverUUID() const { return m_giverUUID; }
 
         bool isActive() const { return m_active; }
         void activate() { m_active = true; }

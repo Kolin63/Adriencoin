@@ -17,6 +17,7 @@ const std::array<std::string, adr::Item::MAX> adr::Item::names
     "adriencoin",
     "gaydriencoin",
     "adriresource",
+    "null"
 };
 
 const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
@@ -31,7 +32,16 @@ const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
     1342319536300621876,
     1342730469640376352,
     1342730457414111273,
+    1342341836949295106,
 };
+
+adr::Item::Id adr::Item::getId(const std::string& name)
+{
+    for (std::size_t i{}; i < names.size(); ++i) {
+        if (names[i] == name) return static_cast<adr::Item::Id>(i);
+    }
+    return adr::Item::null;
+}
 
 std::string adr::Item::getEmojiMention(adr::Item::Id id)
 {

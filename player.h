@@ -30,7 +30,7 @@ namespace adr {
         Player(const dpp::snowflake& uuid, const Inventory& inv);
         ~Player();
 
-        const dpp::snowflake& uuid() { return m_uuid; }
+        const dpp::snowflake& uuid() const { return m_uuid; }
 
         void save() const;
         void load();

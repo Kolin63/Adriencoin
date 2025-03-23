@@ -65,20 +65,20 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             return;
         }
         else if (action == "give" || action == "receive") {
-            std::size_t index{};
-            int amount{};
-            if (!(index = static_cast<std::size_t>(getOptionalParam<int64_t>("item", event).has_value())) && 
-                !(amount = static_cast<int>(getOptionalParam<int64_t>("amount", event).has_value()))) 
+            if (!getOptionalParam<std::string>("item", event).has_value() && !getOptionalParam<int64_t>("amount", event).has_value()) 
             {
                 event.reply(dpp::message{ "You need to set an item and an amount" }.set_flags(dpp::m_ephemeral));
                 return;
             }
 
-            pce.tradeOffers[slot].setInventory(("give" ? adr::TradeOffer::give : adr::TradeOffer::receive), index, amount);
+            adr::Item::Id index{ adr::Item::getId(getOptionalParam<std::string>("item", event).value()) };
+            int amount{ static_cast<int>(getOptionalParam<int64_t>("amount", event).value()) };
+
+            pce.tradeOffers[slot].setInventory((action == "give" ? adr::TradeOffer::give : adr::TradeOffer::receive), index, amount);
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() }.set_flags(dpp::m_ephemeral));
             return;
         }
-        else if (action == "send") {
+        else if (action == "propose") {
             if (receiverUUID == event.command.usr.id) {
                 event.reply(dpp::message{ "You need to define a player to receive the trade." }.set_flags(dpp::m_ephemeral));
                 return;
@@ -87,14 +87,36 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() });
         }
         else if (action == "accept") {
-            if (receiverUUID == pce.tradeOffers[slot].getReceiverUUID() && pce.tradeOffers[slot].isValid()) {
-                event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed().set_title("Trade Complete!") });
+            if (receiverUUID == event.command.usr.id) {
+                event.reply(dpp::message{ "You need to define the player that you are trading with." }.set_flags(dpp::m_ephemeral));
                 return;
             }
-            event.reply(dpp::message{ "Something went wrong." }.set_flags(dpp::m_ephemeral));
+
+            const dpp::snowflake& tradeReceiverUUID{ event.command.usr.id };
+            const dpp::snowflake& tradeGiverUUID{ receiverUUID };
+            adr::playerCacheElement& giverPCE{ adr::cache::getElementFromCache(tradeGiverUUID) };
+
+            if (tradeReceiverUUID != giverPCE.tradeOffers[slot].getReceiverUUID()) {
+                event.reply(dpp::message{ "You are not a part of that trade. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+                
+            if (tradeGiverUUID != giverPCE.tradeOffers[slot].getGiverUUID()) {
+                event.reply(dpp::message{ "Something went wrong. Did you specify the correct player?" }.set_flags(dpp::m_ephemeral));
+                std::cout << "tradeGiverUUID: " << tradeGiverUUID << giverPCE.tradeOffers[slot].getGiverUUID() << '\n';
+                return;
+            }
+                
+            if (!giverPCE.tradeOffers[slot].isValid()) {
+                event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+            
+            event.reply(dpp::message{ giverPCE.tradeOffers[slot].getEmbed().set_title("Trade Complete!") });
+            giverPCE.tradeOffers[slot].executeTrade();
         }
         else if (action == "view") {
-            event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() }.set_flags(dpp::m_ephemeral));
+            event.reply(dpp::message{ adr::cache::getElementFromCache(receiverUUID).tradeOffers[slot].getEmbed()}.set_flags(dpp::m_ephemeral));
             return;
         }
     }

@@ -22,10 +22,12 @@ namespace adr
             gaydriencoin,
             adriresource,
 
+            null,
             MAX
         };
 
         static const std::array<std::string, MAX> names;
+        static adr::Item::Id getId(const std::string& name);
         static const std::array<dpp::snowflake, MAX> emojiIDs;
         static std::string getEmojiMention(adr::Item::Id id);
 

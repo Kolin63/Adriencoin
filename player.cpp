@@ -37,6 +37,7 @@ adr::Player::~Player()
 
 void adr::Player::save() const
 {
+    std::cout << "Writing player " << m_uuid << '\n';
     std::filesystem::create_directory("playerdata");
 
     const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
@@ -54,6 +55,7 @@ void adr::Player::save() const
 
 void adr::Player::load()
 {
+    std::cout << "Reading player " << m_uuid << '\n';
     const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
     if (!exists()) {
         std::cerr << "Error: " << filename << " does not exist.\n";
@@ -93,7 +95,7 @@ void adr::Player::print() const
 
 const dpp::embed adr::Player::viewEmbed() const
 {
-    adr::playerCacheElement playerCache{ adr::cache::getElementFromCache(m_uuid) };
+    const adr::playerCacheElement& playerCache{ adr::cache::getElementFromCache(m_uuid) };
     dpp::embed embed{};
     embed.set_title(playerCache.username + "'s Inventory")
         .set_thumbnail(playerCache.avatarURL)

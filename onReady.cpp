@@ -52,11 +52,11 @@ namespace adr {
 
         dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
         trade.add_option(
-            dpp::command_option{ dpp::co_string, "action", "make, edit, send, or accept a trade offer", true }
+            dpp::command_option{ dpp::co_string, "action", "make, edit, propose, or accept a trade offer", true }
             .add_choice(dpp::command_option_choice{ "make", "make" })
             .add_choice(dpp::command_option_choice{ "give", "give" })
             .add_choice(dpp::command_option_choice{ "receive", "receive" })
-            .add_choice(dpp::command_option_choice{ "send", "send" })
+            .add_choice(dpp::command_option_choice{ "propose", "propose" })
             .add_choice(dpp::command_option_choice{ "accept", "accept" })
             .add_choice(dpp::command_option_choice{ "view", "view" }));
 

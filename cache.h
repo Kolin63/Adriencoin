@@ -13,8 +13,8 @@ namespace adr
 {
     struct playerCacheElement {
         adr::Player player;
-        std::string username{};
-        std::string avatarURL{};
+        std::string username{ "Unknown" };
+        std::string avatarURL{ "https://cdn.discordapp.com/avatars/1339761558019903528/598edcf7dfc76c72a88b77c91d5e8b3e.png" };
         adr::Job::Id tempJob{ adr::Job::MAX };
 
         static constexpr std::size_t MAX_TRADE_OFFERS{ 3 };
@@ -26,6 +26,7 @@ namespace adr
     private:
         static std::unordered_map<dpp::snowflake, playerCacheElement> playerCache;
 
+        static void cacheUsernameAndAvatar(playerCacheElement&);
 
     public:
         static playerCacheElement& getElementFromCache(const dpp::snowflake& uuid);
