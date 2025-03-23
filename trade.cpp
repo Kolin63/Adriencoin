@@ -91,7 +91,9 @@ dpp::embed adr::TradeOffer::getEmbed()
             + adr::getNonZeroItems(m_giverGives)
             + '\n' + receiverUsername + " will give:\n"
             + adr::getNonZeroItems(m_receiverGives)
-            + "\nSeed: ```" + generateSeed() + "```");
+            + "\nSeed: " + generateSeed())
+        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/emerald.webp")
+        .set_color(0x74f793);
 
     return embed;
 }
