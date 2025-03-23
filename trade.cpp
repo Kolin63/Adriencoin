@@ -70,7 +70,7 @@ std::string adr::TradeOffer::encodeDecimal(int64_t decimal)
 
 const std::string& adr::TradeOffer::generateSeed()
 {
-    m_seed = "";
+    m_seed = "https://";
     for (std::size_t i{}; i < m_giverGives.size(); ++i) {
         m_seed += encodeDecimal(m_giverGives[i]) + encodeDecimal(m_receiverGives[i]);
     }
