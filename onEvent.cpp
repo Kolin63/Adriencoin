@@ -49,40 +49,22 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         event.reply(dpp::message{ player.viewEmbed() });
     }
     else if (commandName == "trade") {
-        std::string action{ std::get<std::string>(event.get_parameter("action")) };
-        std::optional<dpp::snowflake> receiverUUID{ getOptionalParam<dpp::snowflake>("player", event) };
+        dpp::command_data_option subcommand{ event.command.get_command_interaction().options[0] };
         std::size_t slot{ static_cast<std::size_t>( getOptionalParam<int64_t>("slot", event).value_or(0) ) };
         adr::playerCacheElement& pce{ adr::cache::getElementFromCache(event.command.usr.id) };
 
-        if (receiverUUID.has_value() && action != "view")
-            pce.tradeOffers[slot].setReceiverUUID(receiverUUID.value());
+        if (subcommand.name == "item") {
+            pce.tradeOffers[slot].setInventory(
+                (std::get<std::string>(event.get_parameter("type")) == "give" ? adr::TradeOffer::give : adr::TradeOffer::receive), 
+                adr::Item::getId(std::get<std::string>(event.get_parameter("item"))),
+                static_cast<int>(std::get<int64_t>(event.get_parameter("amount")))
+            );
 
-        if (action == "make") {
-            pce.tradeOffers[slot].clear();
-            pce.tradeOffers[slot].activate();
-
-            event.reply(dpp::message{ "Created a new trade offer in slot " + std::to_string(slot) }.set_flags(dpp::m_ephemeral));
-            return;
-        }
-        else if (action == "give" || action == "receive") {
-            if (!getOptionalParam<std::string>("item", event).has_value() && !getOptionalParam<int64_t>("amount", event).has_value()) 
-            {
-                event.reply(dpp::message{ "You need to set an item and an amount" }.set_flags(dpp::m_ephemeral));
-                return;
-            }
-
-            adr::Item::Id index{ adr::Item::getId(getOptionalParam<std::string>("item", event).value()) };
-            int amount{ static_cast<int>(getOptionalParam<int64_t>("amount", event).value()) };
-
-            pce.tradeOffers[slot].setInventory((action == "give" ? adr::TradeOffer::give : adr::TradeOffer::receive), index, amount);
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() }.set_flags(dpp::m_ephemeral));
             return;
         }
-        else if (action == "propose") {
-            if (pce.tradeOffers[slot].getReceiverUUID() == event.command.usr.id) {
-                event.reply(dpp::message{ "You need to define a player to receive the trade." }.set_flags(dpp::m_ephemeral));
-                return;
-            }
+        else if (subcommand.name == "propose") {
+            pce.tradeOffers[slot].setReceiverUUID(std::get<dpp::snowflake>(event.get_parameter("player")));
             if (!pce.tradeOffers[slot].isValid()) {
                 event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
                 return;
@@ -90,14 +72,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() });
         }
-        else if (action == "accept") {
-            if (!receiverUUID.has_value()) {
-                event.reply(dpp::message{ "You need to define the player that you are trading with." }.set_flags(dpp::m_ephemeral));
-                return;
-            }
-
+        else if (subcommand.name == "accept") {
             const dpp::snowflake& tradeReceiverUUID{ event.command.usr.id };
-            const dpp::snowflake& tradeGiverUUID{ receiverUUID.value() };
+            const dpp::snowflake tradeGiverUUID{ std::get<dpp::snowflake>(event.get_parameter("player")) };
             adr::playerCacheElement& giverPCE{ adr::cache::getElementFromCache(tradeGiverUUID) };
 
             if (tradeReceiverUUID != giverPCE.tradeOffers[slot].getReceiverUUID()) {
@@ -107,7 +84,6 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 
             if (tradeGiverUUID != giverPCE.tradeOffers[slot].getGiverUUID()) {
                 event.reply(dpp::message{ "Something went wrong. Did you specify the correct player?" }.set_flags(dpp::m_ephemeral));
-                std::cout << "tradeGiverUUID: " << tradeGiverUUID << ' ' << giverPCE.tradeOffers[slot].getGiverUUID() << ' ' << giverPCE.player.uuid() << '\n';
                 return;
             }
                 
@@ -119,8 +95,14 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(dpp::message{ giverPCE.tradeOffers[slot].getEmbed().set_title("Trade Complete!") });
             giverPCE.tradeOffers[slot].executeTrade();
         }
-        else if (action == "view") {
-            event.reply(dpp::message{ adr::cache::getElementFromCache(receiverUUID.value_or(event.command.usr.id)).tradeOffers[slot].getEmbed()}.set_flags(dpp::m_ephemeral));
+        else if (subcommand.name == "view") {
+            event.reply(dpp::message{ adr::cache::getElementFromCache(getOptionalParam<dpp::snowflake>("player", event).value_or(event.command.usr.id))
+                .tradeOffers[slot].getEmbed()}.set_flags(dpp::m_ephemeral));
+            return;
+        }
+        else if (subcommand.name == "cancel") {
+            pce.tradeOffers[slot].clear();
+            event.reply(dpp::message{ "Canceled trade in slot " + std::to_string(slot) }.set_flags(dpp::m_ephemeral));
             return;
         }
     }

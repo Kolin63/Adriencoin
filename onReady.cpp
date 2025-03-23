@@ -50,24 +50,42 @@ namespace adr {
         view.add_option({ dpp::co_user, "player", "the player to view", true });
         commandList.push_back(view);
 
-        dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
-        trade.add_option(
-            dpp::command_option{ dpp::co_string, "action", "make, edit, propose, or accept a trade offer", true }
-            .add_choice(dpp::command_option_choice{ "make", "make" })
-            .add_choice(dpp::command_option_choice{ "give", "give" })
-            .add_choice(dpp::command_option_choice{ "receive", "receive" })
-            .add_choice(dpp::command_option_choice{ "propose", "propose" })
-            .add_choice(dpp::command_option_choice{ "accept", "accept" })
-            .add_choice(dpp::command_option_choice{ "view", "view" }));
 
-        dpp::command_option tradeItemOption{ dpp::co_string, "item", "the item that is being changed" };
+
+        dpp::command_option tradeItemOption{ dpp::co_string, "item", "The item that is being traded", true };
         for (const std::string& i : adr::Item::names)
             tradeItemOption.add_choice(dpp::command_option_choice{ i, i });
-        trade.add_option(tradeItemOption);
-        trade.add_option({ dpp::co_integer, "amount", "the amount of the item", false });
-        trade.add_option({ dpp::co_user, "player", "the player to trade with", false });
-        trade.add_option({ dpp::co_integer, "slot", "the trade offer slot that is being acted on, if there are multiple active", false });
-        trade.add_option({ dpp::co_string, "seed", "the seed of the trade offer, only used for accepting", false });
+
+        dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
+        trade.add_option(
+            dpp::command_option{ dpp::co_sub_command, "item", "Edit what items are being given" }
+            .add_option(dpp::command_option{ dpp::co_string, "type", "If you are giving or receiving this item", true }
+                .add_choice(dpp::command_option_choice{ "give", "give" })
+                .add_choice(dpp::command_option_choice{ "receive", "receive" }))
+            .add_option(tradeItemOption)
+            .add_option(dpp::command_option{ dpp::co_integer, "amount", "The amount of the item that is being traded", true })
+            .add_option(dpp::command_option{ dpp::co_integer, "slot", "Specify what trade slot you are using, defaults to 0", false })
+        );
+        trade.add_option(
+            dpp::command_option{ dpp::co_sub_command, "propose", "Finalize and propose the trade" }
+            .add_option(dpp::command_option{ dpp::co_user, "player", "Who you are trading with", true })
+            .add_option(dpp::command_option{ dpp::co_integer, "slot", "Specify what trade slot you are using, defaults to 0", false })
+        );
+        trade.add_option(
+            dpp::command_option{ dpp::co_sub_command, "accept", "Accept a trade from somebody else" }
+            .add_option(dpp::command_option{ dpp::co_user, "player", "Who you are trading with", true })
+            .add_option(dpp::command_option{ dpp::co_string, "seed", "The seed of the trade, provided in the embed", true })
+            .add_option(dpp::command_option{ dpp::co_integer, "slot", "Specify what trade slot you are using, defaults to 0", false })
+        );
+        trade.add_option(
+            dpp::command_option{ dpp::co_sub_command, "view", "View a trade" }
+            .add_option(dpp::command_option{ dpp::co_user, "player", "The player who's trade you are viewing", false })
+            .add_option(dpp::command_option{ dpp::co_integer, "slot", "Specify what trade slot you are using, defaults to 0", false })
+        );
+        trade.add_option(
+            dpp::command_option{ dpp::co_sub_command, "cancel", "Cancel one of your own trades" }
+            .add_option(dpp::command_option{ dpp::co_integer, "slot", "Specify what trade slot you are using, defaults to 0", false })
+        );
         commandList.push_back(trade);
 
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
