@@ -27,7 +27,12 @@ void adr::TradeOffer::setInventory(invTypes invType, std::size_t index, int amou
 
 bool adr::TradeOffer::isValid() const
 {
-    if (m_receiverUUID == m_giverUUID || m_active == false) return false;
+    // that big lambda is to check if any of the values are negative
+    if (m_receiverUUID == m_giverUUID || m_active == false || [](const Inventory& a, const Inventory& b) -> bool {
+        for (std::size_t i{}; i < a.size(); ++i) 
+            if (a[i] < 0 || b[i] < 0) return false;
+        return true;
+        }(m_giverGives, m_receiverGives)) return false;
 
     auto validInv = [](const uint64_t& uuid, const Inventory& inv) -> bool {
         return adr::cache::getPlayerFromCache(uuid).inv() >= inv;

@@ -83,6 +83,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 event.reply(dpp::message{ "You need to define a player to receive the trade." }.set_flags(dpp::m_ephemeral));
                 return;
             }
+            if (!pce.tradeOffers[slot].isValid()) {
+                event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
 
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed() });
         }
