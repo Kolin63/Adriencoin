@@ -1,6 +1,8 @@
 #ifndef ONREADY_H
 #define ONREADY_H
 
+#include <dpp/dpp.h>
+
 namespace adr {
     // To be called once per bot startup
     // Adds commands, roles, etc

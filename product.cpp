@@ -64,9 +64,9 @@ dpp::message adr::Product::buy(const dpp::snowflake& uuid, const std::string& pr
     // Gets the result choice
     int resultChoice{ -1 };
     if (resultType == adr::Product::r_one && resultName != "")
-        for (int i{}; i < adr::Product::products[productId].result.size(); ++i)
+        for (std::size_t i{}; i < adr::Product::products[productId].result.size(); ++i)
             if (adr::Item::names[adr::Product::products[productId].result[i].id] == resultName)
-                resultChoice = i;
+                resultChoice = static_cast<int>(i);
 
     // If it is something that does not need to be handled in code
     if (adr::Product::products[productId].result[0].amount != 0) { 
