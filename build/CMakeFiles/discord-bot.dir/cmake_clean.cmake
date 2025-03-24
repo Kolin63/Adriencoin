@@ -1,0 +1,31 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/discord-bot.dir/cache.cpp.o"
+  "CMakeFiles/discord-bot.dir/cache.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/item.cpp.o"
+  "CMakeFiles/discord-bot.dir/item.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/job.cpp.o"
+  "CMakeFiles/discord-bot.dir/job.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/main.cpp.o"
+  "CMakeFiles/discord-bot.dir/main.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/onEvent.cpp.o"
+  "CMakeFiles/discord-bot.dir/onEvent.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/onReady.cpp.o"
+  "CMakeFiles/discord-bot.dir/onReady.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/player.cpp.o"
+  "CMakeFiles/discord-bot.dir/player.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/product.cpp.o"
+  "CMakeFiles/discord-bot.dir/product.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/shop.cpp.o"
+  "CMakeFiles/discord-bot.dir/shop.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/trade.cpp.o"
+  "CMakeFiles/discord-bot.dir/trade.cpp.o.d"
+  "CMakeFiles/discord-bot.dir/upgradeSave.cpp.o"
+  "CMakeFiles/discord-bot.dir/upgradeSave.cpp.o.d"
+  "discord-bot"
+  "discord-bot.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/discord-bot.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

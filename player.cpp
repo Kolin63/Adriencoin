@@ -80,7 +80,7 @@ void adr::Player::print() const
 {
     char lastWorkedString[100];
     std::tm tm{};
-    if (localtime_s(&tm, &m_lastWorked) != 0) {
+    if (localtime_r(&m_lastWorked, &tm) == nullptr) {
         std::cerr << "Error converting time.\n";
         return;
     }
