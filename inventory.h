@@ -3,7 +3,7 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <array>
-#include "Item.h"
+#include "item.h"
 
 using Inventory = std::array<int, adr::Item::MAX>;
 
