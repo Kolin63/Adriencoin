@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UPGRADE_SAVE_H
+#define UPGRADE_SAVE_H
 
 #include "job.h"
 #include "inventory.h"
@@ -9,3 +10,5 @@ namespace adr {
 
     void upgradeSave(Inventory& inv, uint32_t& version);
 }
+
+#endif

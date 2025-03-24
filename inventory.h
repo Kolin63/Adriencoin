@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INVENTORY_H
+#define INVENTORY_H
 
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
@@ -22,3 +23,5 @@ namespace adr
         return output;
     }
 }
+
+#endif
