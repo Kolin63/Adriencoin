@@ -250,7 +250,7 @@ void adr::doJob(const dpp::slashcommand_t& event)
     adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
 
     if (player.nextWork() >= 0) {
-        event.reply("You can work next " + player.nextWorkTimestamp());
+        event.reply(dpp::message{ "You can work next " + player.nextWorkTimestamp() }.set_flags(dpp::m_ephemeral));
         return;
     }
 
