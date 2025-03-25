@@ -1,3 +1,0 @@
-/root/adriencoin/build/CMakeFiles/discord-bot.dir
-/root/adriencoin/build/CMakeFiles/edit_cache.dir
-/root/adriencoin/build/CMakeFiles/rebuild_cache.dir
