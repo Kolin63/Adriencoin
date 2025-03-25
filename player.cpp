@@ -78,17 +78,10 @@ void adr::Player::load()
 
 void adr::Player::print() const
 {
-    char lastWorkedString[100];
-    std::tm tm{};
-    if (localtime_r(&m_lastWorked, &tm) == nullptr) {
-        std::cerr << "Error converting time.\n";
-        return;
-    }
-
     std::cout << m_uuid << "'s Inventory:\n"
         << ((m_job != adr::Job::MAX) ? adr::Job::jobs[m_job].name : "no job")
-        << " last worked: " << (std::strftime(lastWorkedString, sizeof lastWorkedString, "%c", &tm) ? lastWorkedString : "error")
-        << '\n';
+        << " last worked: " << std::asctime(std::localtime(&m_lastWorked)) << '\n'
+        << "next work: " << nextWork() << '\n';
 
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         std::cout << adr::Item::names[i] << " (" << i << "):\t" << m_inv[i] << '\n';
@@ -129,9 +122,24 @@ bool adr::Player::exists(const dpp::snowflake& uuid)
     return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".bin");
 }
 
+void adr::Player::updateLastWorked() 
+{ 
+    m_lastWorked = std::time(nullptr); 
+    std::cout << m_uuid << " updateLastWorked(), m_lastWorked = " 
+        << m_lastWorked << ' '
+        << std::asctime(std::localtime(&m_lastWorked)) 
+        << " next work: " << nextWork() << '\n';
+}
+
+std::time_t adr::Player::nextWork() const 
+{ 
+    // relative time, not since epoch
+    return m_lastWorked - std::time(nullptr) + workCooldownSeconds; 
+} 
+
 std::string adr::Player::nextWorkTimestamp() const
 { 
-    std::time_t t{ std::time(0) + nextWork() };
+    std::time_t t{ std::time(nullptr) + nextWork() };
     return dpp::utility::timestamp(t, dpp::utility::tf_relative_time) + " (" + dpp::utility::timestamp(t, dpp::utility::tf_short_time) + ")";
 }
 

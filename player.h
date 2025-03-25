@@ -41,9 +41,9 @@ namespace adr {
         void setJob(adr::Job::Id job) { m_job = job; }
 
         std::time_t lastWorked() const { return m_lastWorked; }
-        void updateLastWorked() { m_lastWorked = std::time(0); }
+        void updateLastWorked();
         void setLastWorked(const std::time_t t) { m_lastWorked = t; }
-        std::time_t nextWork() const { return m_lastWorked - std::time(0) + workCooldownSeconds; } // relative time, not since epoch
+        std::time_t nextWork() const;
         std::string nextWorkTimestamp() const;
 
         void setInv(const Inventory& inv) { m_inv = inv; }

@@ -179,8 +179,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "resetworktimer") {
-            adr::Player{ std::get<dpp::snowflake>(event.get_parameter("user")) }
-            .setLastWorked(0);
+            adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user"))) };
+            player.setLastWorked(0);
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "save") {
@@ -251,6 +251,7 @@ void adr::doJob(const dpp::slashcommand_t& event)
 
     if (player.nextWork() >= 0) {
         event.reply("You can work next " + player.nextWorkTimestamp());
+        return;
     }
 
     for (const adr::Job& i : adr::Job::jobs) if (player.job() == i.id && commandName == i.action) {
