@@ -80,8 +80,9 @@ void adr::Player::print() const
 {
     std::cout << m_uuid << "'s Inventory:\n"
         << ((m_job != adr::Job::MAX) ? adr::Job::jobs[m_job].name : "no job")
-        << " last worked: " << std::asctime(std::localtime(&m_lastWorked)) << '\n'
-        << "next work: " << nextWork() << '\n';
+        << " last worked: " << m_lastWorked << '\n'
+        << "next work: " << nextWork() << '\n'
+        << "current time: " << std::time(0) << '\n';
 
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         std::cout << adr::Item::names[i] << " (" << i << "):\t" << m_inv[i] << '\n';
@@ -125,10 +126,9 @@ bool adr::Player::exists(const dpp::snowflake& uuid)
 void adr::Player::updateLastWorked() 
 { 
     m_lastWorked = std::time(nullptr); 
-    std::cout << m_uuid << " updateLastWorked(), m_lastWorked = " 
-        << m_lastWorked << ' '
-        << std::asctime(std::localtime(&m_lastWorked)) 
-        << " next work: " << nextWork() << '\n';
+    std::cout << m_uuid << " updateLastWorked(), m_lastWorked = " << m_lastWorked 
+        << " next work: " << nextWork() << '\n'
+        << "current: " << std::time(0) << '\n';
 }
 
 std::time_t adr::Player::nextWork() const 
