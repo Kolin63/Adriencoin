@@ -25,7 +25,8 @@ dpp::embed adr::leaderboard::getLeaderboardEmbed()
     for (auto const& dirEntry : std::filesystem::directory_iterator{ filepath }) {
         std::ifstream fs{ dirEntry.path() };
         json data{ json::parse(fs) };
-        const adr::Player& player{ adr::cache::getPlayerFromCache(data["uuid"].get<uint64_t>()) };
+        uint64_t uuid{ data["uuid"] };
+        const adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
         vector.push_back({ player.inv(adr::Item::adriencoin), player.uuid() });
     }
