@@ -24,9 +24,18 @@ dpp::embed adr::leaderboard::getLeaderboardEmbed()
     // Parse every playerdata json file without the cache and put it into a list
     for (auto const& dirEntry : std::filesystem::directory_iterator{ filepath }) {
         std::ifstream fs{ dirEntry.path() };
-        json data{ json::parse(fs) };
-        uint64_t uuid{ data["uuid"] };
-        const adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
+        json data;
+        
+        try {
+            data = json::parse(fs);
+        }
+        catch (const json::parse_error& e) {
+            std::cerr << "adr::leaderboard::getLeaderboardEmbed() json parse error: " << e.what() << '\n';
+            fs.close();
+            return dpp::embed{}.set_title("Error");
+        }
+
+        const adr::Player& player{ adr::cache::getPlayerFromCache(data["uuid"])};
 
         vector.push_back({ player.inv(adr::Item::adriencoin), player.uuid() });
     }

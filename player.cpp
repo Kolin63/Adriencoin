@@ -67,7 +67,16 @@ void adr::Player::load()
     }
 
     std::ifstream fs{ filename };
-    json data{ json::parse(fs) };
+    json data;
+
+    try {
+        data = json::parse(fs);
+    }
+    catch (const json::parse_error& e) {
+        std::cerr << "adr::Player::load() json parse error: " << e.what() << '\n';
+        fs.close();
+        return;
+    }
 
     if (data["uuid"] != static_cast<uint64_t>(m_uuid)) {
         std::cerr << "Error: " << filename << ' ' << data["uuid"] << " does not match " << m_uuid << '\n';
