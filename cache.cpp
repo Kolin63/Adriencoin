@@ -13,13 +13,9 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
     std::cout << "Caching Username and Avatar for Player " << elem.player.uuid() << '\n';
     dpp::cluster bot{ getBotToken() };
 
-    std::promise<void> promise{};
-    std::future<void> future{ promise.get_future() };
-
-    std::function<void(const dpp::confirmation_callback_t&)> func{ [&elem, &promise](const dpp::confirmation_callback_t& callback) {
+    std::function<void(const dpp::confirmation_callback_t&)> func{ [&elem](const dpp::confirmation_callback_t& callback) {
         if (callback.is_error()) {
             std::cout << "Error getting username and avatar url for the cache\n";
-            promise.set_value();
             return;
         }
 
@@ -27,13 +23,9 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
         elem.username = userIdent.username;
         elem.avatarURL = userIdent.get_avatar_url();
         std::cout << "found uuid and username and avatarURL: " << userIdent.id << ' ' << elem.username << ' ' << elem.avatarURL << '\n';
-
-        promise.set_value();
     } };
 
     bot.user_get_cached(elem.player.uuid(), func);
-
-    future.wait();
 
     std::cout << elem.player.uuid() << ' ' << elem.username << ' ' << elem.avatarURL << ": " 
         << (elem.username == "" ? "Failure\n" : "Success! " + elem.username + '\n');
@@ -44,16 +36,20 @@ adr::playerCacheElement& adr::cache::getElementFromCache(const dpp::snowflake& u
     std::cout << "Searching cache for Player " << uuid << '\n';
     if (auto search = adr::cache::playerCache.find(uuid); search != adr::cache::playerCache.end()) {
         std::cout << "Returning Player " << uuid << " from Cache\n";
+
+        // If the username data is still not cached, try to cache it again
+        if (search->second.username == "") cacheUsernameAndAvatar(search->second);
+
         return search->second;
     }
 
     std::cout << "Could not find Player " << uuid << " in cache, creating new element\n";
     adr::playerCacheElement elem{ { uuid }, "", "", adr::Job::MAX, {{ { uuid, 0 }, { uuid, 1 }, { uuid, 2 } }} };
 
-    cacheUsernameAndAvatar(elem);
-
     adr::cache::playerCache.emplace(uuid, elem);
     std::cout << "Done creating player " << uuid << " in cache.\n";
+
+    cacheUsernameAndAvatar(adr::cache::getElementFromCache(uuid));
 
     return adr::cache::getElementFromCache(uuid);
 }
