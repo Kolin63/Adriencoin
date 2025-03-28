@@ -37,7 +37,9 @@ dpp::embed adr::leaderboard::getLeaderboardEmbed()
 
         const adr::Player& player{ adr::cache::getPlayerFromCache(data["uuid"])};
 
-        vector.push_back({ player.inv(adr::Item::adriencoin), player.uuid() });
+        // Leaderboard only includes players with more than 0 adriencoin
+        if (player.inv(adr::Item::adriencoin) > 0)
+            vector.push_back({ player.inv(adr::Item::adriencoin), player.uuid() });
     }
 
     // Sort the list, greatest to least using the adriencoin (first) element
