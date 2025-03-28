@@ -21,8 +21,6 @@ namespace adr
         std::array<adr::TradeOffer, MAX_TRADE_OFFERS> tradeOffers;
     };
 
-    static_assert(sizeof playerCacheElement != 0);
-
     class cache
     {
     private:
