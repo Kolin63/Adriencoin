@@ -6,7 +6,6 @@
 #include "item.h"
 #include "job.h"
 #include "cache.h"
-#include "upgradeSave.h"
 
 adr::Player::Player(const dpp::snowflake& uuid) 
     : m_uuid{ uuid }
@@ -15,7 +14,6 @@ adr::Player::Player(const dpp::snowflake& uuid)
         load();
     }
     else {
-        m_version = adr::CURRENT_SAVE_VERSION;
         save();
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
     }
@@ -26,7 +24,6 @@ adr::Player::Player(const dpp::snowflake& uuid, const Inventory& inv)
 {
     if (!exists()) {
         m_inv = inv;
-        m_version = adr::CURRENT_SAVE_VERSION;
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
     }
     save();
@@ -47,7 +44,7 @@ void adr::Player::save() const
 
     json data;
 
-    data["uuid"] = m_uuid;
+    data["uuid"] = static_cast<uint64_t>(m_uuid);
     data["job"] = m_job;
     data["lastWorked"] = m_lastWorked;
     data["inv"] = m_inv;
@@ -69,7 +66,7 @@ void adr::Player::load()
         return;
     }
 
-    std::ifstream fs(filename);
+    std::ifstream fs{ filename };
     json data{ json::parse(fs) };
 
     if (data["uuid"] != static_cast<uint64_t>(m_uuid)) {
@@ -124,12 +121,12 @@ const dpp::embed adr::Player::viewEmbed() const
 
 bool adr::Player::exists() const
 {
-    return std::filesystem::exists("playerdata/" + std::to_string(m_uuid) + ".bin");
+    return std::filesystem::exists("playerdata/" + std::to_string(m_uuid) + ".json");
 }
 
 bool adr::Player::exists(const dpp::snowflake& uuid)
 {
-    return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".bin");
+    return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".json");
 }
 
 void adr::Player::updateLastWorked() 

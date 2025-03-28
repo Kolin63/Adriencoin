@@ -20,7 +20,7 @@ add_executable(${PROJECT_NAME}
 	product.h
 	shop.h
 	trade.h
-	upgradeSave.h
+	leaderboard.h
 
 	cache.cpp
 	item.cpp
@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME}
 	product.cpp
 	shop.cpp
 	trade.cpp
-	upgradeSave.cpp
+	leaderboard.cpp
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).
@@ -52,4 +52,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
 )
+
+# Set Flags
+add_compile_options(-Wall -Werror -Wpedantic)
 

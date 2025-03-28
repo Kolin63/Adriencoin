@@ -12,8 +12,6 @@ namespace adr {
 
     class Player {
     private:
-        // the savedata version, so that the data can be converted if needed
-        uint32_t m_version{};
         const dpp::snowflake m_uuid{};
 
         adr::Job::Id m_job{ adr::Job::MAX };

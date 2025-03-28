@@ -11,6 +11,7 @@
 #include "shop.h"
 #include "product.h"
 #include "cache.h"
+#include "leaderboard.h"
 
 template <typename T>
 std::optional<T> getOptionalParam(const std::string& name, const dpp::slashcommand_t& event) {
@@ -130,6 +131,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "shopembed") {
             event.reply(adr::shop::getMessage());
+        }
+        else if (subcmd == "leaderboardembed") {
+            event.reply(adr::leaderboard::getLeaderboardEmbed());
         }
         else if (subcmd == "jobembed") {
             dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed")
