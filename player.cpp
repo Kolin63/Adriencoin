@@ -1,11 +1,11 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <time.h>
+#include <dpp/nlohmann/json.hpp>
 #include "player.h"
 #include "item.h"
 #include "job.h"
 #include "cache.h"
-#include "upgradeSave.h"
 
 adr::Player::Player(const dpp::snowflake& uuid) 
     : m_uuid{ uuid }
@@ -14,7 +14,6 @@ adr::Player::Player(const dpp::snowflake& uuid)
         load();
     }
     else {
-        m_version = adr::CURRENT_SAVE_VERSION;
         save();
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
     }
@@ -25,7 +24,6 @@ adr::Player::Player(const dpp::snowflake& uuid, const Inventory& inv)
 {
     if (!exists()) {
         m_inv = inv;
-        m_version = adr::CURRENT_SAVE_VERSION;
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
     }
     save();
@@ -38,50 +36,59 @@ adr::Player::~Player()
 
 void adr::Player::save() const
 {
+    using json = nlohmann::json;
     std::cout << "Saving player " << m_uuid << '\n';
+
     std::filesystem::create_directory("playerdata");
+    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".json" };
 
-    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
-    std::ofstream fs(filename, std::ios::binary);
+    json data;
 
-    fs.write(reinterpret_cast<const char*>(&m_version), sizeof m_version);
-    fs.write(reinterpret_cast<const char*>(&m_job), sizeof m_job);
-    fs.write(reinterpret_cast<const char*>(&m_lastWorked), sizeof m_lastWorked);
+    data["uuid"] = static_cast<uint64_t>(m_uuid);
+    data["job"] = m_job;
+    data["lastWorked"] = m_lastWorked;
+    data["inv"] = m_inv;
 
-    for (const int i : m_inv) {
-        fs.write(reinterpret_cast<const char*>(&i), sizeof i);
-    }
+    std::ofstream fs(filename);
+    fs << std::setw(4) << data << std::endl;
+
     fs.close();
 }
 
 void adr::Player::load()
 {
+    using json = nlohmann::json;
     std::cout << "Loading player " << m_uuid << '\n';
-    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
+    std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".json" };
+
     if (!exists()) {
         std::cerr << "Error: " << filename << " does not exist.\n";
         return;
     }
 
-    std::ifstream fs(filename, std::ios::binary);
+    std::ifstream fs{ filename };
+    json data{ json::parse(fs) };
 
-    fs.read(reinterpret_cast<char*>(&m_version), sizeof m_version);
-    fs.read(reinterpret_cast<char*>(&m_job), sizeof m_job);
-    fs.read(reinterpret_cast<char*>(&m_lastWorked), sizeof m_lastWorked);
-    for (int& i : m_inv) {
-        fs.read(reinterpret_cast<char*>(&i), sizeof i);
+    if (data["uuid"] != static_cast<uint64_t>(m_uuid)) {
+        std::cerr << "Error: " << filename << ' ' << data["uuid"] << " does not match " << m_uuid << '\n';
+        fs.close();
+        return;
     }
-    fs.close();
 
-    adr::upgradeSave(m_inv, m_version);
+    m_job = data["job"];
+    m_lastWorked = data["lastWorked"];
+    m_inv = data["inv"];
+
+    fs.close();
 }
 
 void adr::Player::print() const
 {
     std::cout << m_uuid << "'s Inventory:\n"
         << ((m_job != adr::Job::MAX) ? adr::Job::jobs[m_job].name : "no job")
-        << " last worked: " << std::asctime(std::localtime(&m_lastWorked)) << '\n'
-        << "next work: " << nextWork() << '\n';
+        << " last worked: " << m_lastWorked << '\n'
+        << "next work: " << nextWork() << '\n'
+        << "current time: " << std::time(0) << '\n';
 
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         std::cout << adr::Item::names[i] << " (" << i << "):\t" << m_inv[i] << '\n';
@@ -114,21 +121,20 @@ const dpp::embed adr::Player::viewEmbed() const
 
 bool adr::Player::exists() const
 {
-    return std::filesystem::exists("playerdata/" + std::to_string(m_uuid) + ".bin");
+    return std::filesystem::exists("playerdata/" + std::to_string(m_uuid) + ".json");
 }
 
 bool adr::Player::exists(const dpp::snowflake& uuid)
 {
-    return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".bin");
+    return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".json");
 }
 
 void adr::Player::updateLastWorked() 
 { 
     m_lastWorked = std::time(nullptr); 
-    std::cout << m_uuid << " updateLastWorked(), m_lastWorked = " 
-        << m_lastWorked << ' '
-        << std::asctime(std::localtime(&m_lastWorked)) 
-        << " next work: " << nextWork() << '\n';
+    std::cout << m_uuid << " updateLastWorked(), m_lastWorked = " << m_lastWorked 
+        << " next work: " << nextWork() << '\n'
+        << "current: " << std::time(0) << '\n';
 }
 
 std::time_t adr::Player::nextWork() const 

@@ -213,6 +213,7 @@
     <ClCompile Include="cache.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="job.cpp" />
+    <ClCompile Include="leaderboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="onReady.cpp" />
     <ClCompile Include="onEvent.cpp" />
@@ -220,7 +221,6 @@
     <ClCompile Include="product.cpp" />
     <ClCompile Include="shop.cpp" />
     <ClCompile Include="trade.cpp" />
-    <ClCompile Include="upgradeSave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="botToken.h" />
@@ -228,13 +228,13 @@
     <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="job.h" />
+    <ClInclude Include="leaderboard.h" />
     <ClInclude Include="onReady.h" />
     <ClInclude Include="onEvent.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="product.h" />
     <ClInclude Include="shop.h" />
     <ClInclude Include="trade.h" />
-    <ClInclude Include="upgradeSave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -95,6 +95,7 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "addroles", "addroles" })
             .add_choice(dpp::command_option_choice{ "jobembed", "jobembed" })
             .add_choice(dpp::command_option_choice{ "shopembed", "shopembed" })
+            .add_choice(dpp::command_option_choice{ "leaderboardembed", "leaderboardembed" })
             .add_choice(dpp::command_option_choice{ "addemojis", "addemojis" }));
         admin.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         admin.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
