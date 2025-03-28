@@ -15,7 +15,7 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
 
     std::function<void(const dpp::confirmation_callback_t&)> func{ [&elem](const dpp::confirmation_callback_t& callback) {
         if (callback.is_error()) {
-            std::cout << "Error getting username and avatar url for the cache\n";
+            std::cout << "Error getting username and avatar url\n";
             return;
         }
 
@@ -25,7 +25,15 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
         std::cout << "found uuid and username and avatarURL: " << userIdent.id << ' ' << elem.username << ' ' << elem.avatarURL << '\n';
     } };
 
+    // Try to get username and avatar from cache
     bot.user_get_cached(elem.player.uuid(), func);
+
+    // If the player hasn't sent a messag eyet, they won't be in the cache
+    // If this is the case, we will try without the cache
+    if (elem.username == "") {
+        std::cout << "Could not get username from cache, trying without cache.\n";
+        bot.user_get(elem.player.uuid(), func);
+    }
 
     std::cout << elem.player.uuid() << ' ' << elem.username << ' ' << elem.avatarURL << ": " 
         << (elem.username == "" ? "Failure\n" : "Success! " + elem.username + '\n');
