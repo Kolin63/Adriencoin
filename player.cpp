@@ -1,6 +1,7 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <time.h>
+#include <dpp/nlohmann/json.hpp>
 #include "player.h"
 #include "item.h"
 #include "job.h"
@@ -38,42 +39,50 @@ adr::Player::~Player()
 
 void adr::Player::save() const
 {
+    using json = nlohmann::json;
     std::cout << "Saving player " << m_uuid << '\n';
+
     std::filesystem::create_directory("playerdata");
+    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".json" };
 
-    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
-    std::ofstream fs(filename, std::ios::binary);
+    json data;
 
-    fs.write(reinterpret_cast<const char*>(&m_version), sizeof m_version);
-    fs.write(reinterpret_cast<const char*>(&m_job), sizeof m_job);
-    fs.write(reinterpret_cast<const char*>(&m_lastWorked), sizeof m_lastWorked);
+    data["uuid"] = m_uuid;
+    data["job"] = m_job;
+    data["lastWorked"] = m_lastWorked;
+    data["inv"] = m_inv;
 
-    for (const int i : m_inv) {
-        fs.write(reinterpret_cast<const char*>(&i), sizeof i);
-    }
+    std::ofstream fs(filename);
+    fs << std::setw(4) << data << std::endl;
+
     fs.close();
 }
 
 void adr::Player::load()
 {
+    using json = nlohmann::json;
     std::cout << "Loading player " << m_uuid << '\n';
-    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".bin" };
+    std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".json" };
+
     if (!exists()) {
         std::cerr << "Error: " << filename << " does not exist.\n";
         return;
     }
 
-    std::ifstream fs(filename, std::ios::binary);
+    std::ifstream fs(filename);
+    json data{ json::parse(fs) };
 
-    fs.read(reinterpret_cast<char*>(&m_version), sizeof m_version);
-    fs.read(reinterpret_cast<char*>(&m_job), sizeof m_job);
-    fs.read(reinterpret_cast<char*>(&m_lastWorked), sizeof m_lastWorked);
-    for (int& i : m_inv) {
-        fs.read(reinterpret_cast<char*>(&i), sizeof i);
+    if (data["uuid"] != static_cast<uint64_t>(m_uuid)) {
+        std::cerr << "Error: " << filename << ' ' << data["uuid"] << " does not match " << m_uuid << '\n';
+        fs.close();
+        return;
     }
-    fs.close();
 
-    adr::upgradeSave(m_inv, m_version);
+    m_job = data["job"];
+    m_lastWorked = data["lastWorked"];
+    m_inv = data["inv"];
+
+    fs.close();
 }
 
 void adr::Player::print() const
