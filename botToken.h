@@ -7,7 +7,7 @@
 
 inline std::string getBotToken()
 {
-    std::string filename{ "C:/discordtokens/adriencoin.txt" };
+    std::string filename{ "/root/token.txt" };
     std::ifstream fs{ filename, std::ios::binary };
 
     std::string token{};
