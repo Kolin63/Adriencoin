@@ -29,28 +29,11 @@ namespace adr {
             commandList.push_back(slashcommand);
         }
 
-        dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
-        dpp::command_option buyCommandOption{ dpp::co_string, "product", "the product / trade / deal", true };
-        for (const adr::Product& product : adr::Product::products) {
-            buyCommandOption.add_choice(dpp::command_option_choice{ product.name, product.name });
-        }
-        dpp::command_option buyResultOption{ dpp::co_string, "result", "what you are getting, if applicable", false };
-        for (const std::string& name : adr::Item::names) {
-            buyResultOption.add_choice(dpp::command_option_choice{ name, name });
-        }
-        for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
-            buyResultOption.add_choice(dpp::command_option_choice{ adr::Job::jobs[i].name, adr::Job::jobs[i].name });
-        }
-        buy.add_option(buyCommandOption);
-        buy.add_option(buyResultOption);
-        buy.add_option(dpp::command_option{ dpp::co_integer, "times", "how many times to buy this (max 100)", false });
-        commandList.push_back(buy);
+        adr::Product::addSlashCommands(bot, commandList);
 
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });
         commandList.push_back(view);
-
-
 
         dpp::command_option tradeItemOption{ dpp::co_string, "item", "The item that is being traded", true };
         for (const std::string& i : adr::Item::names)

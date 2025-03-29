@@ -4,6 +4,7 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <array>
+#include <algorithm>
 #include "item.h"
 
 using Inventory = std::array<int, adr::Item::MAX>;
@@ -14,9 +15,10 @@ namespace adr
     inline std::string getNonZeroItems(const Inventory& inv) {
         std::string output{};
 
-        for (std::size_t i{}; i < inv.size(); ++i) {
+        for (std::size_t i{}; i < inv.size(); ++i)
+        {
             if (inv[i] != 0)
-                output += dpp::emoji{ adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention() 
+                output += dpp::emoji{ adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention()
                 + ' ' + adr::Item::names[i] + ": " + std::to_string(inv[i]) + '\n';
         }
 

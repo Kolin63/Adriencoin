@@ -1,9 +1,8 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include <array>
+#include <dpp/dpp.h>
 #include <vector>
-#include <string_view>
 #include "item.h"
 #include "player.h"
 
@@ -11,32 +10,31 @@ namespace adr
 {
     struct Product 
     {
-        enum Id {
-            gaytocoin,
-            adriresourcetrade,
-            tierupgrade,
-            jobchange,
-            resourceexchange,
-
-            MAX
-        };
-
         enum ResultType {
             r_all,
             r_one,
             r_none,
-            r_custom
+            r_customAll,
+            r_customOne,
         };
 
-        const Id id{ adr::Product::MAX };
-        const std::string& name{};
-        const std::vector<adr::Item> cost{};
-        const ResultType resultType{ adr::Product::r_all };
-        const std::vector<adr::Item> result{};
+        const std::string name{};
+        const std::string display{};
+        const std::string desc{};
+        const std::string joke{};
+        const std::string picURL{};
+        const uint32_t color{};
+        const Inventory cost{};
+        const ResultType resultType{ adr::Product::r_none };
+        const Inventory result{};
+        const std::vector<std::string> customResult{};
+        const bool noTimes{};
 
-        const static std::array<adr::Product, adr::Product::MAX> products;
+        inline static std::vector<Product> products;
 
-        static dpp::message buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName = "", int times = 1);
+        static bool parseJson();
+        static ResultType getResultType(const std::string& str);
+        static void addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcommand>& commandList);
     };
 }
 

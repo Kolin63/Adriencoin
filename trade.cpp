@@ -42,7 +42,7 @@ bool adr::TradeOffer::isValid() const
 
     // check that the players inventory satisfies the trade inventory
     auto validInv = [](const dpp::snowflake& uuid, const Inventory& inv) -> bool {
-        return adr::cache::getPlayerFromCache(uuid).inv() >= inv;
+        return adr::cache::getPlayerFromCache(uuid).canBuy(inv);
     };
 
     return validInv(m_giverUUID, m_giverGives) && validInv(m_receiverUUID, m_receiverGives);

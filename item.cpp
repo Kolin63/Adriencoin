@@ -37,6 +37,7 @@ const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
     1353479698021224488, // stockofstonks
 };
 
+// Returns the Item ID Based on a String. Fallsback to adr::Item::null
 adr::Item::Id adr::Item::getId(const std::string& name)
 {
     for (std::size_t i{}; i < names.size(); ++i) {

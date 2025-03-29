@@ -107,10 +107,10 @@ void adr::Player::print() const
 
 const dpp::embed adr::Player::viewEmbed() const
 {
-    const adr::playerCacheElement& playerCache{ adr::cache::getElementFromCache(m_uuid) };
+    const adr::playerCacheElement& pce{ adr::cache::getElementFromCache(m_uuid) };
     dpp::embed embed{};
-    embed.set_title(playerCache.username + "'s Inventory")
-        .set_thumbnail(playerCache.avatarURL)
+    embed.set_title(pce.username + "'s Inventory")
+        .set_thumbnail(pce.avatarURL)
         .set_color(0x0088FF)
         .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/skew-wide.jpg");
 
@@ -170,6 +170,14 @@ void adr::Player::subtractInv(const Inventory& difference)
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         m_inv[i] -= difference[i];
     }
+}
+
+bool adr::Player::canBuy(const Inventory& cost)
+{
+    for (std::size_t i{}; i < m_inv.size(); ++i) {
+        if (m_inv[i] < cost[i]) return false;
+    }
+    return true;
 }
 
 int& adr::Player::operator[](int index)
