@@ -61,7 +61,12 @@
             "result": {
                 "custom": [
                     "farmer",
-                    "miner"
+                    "miner",
+                    "lumberjack",
+                    "fisherman",
+                    "warrior",
+                    "enchanter",
+                    "brewer"
                 ]
             },
             "noTimes": true

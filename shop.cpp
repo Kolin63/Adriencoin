@@ -74,7 +74,7 @@ dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& produ
 
             dpp::message msg{ "**Transaction Complete!**\n\n" };
 
-            auto listItems = [&msg, &product](bool isCost, const Inventory& inv) {
+            auto listItems = [&msg, &product](bool isCost, const Inventory& inv, int customResultIndex = -1) {
                 msg.set_content(msg.content + "**" + (isCost ? "Cost" : "Result") + ":**\n");
 
                 for (std::size_t j{}; j < inv.size(); ++j) {
@@ -84,8 +84,13 @@ dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& produ
                 }
 
                 if (!isCost) {
-                    for (const std::string& str : product.customResult) {
-                        msg.set_content(msg.content + "* " + str + '\n');
+                    if (customResultIndex == -1) {
+                        for (const std::string& str : product.customResult) {
+                            msg.set_content(msg.content + "* " + str + '\n');
+                        }
+                    }
+                    else {
+                        msg.set_content(msg.content + "* " + product.customResult[customResultIndex] + '\n');
                     }
                 }
             };
@@ -135,8 +140,7 @@ dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& produ
                         if (job.name == resultName) {
                             player.setJob(job.id);
                             player.subtractInv(cost);
-
-                            listItems(false, result);
+                            listItems(false, result, player.job());
                             return msg;
                         }
                     return dpp::message{ "There was an error changing your job to that." };
