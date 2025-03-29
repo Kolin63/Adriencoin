@@ -2,6 +2,7 @@
     "products": [
         {
             "name": "gay_to_coin",
+            "display": "Gaydrien Coin Exchange",
             "desc": "Gaydrien coins (:gaydriencoin:) can be traded for 1000 adrien coins (:adriencoin:). 1000 :adriencoin: CANNOT be traded in for 1 :gaydriencoin:",
             "joke": "If there's Gaydrien, is there Bidrien?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/gaydriencoin.png",
@@ -16,6 +17,7 @@
         },
         {
             "name": "adriresource_trade",
+            "display": "Adriresource Trade",
             "desc": "",
             "joke": "If you get a resource for the first time, is it just a source?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/adriresource.png",
@@ -36,6 +38,7 @@
         },
         {
             "name": "tier_upgrade",
+            "display": "Tier Upgrade",
             "desc": "Tier Upgrades only available when the buyer has no active loan",
             "joke": "If there's a teardrop, is there a tearpickup?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/carrot.png",
@@ -50,6 +53,7 @@
         },
         {
             "name": "job_change",
+            "display": "Job Change",
             "desc": "",
             "joke": "If there's a jaw-b, is there a chin-b?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/jmart.jpg",
@@ -73,6 +77,7 @@
         },
         {
             "name": "resource_exchange",
+            "display": "Resource Exchange",
             "desc": "",
             "joke": "If there is an Exchange, why is there no Ychange?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/3826f1b32eb2f25f43fcfef67ca81c24088c1447/art/item/gemstone.png",

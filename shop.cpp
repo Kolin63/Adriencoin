@@ -15,8 +15,8 @@ dpp::message adr::shop::getMessage(const std::string name)
             dpp::embed embed{};
 
             embed
-                .set_title(product.name)
-                .set_description("> *" + product.joke + "*\n" + product.desc + (product.desc == "" ? "" : "\n") + '\n')
+                .set_title(product.display)
+                .set_description("`/buy " + product.name + "`\n> *" + product.joke + "*\n" + product.desc + (product.desc == "" ? "" : "\n") + '\n')
                 .set_thumbnail(product.picURL)
                 .set_color(product.color);
 

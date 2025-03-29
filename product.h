@@ -19,6 +19,7 @@ namespace adr
         };
 
         const std::string name{};
+        const std::string display{};
         const std::string desc{};
         const std::string joke{};
         const std::string picURL{};

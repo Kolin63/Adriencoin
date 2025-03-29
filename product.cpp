@@ -99,7 +99,7 @@ bool adr::Product::parseJson()
         }
         catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {}
 
-        adr::Product::products.push_back({ i["name"], i["desc"], i["joke"], i["picURL"], i["color"], 
+        adr::Product::products.push_back({ i["name"], i["display"], i["desc"], i["joke"], i["picURL"], i["color"],
             std::get<Inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<Inventory>(jsonToInv(i["result"])), 
             std::get<std::vector<std::string>>(jsonToInv(i["result"])), noTimes });
     }
