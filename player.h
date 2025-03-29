@@ -50,6 +50,7 @@ namespace adr {
         void changeInv(const adr::Item::Id& id, int difference) { m_inv[id] += difference; }
         void changeInv(const Inventory& difference);
         void subtractInv(const Inventory& difference);
+        bool canBuy(const Inventory& cost);
 
         Inventory inv() const { return m_inv; }
         int inv(adr::Item::Id id) const { return m_inv[id]; }

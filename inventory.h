@@ -15,12 +15,12 @@ namespace adr
     inline std::string getNonZeroItems(const Inventory& inv) {
         std::string output{};
 
-        std::for_each(inv.begin(), inv.end(), [&output](const int& i)
-            {
-                if (i != 0)
-                    output += dpp::emoji{ adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention()
-                    + ' ' + adr::Item::names[i] + ": " + std::to_string(i) + '\n';
-            });
+        for (std::size_t i{}; i < inv.size(); ++i)
+        {
+            if (inv[i] != 0)
+                output += dpp::emoji{ adr::Item::names[i], adr::Item::emojiIDs[i] }.get_mention()
+                + ' ' + adr::Item::names[i] + ": " + std::to_string(inv[i]) + '\n';
+        }
 
         return output;
     }

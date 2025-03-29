@@ -26,6 +26,7 @@ namespace adr
         const Inventory cost{};
         const ResultType resultType{ adr::Product::r_none };
         const Inventory result{};
+        const std::vector<std::string> customResult{};
 
         inline static std::vector<Product> products;
 

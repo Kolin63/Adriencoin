@@ -6,35 +6,13 @@
             "joke": "If there's Gaydrien, is there Bidrien?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/gaydriencoin.png",
             "color": 16766497,
-            "cost": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0,
-                0,
-                0
-            ],
+            "cost": {
+                "gaydriencoin": 1
+            },
             "resultType": "all",
-            "result": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1000,
-                0,
-                0,
-                0,
-                0
-            ]
+            "result": {
+                "adriencoin": 1000
+            }
         },
         {
             "name": "adriresource_trade",
@@ -42,35 +20,19 @@
             "joke": "If you get a resource for the first time, is it just a source?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/adriresource.png",
             "color": 14989557,
-            "cost": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0,
-                0
-            ],
+            "cost": {
+                "adriresource": 1
+            },
             "resultType": "one",
-            "result": [
-                20,
-                5,
-                30,
-                30,
-                60,
-                2,
-                1,
-                0,
-                0,
-                0,
-                0,
-                0
-            ]
+            "result": {
+                "carrot": 20,
+                "gemstone": 5,
+                "wood": 30,
+                "fish": 30,
+                "rottenflesh": 60,
+                "book": 2,
+                "potion": 1
+            }
         },
         {
             "name": "tier_upgrade",
@@ -78,35 +40,12 @@
             "joke": "If there's a teardrop, is there a tearpickup?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/carrot.png",
             "color": 16744522,
-            "cost": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                70,
-                0,
-                100,
-                0,
-                0,
-                0,
-                0
-            ],
+            "cost": {
+                "book": 70,
+                "adriencoin": 100
+            },
             "resultType": "customAll",
-            "result": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ]
+            "result": {}
         },
         {
             "name": "job_change",
@@ -114,35 +53,16 @@
             "joke": "If there's a jaw-b, is there a chin-b?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/jmart.jpg",
             "color": 5635993,
-            "cost": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                100,
-                0,
-                0,
-                0,
-                0
-            ],
+            "cost": {
+                "adriencoin": 100
+            },
             "resultType": "customOne",
-            "result": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ]
+            "result": {
+                "custom": [
+                    "farmer",
+                    "miner"
+                ]
+            }
         },
         {
             "name": "resource_exchange",
@@ -150,35 +70,19 @@
             "joke": "If there is an Exchange, why is there no Ychange?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/3826f1b32eb2f25f43fcfef67ca81c24088c1447/art/item/gemstone.png",
             "color": 16733002,
-            "cost": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                10,
-                0,
-                0,
-                0,
-                0
-            ],
+            "cost": {
+                "adriencoin": 10
+            },
             "resultType": "one",
-            "result": [
-                100,
-                25,
-                150,
-                150,
-                300,
-                10,
-                5,
-                0,
-                0,
-                0,
-                0,
-                0
-            ]
+            "result": {
+                "carrot": 100,
+                "gemstone": 25,
+                "wood": 150,
+                "fish": 150,
+                "rottenflesh": 300,
+                "book": 10,
+                "potion": 5
+            }
         }
     ]
 }

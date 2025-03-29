@@ -30,19 +30,16 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     if (commandName == "buy") {
         std::string resultName{ getOptionalParam<std::string>("result", event).value_or("")};
 
-        std::int64_t times{ 1 };
-        try { times = std::get<std::int64_t>(event.get_parameter("times")); }
-        catch (const std::bad_variant_access& e) { 
-            std::cout << "buy error: " << e.what() << '\n'; 
-            times = 1;
-        }
+        std::int64_t times{ getOptionalParam<int64_t>("times", event).value_or(1) };
 
         if (times > 100) {
-            event.reply(dpp::message{ "You can not buy something more than 100 times." });
+            event.reply(dpp::message{ "You can not buy something more than 100 times." }.set_flags(dpp::m_ephemeral));
             return;
         }
 
-        event.reply(adr::shop::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
+        //event.reply(adr::shop::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
+        dpp::message tmp = adr::shop::buy(event.command.usr.id, event.command.get_command_interaction().options[0].name, resultName, std::min(static_cast<int>(times), 100));
+        event.reply(tmp);
     }
     else if (commandName == "view") {
         const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };

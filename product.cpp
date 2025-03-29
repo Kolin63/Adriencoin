@@ -16,6 +16,37 @@ adr::Product::ResultType adr::Product::getResultType(const std::string& str) {
     return adr::Product::r_none;
 }
 
+// Take a JSON object, "cost":{} or "result":{}, and return an Inventory or a String Vector of custom results
+std::tuple<Inventory, std::vector<std::string>> jsonToInv(const nlohmann::json json) {
+    Inventory inv{};
+    std::vector<std::string> custom(0);
+
+    // For every item that exists 
+    for (std::size_t i{}; i < adr::Item::names.size(); ++i) {
+        // If the JSON has this item, and it is an int
+        try {
+            if (json.at(adr::Item::names[i]).is_number_integer()) {
+                // Set the passed Inventory's value to the JSON's value
+                inv[i] = json[adr::Item::names[i]];
+            }
+        }
+        catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {
+        }
+    }
+
+    try {
+        if (json.at("custom").is_array()) {
+            for (std::string str : json.at("custom")) {
+                custom.push_back(str);
+            }
+        }
+    }
+    catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {
+    }
+    
+    return { inv, custom };
+}
+
 // Return false if error, true otherwise
 bool adr::Product::parseJson()
 {
@@ -39,20 +70,18 @@ bool adr::Product::parseJson()
         "products": 
         [
             {
-                "name": "gaydrien",
-                "desc": "",
-                "joke": "funny joke",
-                "picURL": "https....",
-                "color": 0xFFFFFF,
-                "cost": 
-                [
-                    ... 
-                ],
+                "name": "gay_to_coin",
+                "desc": "Gaydrien coins (:gaydriencoin:) can be traded for 1000 adrien coins (:adriencoin:). 1000 :adriencoin: CANNOT be traded in for 1 :gaydriencoin:",
+                "joke": "If there's Gaydrien, is there Bidrien?",
+                "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/gaydriencoin.png",
+                "color": 16766497, (converted uint32_t in hex to decimal)
+                "cost": {
+                    "gaydriencoin": 1
+                },
                 "resultType": "all",
-                "result":
-                [
-                    ...
-                ]
+                "result": {
+                    "adriencoin": 1000
+                }
             }
         ]
     }
@@ -62,9 +91,9 @@ bool adr::Product::parseJson()
 
     // Puts the JSON data into the vector for future access
     for (auto i : data["products"]) {
-        std::cout << i["name"] << '\n';
         adr::Product::products.push_back({ i["name"], i["desc"], i["joke"], i["picURL"], i["color"], 
-            i["cost"], getResultType(i["resultType"]), i["result"] });
+            std::get<Inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<Inventory>(jsonToInv(i["result"])), 
+            std::get<std::vector<std::string>>(jsonToInv(i["result"])) });
     }
 
     return true;
@@ -79,7 +108,7 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
     for (const adr::Product& product : adr::Product::products) {
         dpp::command_option subcmd{ dpp::co_sub_command, product.name, product.joke };
 
-        if (product.resultType != adr::Product::r_all && product.resultType != adr::Product::r_none) {
+        if (product.resultType != adr::Product::r_all && product.resultType != adr::Product::r_customAll && product.resultType != adr::Product::r_none) {
             dpp::command_option result{ dpp::co_string, "result", "result", true };
 
             for (std::size_t i{}; i < product.result.size(); ++i) {
@@ -87,10 +116,15 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
                     result.add_choice(dpp::command_option_choice{ adr::Item::names[i], adr::Item::names[i] });
             }
 
-            subcmd.add_option(result);
+            for (const std::string& str : product.customResult) {
+                result.add_choice(dpp::command_option_choice{ str, str });
+            }
 
-            subcmd.add_option(dpp::command_option{ dpp::co_integer, "times", "the amount of times to buy this product", false });
+            subcmd.add_option(result);
         }
+
+        if (product.resultType != adr::Product::r_none)
+            subcmd.add_option(dpp::command_option{ dpp::co_integer, "times", "the amount of times to buy this product", false });
 
         buy.add_option(subcmd);
     }
