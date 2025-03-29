@@ -27,6 +27,7 @@ namespace adr
         const ResultType resultType{ adr::Product::r_none };
         const Inventory result{};
         const std::vector<std::string> customResult{};
+        const bool noTimes{};
 
         inline static std::vector<Product> products;
 

@@ -45,7 +45,8 @@
                 "adriencoin": 100
             },
             "resultType": "customAll",
-            "result": {}
+            "result": {},
+            "noTimes": true
         },
         {
             "name": "job_change",
@@ -62,7 +63,8 @@
                     "farmer",
                     "miner"
                 ]
-            }
+            },
+            "noTimes": true
         },
         {
             "name": "resource_exchange",

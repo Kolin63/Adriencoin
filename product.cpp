@@ -91,9 +91,17 @@ bool adr::Product::parseJson()
 
     // Puts the JSON data into the vector for future access
     for (auto i : data["products"]) {
+        bool noTimes{ false };
+        try {
+            if (i.at("noTimes").is_boolean()) {
+                noTimes = i.at("noTimes");
+            }
+        }
+        catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {}
+
         adr::Product::products.push_back({ i["name"], i["desc"], i["joke"], i["picURL"], i["color"], 
             std::get<Inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<Inventory>(jsonToInv(i["result"])), 
-            std::get<std::vector<std::string>>(jsonToInv(i["result"])) });
+            std::get<std::vector<std::string>>(jsonToInv(i["result"])), noTimes });
     }
 
     return true;
@@ -123,7 +131,7 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
             subcmd.add_option(result);
         }
 
-        if (product.resultType != adr::Product::r_none)
+        if (product.resultType != adr::Product::r_none && !product.noTimes)
             subcmd.add_option(dpp::command_option{ dpp::co_integer, "times", "the amount of times to buy this product", false });
 
         buy.add_option(subcmd);
