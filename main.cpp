@@ -9,7 +9,7 @@
 
 int main()
 {
-    dpp::cluster bot{ getBotToken() };
+    dpp::cluster bot{ getBotToken(), dpp::i_default_intents | dpp::i_guild_members };
 
     bot.on_log(dpp::utility::cout_logger());
 

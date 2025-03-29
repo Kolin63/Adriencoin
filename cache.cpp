@@ -11,7 +11,7 @@ std::unordered_map<dpp::snowflake, adr::playerCacheElement> adr::cache::playerCa
 void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
 {
     std::cout << "Caching Username and Avatar for Player " << elem.player.uuid() << '\n';
-    dpp::cluster bot{ getBotToken() };
+    dpp::cluster bot{ getBotToken(), dpp::i_default_intents | dpp::i_guild_members };
 
     std::function<void(const dpp::confirmation_callback_t&)> func{ [&elem](const dpp::confirmation_callback_t& callback) {
         if (callback.is_error()) {
@@ -27,13 +27,6 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
 
     // Try to get username and avatar from cache
     bot.user_get_cached(elem.player.uuid(), func);
-
-    // If the player hasn't sent a messag eyet, they won't be in the cache
-    // If this is the case, we will try without the cache
-    if (elem.username == "") {
-        std::cout << "Could not get username from cache, trying without cache.\n";
-        bot.user_get(elem.player.uuid(), func);
-    }
 
     std::cout << elem.player.uuid() << ' ' << elem.username << ' ' << elem.avatarURL << ": " 
         << (elem.username == "" ? "Failure\n" : "Success! " + elem.username + '\n');
