@@ -48,7 +48,11 @@
                 "adriencoin": 100
             },
             "resultType": "customAll",
-            "result": {},
+            "result": {
+                "custom": [
+                    "tier upgrade"
+                ]
+            },
             "noTimes": true
         },
         {
