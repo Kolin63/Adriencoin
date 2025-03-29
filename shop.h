@@ -2,32 +2,12 @@
 #define SHOP_H
 
 #include <string>
-#include <string_view>
 #include <dpp/dpp.h>
-#include "item.h"
-#include "player.h"
 
 namespace adr {
     namespace shop {
-        enum Id {
-            gaydrien,
-            adriresource,
-            job,
-            resource,
-            everything,
-
-            MAX
-        };
-
-        extern const std::array<std::string, MAX> names;
-        adr::shop::Id getId(const std::string_view str);
-        extern const std::array<adr::Item::Id, MAX> itemIcons;
-        extern const std::array<std::string, MAX> jokes;
-       
-        const std::array<dpp::embed, adr::shop::MAX> makeEmbedsList();
-        extern const std::array<dpp::embed, adr::shop::MAX> embeds;
-
-        dpp::message getMessage(adr::shop::Id screen = adr::shop::everything);
+        dpp::message getMessage(const std::string name = "everything");
+        dpp::message buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName = "", int times = 1);
     }
 }
 

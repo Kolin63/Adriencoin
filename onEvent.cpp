@@ -42,7 +42,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             return;
         }
 
-        event.reply(adr::Product::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
+        event.reply(adr::shop::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
     }
     else if (commandName == "view") {
         const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };
@@ -219,9 +219,6 @@ void adr::onSelectClick(const dpp::select_click_t& event)
     if (event.custom_id == "jobselect") {
         adr::cache::getElementFromCache(event.command.usr.id).tempJob = adr::Job::getId(event.values[0]);
         event.reply(dpp::message("Job selected, please confirm").set_flags(dpp::m_ephemeral));
-    }
-    else if (event.custom_id == "shopselect") {
-        event.reply(adr::shop::getMessage(adr::shop::getId(event.values[0])).set_flags(dpp::m_ephemeral));
     }
 }
 
