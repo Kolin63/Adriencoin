@@ -21,6 +21,7 @@ add_executable(${PROJECT_NAME}
 	shop.h
 	trade.h
 	leaderboard.h
+    daily.h
 
 	cache.cpp
 	item.cpp
@@ -32,6 +33,7 @@ add_executable(${PROJECT_NAME}
 	shop.cpp
 	trade.cpp
 	leaderboard.cpp
+    daily.cpp
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).
