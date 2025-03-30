@@ -7,6 +7,7 @@
 #include "item.h"
 #include "job.h"
 #include "inventory.h"
+#include "daily.h"
 
 namespace adr {
 
@@ -20,6 +21,8 @@ namespace adr {
 
         // the player's inventory, where the index is the item ID and the value is the amount (int)
         Inventory m_inv{};
+
+        adr::daily::Title m_title{ adr::daily::t_none };
 
     public:
         Player(const dpp::snowflake& uuid);
@@ -54,6 +57,9 @@ namespace adr {
 
         Inventory inv() const { return m_inv; }
         int inv(adr::Item::Id id) const { return m_inv[id]; }
+
+        adr::daily::Title getTitle() const { return m_title; }
+        void setTitle(adr::daily::Title title) { m_title = title; }
 
         int& operator[](int index);
         const int& operator[](int index) const;

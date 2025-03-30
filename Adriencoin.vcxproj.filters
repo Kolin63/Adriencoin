@@ -45,6 +45,10 @@
     <ClCompile Include="trade.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="leaderboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="daily.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -82,7 +86,10 @@
     <ClInclude Include="inventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="upgradeSave.h">
+    <ClInclude Include="leaderboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="daily.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

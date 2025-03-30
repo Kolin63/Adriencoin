@@ -6,6 +6,7 @@
 #include "player.h"
 #include "onEvent.h"
 #include "cache.h"
+#include "daily.h"
 
 int main()
 {
@@ -33,7 +34,19 @@ int main()
         {
             adr::onReady(bot);
 
+            // Autosave the Cache
             bot.start_timer(adr::cache::saveCache, adr::cache::SAVE_FREQUENCY_SECONDS, adr::cache::saveCache);
+
+            // Do Dailies at midnight
+            // First one calculates time to midnight from time now
+            // After that one, a persistent timer is started to run every 24 hours
+            bot.start_timer([&bot](dpp::timer t) {
+
+                bot.stop_timer(t);
+                adr::daily::doDailyTasks(t);
+                bot.start_timer(adr::daily::doDailyTasks, (60 * 60 * 24));
+
+                }, adr::daily::getTimeToMidnight());
         }
     });
 

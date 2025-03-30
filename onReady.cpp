@@ -94,6 +94,7 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "save", "save" })
             .add_choice(dpp::command_option_choice{ "clearcache", "clearcache" })
             .add_choice(dpp::command_option_choice{ "getindices", "getindices" })
+            .add_choice(dpp::command_option_choice{ "dailies", "dailies" })
             .add_choice(dpp::command_option_choice{ "resetworktimer", "resetworktimer" }));
         owner.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         owner.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });

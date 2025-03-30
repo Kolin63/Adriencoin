@@ -211,6 +211,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cache.cpp" />
+    <ClCompile Include="daily.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="job.cpp" />
     <ClCompile Include="leaderboard.cpp" />
@@ -225,6 +226,7 @@
   <ItemGroup>
     <ClInclude Include="botToken.h" />
     <ClInclude Include="cache.h" />
+    <ClInclude Include="daily.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="job.h" />

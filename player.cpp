@@ -48,6 +48,7 @@ void adr::Player::save() const
     data["job"] = m_job;
     data["lastWorked"] = m_lastWorked;
     data["inv"] = m_inv;
+    data["title"] = m_title;
 
     std::ofstream fs(filename);
     fs << std::setw(4) << data << std::endl;
@@ -87,6 +88,7 @@ void adr::Player::load()
     m_job = data["job"];
     m_lastWorked = data["lastWorked"];
     m_inv = data["inv"];
+    m_title = data.value("title", adr::daily::t_none);
 
     fs.close();
 }
