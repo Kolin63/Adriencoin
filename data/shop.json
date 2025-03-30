@@ -3,7 +3,7 @@
         {
             "name": "gay_to_coin",
             "display": "Gaydrien Coin Exchange",
-            "desc": "Gaydrien coins (:gaydriencoin:) can be traded for 1000 adrien coins (:adriencoin:). 1000 :adriencoin: CANNOT be traded in for 1 :gaydriencoin:",
+            "desc": "Gaydrien coins can be traded for 1000 adrien coins.\n1000 Adriencoin CANNOT be traded in for 1 Gaydrien coin",
             "joke": "If there's Gaydrien, is there Bidrien?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/gaydriencoin.png",
             "color": 16766497,
@@ -103,7 +103,7 @@
         {
             "name": "titles",
             "display": "Titles",
-            "desc": "Baron - Gives 5 :adriencoin: daily\nDuke - Gives 10 :adriencoin: daily",
+            "desc": "Baron - Gives 5 Adriencoin daily\nDuke - Gives 10 Adriencoin daily",
             "joke": "If there's a Title, is there a Knot-le?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/flags-wide.jpg",
             "color": 7093162,
