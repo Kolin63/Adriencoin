@@ -99,6 +99,26 @@
                 "book": 10,
                 "potion": 5
             }
+        },
+        {
+            "name": "titles",
+            "display": "Titles",
+            "desc": "Baron - Gives 5 :adriencoin: daily\nDuke - Gives 10 :adriencoin: daily",
+            "joke": "If there's a Title, is there a Knot-le?",
+            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/flags-wide.jpg",
+            "color": 7093162,
+            "cost": {
+                "gemstone": 50,
+                "carrot": 200,
+                "wood": 300
+            },
+            "resultType": "customAll",
+            "result": {
+                "custom": [
+                    "baron"
+                ]
+            },
+            "noTimes": true
         }
     ]
 }

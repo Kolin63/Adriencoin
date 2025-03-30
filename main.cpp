@@ -43,8 +43,10 @@ int main()
             bot.start_timer([&bot](dpp::timer t) {
 
                 bot.stop_timer(t);
-                adr::daily::doDailyTasks(t);
-                bot.start_timer(adr::daily::doDailyTasks, (60 * 60 * 24));
+                adr::daily::doDailyTasks(bot);
+                bot.start_timer([&bot]([[maybe_unused]] const dpp::timer& t) {
+                    adr::daily::doDailyTasks(bot);
+                    }, (60 * 60 * 24));
 
                 }, adr::daily::getTimeToMidnight());
         }

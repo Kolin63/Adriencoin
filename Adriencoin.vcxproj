@@ -238,6 +238,9 @@
     <ClInclude Include="shop.h" />
     <ClInclude Include="trade.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="data\shop.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -34,7 +34,7 @@ namespace adr
 
         static constexpr std::uint64_t SAVE_FREQUENCY_SECONDS{ 60 * 10 }; // 10 Minutes
         static void saveCache(const dpp::timer& = {});
-        static void clear() { adr::cache::playerCache.clear(); }
+        static void clear() { saveCache(); adr::cache::playerCache.clear(); }
         static std::vector<dpp::snowflake> cacheAll();
     };
 } 

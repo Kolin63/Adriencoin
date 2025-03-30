@@ -119,6 +119,7 @@ const dpp::embed adr::Player::viewEmbed() const
     std::string desc{
         '*' + std::to_string(m_uuid) + "*\n\n" 
         + "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
+        + (getTitle() == adr::daily::t_none ? "" : "\nTitle: " + adr::daily::titleNames[m_title])
         + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
         + "\nCan Work Next " + nextWorkTimestamp()
         + "\n\n**Inventory:**\n"};

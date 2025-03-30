@@ -5,12 +5,22 @@
 #include <chrono>
 #include "daily.h"
 #include "cache.h"
+#include "botToken.h"
 
-void adr::daily::doDailyTasks([[maybe_unused]] dpp::timer t)
+void adr::daily::doDailyTasks(dpp::cluster& bot)
 {
     std::cout << "doDailyTasks() called\n";
 
     doTitleMoney();
+
+    bot.direct_message_create(dpp::snowflake{ 488335709883727882 }, dpp::message{ "Daily Tasks Complete" }, [](const dpp::confirmation_callback_t& callback) {
+        if (callback.is_error()) {
+            std::cerr << "do daily tasks dm error: " << callback.get_error().human_readable << '\n';
+        }
+        else {
+            std::cout << "do daily tasks dm sent\n";
+        }
+        });
 }
 
 void adr::daily::doTitleMoney()

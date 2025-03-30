@@ -2,6 +2,7 @@
 #define DAILY_H
 
 #include <ctime>
+#include <array>
 #include <dpp/dpp.h>
 
 namespace adr
@@ -12,9 +13,13 @@ namespace adr
             t_none,
             t_baron,
             t_duke,
+
+            t_MAX
         };
 
-        void doDailyTasks(dpp::timer t = {});
+        const std::array<std::string, t_MAX> titleNames{ "None", "Baron", "Duke" };
+
+        void doDailyTasks(dpp::cluster& bot);
         void doTitleMoney();
 
         uint64_t getTimeToMidnight();

@@ -145,6 +145,12 @@ dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& produ
                         }
                     return dpp::message{ "There was an error changing your job to that." };
                 }
+                if (productName == "titles") {
+                    player.setTitle(adr::daily::t_baron);
+                    player.subtractInv(cost);
+                    listItems(false, result);
+                    return msg;
+                }
             }
             return dpp::message{ "There was an error doing that" }.set_flags(dpp::m_ephemeral);
         }

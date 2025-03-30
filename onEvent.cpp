@@ -206,8 +206,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(dpp::message(body).set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "dailies") {
-            adr::daily::doDailyTasks();
-            event.reply("done");
+            adr::daily::doDailyTasks(bot);
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
     }
     else {
