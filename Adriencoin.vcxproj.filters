@@ -45,7 +45,6 @@
     <ClCompile Include="trade.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="upgradeSave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

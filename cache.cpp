@@ -63,3 +63,35 @@ void adr::cache::saveCache([[maybe_unused]] const dpp::timer& timer)
     }
     std::cout << "Finished Saving Cache!\n";
 }
+
+// Parse every playerdata file with the cache and return a list of their uuids
+std::vector<dpp::snowflake> adr::cache::cacheAll() {
+    using json = nlohmann::json;
+
+    const std::filesystem::path filepath{ "playerdata" };
+    std::filesystem::create_directory(filepath);
+
+    std::vector<dpp::snowflake> vector{};
+    vector.reserve(4);
+
+    for (auto const& dirEntry : std::filesystem::directory_iterator{ filepath }) {
+        std::ifstream fs{ dirEntry.path() };
+        json data;
+
+        try {
+            data = json::parse(fs);
+        }
+        catch (const json::parse_error& e) {
+            std::cerr << "adr::leaderboard::getLeaderboardEmbed() json parse error: " << e.what() << '\n';
+            fs.close();
+            return vector;
+        }
+
+        const adr::Player& player{ adr::cache::getPlayerFromCache(data["uuid"]) };
+
+        vector.push_back(player.uuid());
+    }
+
+    return vector;
+}
+

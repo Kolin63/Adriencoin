@@ -13,38 +13,11 @@
 // Return an embed with a list of all players 
 dpp::embed adr::leaderboard::getLeaderboardEmbed()
 {
-    using json = nlohmann::json;
-
-    const std::filesystem::path filepath{ "playerdata" };
-    std::filesystem::create_directory(filepath);
-
-    using elem = std::pair<int, dpp::snowflake>;
-    std::vector<elem> vector{};
-
-    // Parse every playerdata json file without the cache and put it into a list
-    for (auto const& dirEntry : std::filesystem::directory_iterator{ filepath }) {
-        std::ifstream fs{ dirEntry.path() };
-        json data;
-        
-        try {
-            data = json::parse(fs);
-        }
-        catch (const json::parse_error& e) {
-            std::cerr << "adr::leaderboard::getLeaderboardEmbed() json parse error: " << e.what() << '\n';
-            fs.close();
-            return dpp::embed{}.set_title("Error");
-        }
-
-        const adr::Player& player{ adr::cache::getPlayerFromCache(data["uuid"])};
-
-        // Leaderboard only includes players with more than 0 adriencoin
-        if (player.inv(adr::Item::adriencoin) > 0)
-            vector.push_back({ player.inv(adr::Item::adriencoin), player.uuid() });
-    }
+    std::vector<dpp::snowflake> vector{ adr::cache::cacheAll() };
 
     // Sort the list, greatest to least using the adriencoin (first) element
-    std::sort(vector.begin(), vector.end(), [](const elem& a, const elem& b) {
-        return a.first > b.first;
+    std::sort(vector.begin(), vector.end(), [](const dpp::snowflake& a, const dpp::snowflake& b) {
+        return adr::cache::getPlayerFromCache(a).inv(adr::Item::adriencoin) > adr::cache::getPlayerFromCache(b).inv(adr::Item::adriencoin);
         });
 
     // Make the embed
@@ -55,7 +28,7 @@ dpp::embed adr::leaderboard::getLeaderboardEmbed()
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/gaydriencoin.png");
 
     for (std::size_t i{}; i < vector.size(); ++i) {
-        const adr::playerCacheElement& pce{ adr::cache::getElementFromCache(vector[i].second)};
+        const adr::playerCacheElement& pce{ adr::cache::getElementFromCache(vector[i])};
         
         embed.set_description(embed.description + std::to_string(i + 1) + ". "
             + pce.username + ": " + adr::Item::getEmojiMention(adr::Item::adriencoin) + ' '
