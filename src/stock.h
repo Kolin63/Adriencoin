@@ -7,14 +7,6 @@ namespace adr
 {
     class Stock
     {
-    private:
-        const std::string& m_name{};
-        const Id m_id{};
-        // Value in Adriencoin
-        int m_value{};
-        // The time for all of the stocks, in days
-        static unsigned int time{};
-        
     public:
         enum Id {
             jerrys_carrots,
@@ -26,6 +18,22 @@ namespace adr
             stonks_unlimited,
             shens_investment,
         };
+
+    private:
+        const std::string& m_name{};
+        const Id m_id{};
+        // Value in Adriencoin
+        int m_value{};
+        // The time for all of the stocks, in days
+        static unsigned int day;
+
+    public:
+        static Stock& getStock(Id id); 
+        // Increments the day by 1
+        static void newDay();
+        static unsigned int getDay();
+
+
     };
 }
 
