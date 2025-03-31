@@ -210,36 +210,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cache.cpp" />
-    <ClCompile Include="daily.cpp" />
-    <ClCompile Include="item.cpp" />
-    <ClCompile Include="job.cpp" />
-    <ClCompile Include="leaderboard.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="onReady.cpp" />
-    <ClCompile Include="onEvent.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="product.cpp" />
-    <ClCompile Include="shop.cpp" />
-    <ClCompile Include="trade.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="botToken.h" />
-    <ClInclude Include="cache.h" />
-    <ClInclude Include="daily.h" />
-    <ClInclude Include="inventory.h" />
-    <ClInclude Include="item.h" />
-    <ClInclude Include="job.h" />
-    <ClInclude Include="leaderboard.h" />
-    <ClInclude Include="onReady.h" />
-    <ClInclude Include="onEvent.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="product.h" />
-    <ClInclude Include="shop.h" />
-    <ClInclude Include="trade.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="data\shop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\botToken.h" />
+    <ClInclude Include="src\cache.h" />
+    <ClInclude Include="src\daily.h" />
+    <ClInclude Include="src\inventory.h" />
+    <ClInclude Include="src\item.h" />
+    <ClInclude Include="src\job.h" />
+    <ClInclude Include="src\leaderboard.h" />
+    <ClInclude Include="src\onEvent.h" />
+    <ClInclude Include="src\onReady.h" />
+    <ClInclude Include="src\player.h" />
+    <ClInclude Include="src\product.h" />
+    <ClInclude Include="src\Random.h" />
+    <ClInclude Include="src\shop.h" />
+    <ClInclude Include="src\stock.h" />
+    <ClInclude Include="src\trade.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cache.cpp" />
+    <ClCompile Include="src\daily.cpp" />
+    <ClCompile Include="src\item.cpp" />
+    <ClCompile Include="src\job.cpp" />
+    <ClCompile Include="src\leaderboard.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\onEvent.cpp" />
+    <ClCompile Include="src\onReady.cpp" />
+    <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\product.cpp" />
+    <ClCompile Include="src\shop.cpp" />
+    <ClCompile Include="src\trade.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

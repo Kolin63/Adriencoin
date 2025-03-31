@@ -1,99 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="onReady.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="job.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="onEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="product.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cache.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="trade.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="leaderboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="daily.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="botToken.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="onReady.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="job.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="onEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="product.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cache.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="trade.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inventory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="leaderboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="daily.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Filter Include="Source">
+      <UniqueIdentifier>{0393fdb2-3f18-4999-98e7-17f4a67e9ddf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\botToken.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cache.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\daily.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\inventory.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\item.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\job.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\leaderboard.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\onEvent.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\onReady.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\product.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Random.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shop.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stock.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\trade.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cache.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\daily.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\item.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\job.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\leaderboard.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\onEvent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\onReady.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\product.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shop.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\trade.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
