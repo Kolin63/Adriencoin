@@ -7,33 +7,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
  
 # Create an executable
 add_executable(${PROJECT_NAME}
-	main.cpp
-
-	botToken.h
-	cache.h
-	inventory.h
-	item.h
-	job.h
-	onEvent.h
-	onReady.h
-	player.h
-	product.h
-	shop.h
-	trade.h
-	leaderboard.h
-    daily.h
-
-	cache.cpp
-	item.cpp
-	job.cpp
-	onEvent.cpp
-	onReady.cpp
-	player.cpp
-	product.cpp
-	shop.cpp
-	trade.cpp
-	leaderboard.cpp
-    daily.cpp
+    src/*
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).
