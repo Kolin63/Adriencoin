@@ -96,5 +96,6 @@
     <ClCompile Include="src\trade.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\stock.cpp" />
   </ItemGroup>
 </Project>

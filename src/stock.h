@@ -35,6 +35,7 @@ namespace adr
 
     public:
         static Stock& getStock(Id id); 
+        static std::array<adr::Stock, adr::Stock::MAX> parseJSON();
 
         int getValue() const { return m_value; };
         void setValue(int value) { m_value = value; };
@@ -42,7 +43,6 @@ namespace adr
         // Increments the day by 1
         static void newDay();
         static unsigned int getDay();
-        static void loadDay();
     };
 }
 

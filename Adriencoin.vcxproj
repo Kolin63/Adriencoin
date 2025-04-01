@@ -241,6 +241,7 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\product.cpp" />
     <ClCompile Include="src\shop.cpp" />
+    <ClCompile Include="src\stock.cpp" />
     <ClCompile Include="src\trade.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
