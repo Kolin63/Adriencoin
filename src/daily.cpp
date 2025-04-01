@@ -46,15 +46,16 @@ void adr::daily::doTitleMoney()
 
 uint64_t adr::daily::getTimeToMidnight()
 {
-    // thanks copilot!
-
     using namespace std::chrono;
 
     auto now = system_clock::now();
-    auto tomorrow = floor<days>(now) + days{1};
-    auto midnight = time_point_cast<system_clock::duration>(tomorrow);
-    uint64_t out{ static_cast<uint64_t>(duration_cast<seconds>(midnight - now).count()) };
+    auto now_utc = time_point_cast<seconds>(now);
+    auto now_est = now_utc - hours(4); // EST is UTC-4
 
-    std::cout << "time until midnight: " << out << '\n';
+    auto tomorrow_est = floor<days>(now_est) + days{1};
+    auto midnight_est = time_point_cast<system_clock::duration>(tomorrow_est);
+    uint64_t out{ static_cast<uint64_t>(duration_cast<seconds>(midnight_est - now_est).count()) };
+
+    std::cout << "time until midnight EST: " << out << '\n';
     return out;
 }
