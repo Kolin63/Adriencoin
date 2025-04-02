@@ -14,9 +14,33 @@ namespace adr
     std::array<adr::Stock, adr::Stock::MAX> Stock::stocks{};
 }
 
+adr::Stock::Id adr::Stock::getId(const std::string& str)
+{
+    for (const adr::Stock& stock : adr::Stock::stocks) {
+        if (stock.m_name == str) {
+            return stock.m_id;
+        }
+    }
+
+    std::cerr << "getId(string) Error: stock named " << str << " not found, returning jerry's carrots\n";
+    return adr::Stock::jerrys_carrots;
+}
+
 adr::Stock& adr::Stock::getStock(Id id)
 {
     return adr::Stock::stocks[id];
+}
+
+adr::Stock& adr::Stock::getStock(const std::string& str)
+{
+    for (adr::Stock& stock : adr::Stock::stocks) {
+        if (stock.m_name == str) {
+            return stock;
+        }
+    }
+
+    std::cerr << "getStock(string) Error: stock named " << str << " not found, returning jerry's carrots\n";
+    return adr::Stock::stocks[0];
 }
 
 void adr::Stock::saveJSON()

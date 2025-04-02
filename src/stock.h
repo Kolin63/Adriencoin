@@ -43,7 +43,9 @@ namespace adr
         {
         };
 
+        static Id getId(const std::string& str);
         static Stock& getStock(Id id); 
+        static Stock& getStock(const std::string& str);
         static void saveJSON();
         static void parseJSON();
 
