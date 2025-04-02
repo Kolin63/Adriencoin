@@ -75,7 +75,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         stock.changeOutstanding(buying * receivingAmount + !buying * -spendingAmount);
         
         event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::Item::getEmojiMention(itemSpending) + ' ' + adr::Item::names[itemSpending]
-            + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::Item::getEmojiMention(itemReceiving) + ' ' + adr::Item::names[itemSpending] });
+            + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::Item::getEmojiMention(itemReceiving) + ' ' + adr::Item::names[itemReceiving] });
 
         return;
     }
