@@ -24,6 +24,15 @@ namespace adr
             null,
             stockofstonks,
 
+            jerrys_carrots,
+            divans_gems,
+            jacks_lumber,
+            geralds_fish,
+            aatroxs_slaying,
+            berts_knowledge,
+            the_brewers,
+            stonks_unlimited,
+
             MAX
         };
 

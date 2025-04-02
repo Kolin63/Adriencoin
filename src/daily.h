@@ -21,6 +21,7 @@ namespace adr
 
         void doDailyTasks(dpp::cluster& bot);
         void doTitleMoney();
+        void doStocks();
 
         uint64_t getTimeToMidnight();
     }

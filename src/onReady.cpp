@@ -9,6 +9,7 @@
 #include "item.h"
 #include "shop.h"
 #include "product.h"
+#include "stock.h"
 
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
@@ -30,6 +31,8 @@ namespace adr {
         }
 
         adr::Product::addSlashCommands(bot, commandList);
+        
+        adr::Stock::addSlashCommands(bot, commandList);
 
         dpp::slashcommand view{ "view", "view a player's inventory and stats", bot.me.id };
         view.add_option({ dpp::co_user, "player", "the player to view", true });

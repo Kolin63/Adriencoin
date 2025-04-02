@@ -1,0 +1,53 @@
+{
+    "day": 0,
+    "stocks": [
+        {
+            "name": "Jerry's Carrots",
+            "value": 17,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "Divan's Gems",
+            "value": 21,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "Jack's Lumber Co",
+            "value": 5,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "Gerald's Fish",
+            "value": 4,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "Aatrox's Slaying Co",
+            "value": 16,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "Bert's Knowledge",
+            "value": 18,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "The Brewers",
+            "value": 22,
+            "outstanding": 0,
+            "unissued": 50
+        },
+        {
+            "name": "Stonks Unlimited",
+            "value": 0,
+            "outstanding": 0,
+            "unissued": 0
+        }
+    ]
+}

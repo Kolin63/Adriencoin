@@ -5,7 +5,7 @@
 #include <dpp/dpp.h>
 #include "item.h"
 
-const std::array<std::string, adr::Item::MAX> adr::Item::names
+const std::array<std::string, adr::Item::MAX> adr::Item::names 
 {
     "carrot",
     "gemstone",
@@ -19,6 +19,15 @@ const std::array<std::string, adr::Item::MAX> adr::Item::names
     "adriresource",
     "null",
     "stockofstonks",
+
+    "jerry's carrots",
+    "divan's gems",
+    "jack's lumber",
+    "gerald's fish",
+    "aatrox's slaying",
+    "bert's knowledge",
+    "the brewer's",
+    "stonks unlimited",
 };
 
 const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
@@ -35,6 +44,15 @@ const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
     1342730457414111273, // adriresource
     1342341836949295106, // null (fish texture)
     1353479698021224488, // stockofstonks
+
+    1356787387463766046, // paper
+    1356787387463766046, // paper
+    1356787387463766046, // paper
+    1356787387463766046, // paper
+    1356787387463766046, // paper
+    1356787387463766046, // paper
+    1356787387463766046, // paper
+    1356787387463766046, // paper
 };
 
 // Returns the Item ID Based on a String. Fallsback to adr::Item::null

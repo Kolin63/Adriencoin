@@ -6,12 +6,14 @@
 #include "daily.h"
 #include "cache.h"
 #include "botToken.h"
+#include "stock.h"
 
 void adr::daily::doDailyTasks(dpp::cluster& bot)
 {
     std::cout << "doDailyTasks() called\n";
 
     doTitleMoney();
+    doStocks();
 
     bot.direct_message_create(dpp::snowflake{ 488335709883727882 }, dpp::message{ "Daily Tasks Complete" }, [](const dpp::confirmation_callback_t& callback) {
         if (callback.is_error()) {
@@ -42,6 +44,13 @@ void adr::daily::doTitleMoney()
             break;
         }
     }
+}
+
+void adr::daily::doStocks()
+{
+    std::cout << "doStocks() called\n";
+
+    adr::Stock::saveJSON();
 }
 
 uint64_t adr::daily::getTimeToMidnight()
