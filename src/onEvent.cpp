@@ -41,6 +41,16 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         dpp::message tmp = adr::shop::buy(event.command.usr.id, event.command.get_command_interaction().options[0].name, resultName, std::min(static_cast<int>(times), 100));
         event.reply(tmp);
     }
+    else if (commandName == "stock") {
+        bool buying{ std::get<std::string>(event.get_parameter("action")) == "buy" };
+        std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
+        int64_t amount{ std::clamp(
+            static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)),
+            1, 100)
+        };
+
+
+    }
     else if (commandName == "view") {
         const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };
         player.print();
