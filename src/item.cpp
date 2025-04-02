@@ -20,14 +20,14 @@ const std::array<std::string, adr::Item::MAX> adr::Item::names
     "null",
     "stockofstonks",
 
-    "jerry's carrots",
-    "divan's gems",
-    "jack's lumber",
-    "gerald's fish",
-    "aatrox's slaying",
-    "bert's knowledge",
-    "the brewer's",
-    "stonks unlimited",
+    "Jerry's Carrots",
+    "Divan's Gems",
+    "Jack's Lumber Co",
+    "Gerald's Fish",
+    "Aatrox's Slaying Co",
+    "Bert's Knowledge",
+    "The Brewers",
+    "Stonks Unlimited",
 };
 
 const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
@@ -45,14 +45,14 @@ const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
     1342341836949295106, // null (fish texture)
     1353479698021224488, // stockofstonks
 
-    1356787387463766046, // paper
-    1356787387463766046, // paper
-    1356787387463766046, // paper
-    1356787387463766046, // paper
-    1356787387463766046, // paper
-    1356787387463766046, // paper
-    1356787387463766046, // paper
-    1356787387463766046, // paper
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
+    1356787387463766046, // paper (stock)
 };
 
 // Returns the Item ID Based on a String. Fallsback to adr::Item::null
