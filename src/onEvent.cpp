@@ -12,6 +12,7 @@
 #include "product.h"
 #include "cache.h"
 #include "leaderboard.h"
+#include "stock.h"
 
 template <typename T>
 std::optional<T> getOptionalParam(const std::string& name, const dpp::slashcommand_t& event) {
@@ -42,14 +43,41 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         event.reply(tmp);
     }
     else if (commandName == "stock") {
-        bool buying{ std::get<std::string>(event.get_parameter("action")) == "buy" };
-        std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
-        int64_t amount{ std::clamp(
-            static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)),
-            1, 100)
-        };
+        const bool buying{ std::get<std::string>(event.get_parameter("action")) == "buy" };
+        const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
+        const int amount{ std::clamp(static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)), 1, 100) };
 
+        adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
+        adr::Stock& stock{ adr::Stock::getStock(stockName) };
 
+        // If the player is buying, they are spending adriencoin
+        // If the player is selling, they are spending the stock they are selling
+        // Branchless programming just for funzies
+        const adr::Item::Id itemSpending{ static_cast<adr::Item::Id>(buying * adr::Item::adriencoin + !buying * adr::Item::getId(stockName)) };
+        const int spendingAmount{ buying * amount * stock.getValue() + !buying * amount };
+        // Vice Versa for Item Receiving
+        const adr::Item::Id itemReceiving{ static_cast<adr::Item::Id>(!buying * adr::Item::adriencoin + buying * adr::Item::getId(stockName)) };
+        const int receivingAmount{ !buying * amount * stock.getValue() + buying * amount };
+
+        if (player.inv(itemSpending) < spendingAmount) {
+            event.reply(dpp::message{ "You cannot afford that!" }.set_flags(dpp::m_ephemeral));
+            return;
+        }
+
+        if (buying && stock.getUnissued() < receivingAmount) {
+            event.reply(dpp::message{ "There are not enough unissued stocks!" }.set_flags(dpp::m_ephemeral));
+            return;
+        }
+
+        player.changeInv(itemSpending, -spendingAmount);
+        player.changeInv(itemReceiving, receivingAmount);
+
+        stock.changeOutstanding(buying * receivingAmount + !buying * -spendingAmount);
+        
+        event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::Item::getEmojiMention(itemSpending) + ' ' + adr::Item::names[itemSpending]
+            + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::Item::getEmojiMention(itemReceiving) + ' ' + adr::Item::names[itemSpending] });
+
+        return;
     }
     else if (commandName == "view") {
         const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };

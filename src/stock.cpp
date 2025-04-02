@@ -113,14 +113,11 @@ void adr::Stock::updateValue(adr::Job::Id id)
     adr::Stock::updateValue(sid, 1, 2);
 }
 
-void adr::Stock::changeValue(Id id, int diff)
+void adr::Stock::changeOutstanding(int diff)
 {
-    adr::Stock::stocks[id].m_value += diff;
-}
-
-int adr::Stock::getValue(Id id)
-{
-    return adr::Stock::stocks[id].m_value;
+    m_outstanding += diff;
+    m_unissued -= diff;
+    updateValue(m_id, diff, 5);
 }
 
 void adr::Stock::newDay()

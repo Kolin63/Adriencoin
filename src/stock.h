@@ -54,8 +54,15 @@ namespace adr
         // Used when a player works
         static void updateValue(adr::Job::Id id);
 
-        static void changeValue(Id id, int diff);
-        static int getValue(Id id);
+        void changeValue(int diff) { m_value += diff; };
+        int getValue() const { return m_value; };
+        // To be called when a stock is bought or sold
+        // Diff: the difference in stock outstanding
+        // > Positive means stock was bought
+        // > Negative means stock was sold
+        void changeOutstanding(int diff);
+        int getOutstanding() const { return m_outstanding; };
+        int getUnissued() const { return m_unissued; };
 
         // Increments the day by 1
         static void newDay();
