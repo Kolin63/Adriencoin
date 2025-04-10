@@ -50,6 +50,8 @@ void adr::daily::doStocks()
 {
     std::cout << "doStocks() called\n";
 
+    adr::Stock::newDay();
+
     adr::Stock::saveJSON();
 }
 

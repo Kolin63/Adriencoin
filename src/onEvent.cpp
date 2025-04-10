@@ -300,6 +300,8 @@ void adr::doJob(const dpp::slashcommand_t& event)
         player[adr::Item::adriencoin] += i.adriencoin;
         player.updateLastWorked();
 
+        adr::Stock::updateValue(i.id);
+
         event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + dpp::emoji{ adr::Item::names[i.item.id], adr::Item::emojiIDs[i.item.id] }.get_mention()
             + " and +" + std::to_string(i.adriencoin) + ' ' + dpp::emoji{adr::Item::names[adr::Item::adriencoin], adr::Item::emojiIDs[adr::Item::adriencoin]}.get_mention());
     }

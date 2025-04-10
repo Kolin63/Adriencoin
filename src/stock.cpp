@@ -5,6 +5,7 @@
 #include <utility>
 #include <dpp/nlohmann/json.hpp>
 #include "stock.h"
+#include "Random.h"
 
 std::filesystem::path path{ "data/stock.json" };
 
@@ -93,36 +94,46 @@ void adr::Stock::parseJSON()
     std::cout << "Done parsing stocks JSON.\n";
 }
 
-void adr::Stock::updateValue(Id id, int amount, int mux)
-{
-    // The new value is changed by the amount bought * mux (default 5)
-    // Cannot be less than 0
-    adr::Stock::stocks[id].m_value = std::max(
-        0,
-        adr::Stock::stocks[id].m_value + (amount * mux)
-    );
-}
-
 void adr::Stock::updateValue(adr::Job::Id id)
 {
     // Job Id % Tier One Job Size essentially turns tier 2 jobs into their tier one counterparts
     // With tier one job numbers, we can get the corresponding stock
     adr::Stock::Id sid{ static_cast<adr::Stock::Id>(id % adr::Job::tierOneJobsSize) };
 
-    // Increase the value by 2
-    adr::Stock::updateValue(sid, 1, 2);
+    constexpr int base{ 1 };
+    constexpr int increase{ 2 };
+
+    // Tier 1 Job - base adriencoin increase
+    // Tier 2 Job - base + increase adriencoin
+    // https://www.desmos.com/calculator/e06yhf1wsb
+    const int value{ static_cast<int>(id) / static_cast<int>(adr::Job::tierOneJobsSize) * increase + base };
+
+    // Change the value to the new value
+    adr::Stock::stocks[sid].m_value = adr::Stock::stocks[sid].m_value + value;
 }
 
 void adr::Stock::changeOutstanding(int diff)
 {
     m_outstanding += diff;
     m_unissued -= diff;
-    updateValue(m_id, diff, 5);
 }
 
 void adr::Stock::newDay()
 {
     ++adr::Stock::day;
+
+    std::cout << "Stock day now: " << adr::Stock::day << '\n';
+
+    // Randomly change the values of every stock
+
+    // In this case, the percentages are in integer form because of limitations of Random::get()
+    constexpr int lowerPercent{ 5 };
+    constexpr int upperPercent{ 150 };
+
+    for (adr::Stock& stock : adr::Stock::stocks) {
+        // They are divided by 100 here to compensate for the change --->                     vvvvv
+        stock.changeValue(static_cast<double>(Random::get<int>(lowerPercent, upperPercent)) / 100.0);
+    }
 }
 
 unsigned int adr::Stock::getDay()
