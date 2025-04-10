@@ -28,13 +28,17 @@ namespace adr
         Id m_id{};
         // Value in Adriencoin
         int m_value{};
+        // how many do the people own
         int m_outstanding{};
+        // how many are still in the company's possesion
         int m_unissued{};
         
         // The time for all of the stocks, in days
         static unsigned int day;
         // List of all stocks, gotten via getStock()
         static std::array<Stock, MAX> stocks;
+        // How many days back the history will go
+        static constexpr std::size_t historyLength{ 100 };
 
     public:
         Stock() = default;
@@ -45,8 +49,11 @@ namespace adr
 
         static Id getId(const std::string& str);
         Id getId() const { return m_id; };
+        const std::string& getName() const { return m_name; }
         static Stock& getStock(Id id); 
         static Stock& getStock(const std::string& str);
+        static dpp::message getEmbed(std::string name);
+
         static void saveJSON();
         static void parseJSON();
 

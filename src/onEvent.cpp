@@ -43,41 +43,49 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         event.reply(tmp);
     }
     else if (commandName == "stock") {
-        const bool buying{ std::get<std::string>(event.get_parameter("action")) == "buy" };
+        const std::string action{ event.command.get_command_interaction().options[0].name };
         const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
         const int amount{ std::clamp(static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)), 1, 100) };
 
         adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
         adr::Stock& stock{ adr::Stock::getStock(stockName) };
 
-        // If the player is buying, they are spending adriencoin
-        // If the player is selling, they are spending the stock they are selling
-        // Branchless programming just for funzies
-        const adr::Item::Id itemSpending{ static_cast<adr::Item::Id>(buying * adr::Item::adriencoin + !buying * adr::Item::getId(stockName)) };
-        const int spendingAmount{ buying * amount * stock.getValue() + !buying * amount };
-        // Vice Versa for Item Receiving
-        const adr::Item::Id itemReceiving{ static_cast<adr::Item::Id>(!buying * adr::Item::adriencoin + buying * adr::Item::getId(stockName)) };
-        const int receivingAmount{ !buying * amount * stock.getValue() + buying * amount };
-
-        if (player.inv(itemSpending) < spendingAmount) {
-            event.reply(dpp::message{ "You cannot afford that!" }.set_flags(dpp::m_ephemeral));
+        if (action == "view") {
+            event.reply(adr::Stock::getEmbed(stockName));
             return;
         }
+        else {
+            const bool buying{ action == "buy" };
 
-        if (buying && stock.getUnissued() < receivingAmount) {
-            event.reply(dpp::message{ "There are not enough unissued stocks!" }.set_flags(dpp::m_ephemeral));
+            // If the player is buying, they are spending adriencoin
+            // If the player is selling, they are spending the stock they are selling
+            // Branchless programming just for funzies
+            const adr::Item::Id itemSpending{ static_cast<adr::Item::Id>(buying * adr::Item::adriencoin + !buying * adr::Item::getId(stockName)) };
+            const int spendingAmount{ buying * amount * stock.getValue() + !buying * amount };
+            // Vice Versa for Item Receiving
+            const adr::Item::Id itemReceiving{ static_cast<adr::Item::Id>(!buying * adr::Item::adriencoin + buying * adr::Item::getId(stockName)) };
+            const int receivingAmount{ !buying * amount * stock.getValue() + buying * amount };
+
+            if (player.inv(itemSpending) < spendingAmount) {
+                event.reply(dpp::message{ "You cannot afford that!" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+
+            if (buying && stock.getUnissued() < receivingAmount) {
+                event.reply(dpp::message{ "There are not enough unissued stocks!" }.set_flags(dpp::m_ephemeral));
+                return;
+            }
+
+            player.changeInv(itemSpending, -spendingAmount);
+            player.changeInv(itemReceiving, receivingAmount);
+
+            stock.changeOutstanding(buying * receivingAmount + !buying * -spendingAmount);
+
+            event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::Item::getEmojiMention(itemSpending) + ' ' + adr::Item::names[itemSpending]
+                + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::Item::getEmojiMention(itemReceiving) + ' ' + adr::Item::names[itemReceiving] });
+
             return;
         }
-
-        player.changeInv(itemSpending, -spendingAmount);
-        player.changeInv(itemReceiving, receivingAmount);
-
-        stock.changeOutstanding(buying * receivingAmount + !buying * -spendingAmount);
-        
-        event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::Item::getEmojiMention(itemSpending) + ' ' + adr::Item::names[itemSpending]
-            + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::Item::getEmojiMention(itemReceiving) + ' ' + adr::Item::names[itemReceiving] });
-
-        return;
     }
     else if (commandName == "view") {
         const adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("player"))) };

@@ -44,6 +44,48 @@ adr::Stock& adr::Stock::getStock(const std::string& str)
     return adr::Stock::stocks[0];
 }
 
+dpp::message adr::Stock::getEmbed(std::string name)
+{
+    dpp::message msg{};
+
+    if (name == "everything") {
+        dpp::embed embed{};
+        embed.set_title("Stocks")
+            .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
+            .set_description(dpp::utility::timestamp(std::time(0), dpp::utility::tf_short_date) + "\n\n");
+
+        for (const adr::Stock& stock : adr::Stock::stocks) {
+            embed.set_description(embed.description + "## " + stock.getName() + '\n' + getEmbed(stock.getName()).embeds[0].description + '\n');
+        }
+
+        msg.add_embed(embed);
+        return msg;
+    }
+    else if (name == "compact") {
+        // TODO
+        return dpp::message{ "Coming soon" };
+    }
+    else if (name == "graph") {
+        // TODO
+        return dpp::message{ "Coming soon" };
+    }
+
+    const adr::Stock::Id id{ adr::Stock::getId(name) };
+    const adr::Stock& stock{ adr::Stock::getStock(id) };
+
+    dpp::embed embed{};
+    embed
+        .set_title(name)
+        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
+        .set_description("**Value:** " + std::to_string(stock.getValue()) + " (+/- x)\n"
+            + "**Authorized:** " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n'
+            + "**Outstanding:** " + std::to_string(stock.getOutstanding()) + '\n'
+            + "**Unissued:** " + std::to_string(stock.getUnissued()) + '\n');
+
+    msg.add_embed(embed);
+    return msg;
+}
+
 void adr::Stock::saveJSON()
 {
     std::cout << "Saving stocks JSON...\n";
@@ -145,20 +187,22 @@ void adr::Stock::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcomma
 {
     parseJSON();
 
-    dpp::slashcommand cmd{ "stock", "Buy or sell a stock", bot.me.id };
-    cmd.add_option(dpp::command_option{ dpp::co_string, "action", "Buy or sell?", true }
-        .add_choice(dpp::command_option_choice{ "buy", "buy" })
-        .add_choice(dpp::command_option_choice{ "sell", "sell" }));
-
-    dpp::command_option stockopt{ dpp::co_string, "stock", "Which stock to buy or sell", true };
+    dpp::command_option stockopt{ dpp::co_string, "stock", "Which stock", true };
 
     for (const adr::Stock& i : adr::Stock::stocks) {
         stockopt.add_choice(dpp::command_option_choice{ i.m_name, i.m_name });
     }
 
-    cmd.add_option(stockopt);
+    dpp::command_option amtopt{ dpp::co_integer, "amount", "How many stocks to buy", false };
 
-    cmd.add_option(dpp::command_option{ dpp::co_integer, "amount", "How many stocks to buy", false });
+    dpp::slashcommand cmd{ "stock", "Buy or sell a stock", bot.me.id };
+    cmd.add_option(dpp::command_option{ dpp::co_sub_command, "buy", "Buy a stock" }.add_option(stockopt).add_option(amtopt));
+    cmd.add_option(dpp::command_option{ dpp::co_sub_command, "sell", "Sell a stock" }.add_option(stockopt).add_option(amtopt));
+
+    stockopt.add_choice(dpp::command_option_choice{ "everything", "everything" });
+    stockopt.add_choice(dpp::command_option_choice{ "compact", "compact" });
+    stockopt.add_choice(dpp::command_option_choice{ "graph", "graph" });
+    cmd.add_option(dpp::command_option{ dpp::co_sub_command, "view", "View a stock" }.add_option(stockopt));
 
     commandList.push_back(cmd);
 }
