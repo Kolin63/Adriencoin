@@ -63,8 +63,24 @@ dpp::message adr::Stock::getEmbed(std::string name)
         return msg;
     }
     else if (name == "compact") {
-        // TODO
-        return dpp::message{ "Coming soon" };
+        msg.set_content("```diff\n@ day " + std::to_string(adr::Stock::getDay()) + "\n\n");
+
+        for (const adr::Stock& stock : adr::Stock::stocks) {
+            int diff{ stock.getValue() - stock.getHistory(1) };
+
+            char c{};
+            if (diff > 0) c = '+';
+            else if (diff < 0) c = '-';
+            else c = '=';
+
+            msg.set_content(msg.content + c + ' ' + stock.getName() + ": " 
+                + std::to_string(stock.getValue())
+                + (c == '=' ? "\n" : " (" + std::string{ c } + std::to_string(std::abs(diff)) + " : " + std::to_string(stock.getHistory(1)) + " -> " + std::to_string(stock.getValue()) + ")\n"));
+        }
+
+        msg.set_content(msg.content + "```");
+
+        return msg;
     }
     else if (name == "graph") {
         // TODO
@@ -128,8 +144,13 @@ void adr::Stock::parseJSON()
         const json& stock{ data["stocks"][i] };
 
         std::array<int, adr::Stock::historyLength> history{};
-        for (std::size_t hi{}; hi < stock["history"].size(); ++hi) {
-            history[hi] = stock["history"][hi];
+        try {
+            for (std::size_t hi{}; hi < stock.at("history").size(); ++hi) {
+                history[hi] = stock.at("history").at(hi);
+            }
+        }
+        catch ([[maybe_unused]] const json::out_of_range& e) {
+            history[0] = stock["value"].get<int>();
         }
 
         adr::Stock::stocks[i] = { 
