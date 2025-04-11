@@ -5,6 +5,7 @@
 #include <utility>
 #include <dpp/nlohmann/json.hpp>
 #include "stock.h"
+#include "util.h"
 #include "Random.h"
 
 std::filesystem::path path{ "data/stock.json" };
@@ -73,14 +74,16 @@ dpp::message adr::Stock::getEmbed(std::string name)
     const adr::Stock::Id id{ adr::Stock::getId(name) };
     const adr::Stock& stock{ adr::Stock::getStock(id) };
 
+    const int valueDiff{ stock.getValue() - stock.getHistory(1) };
+
     dpp::embed embed{};
     embed
         .set_title(name)
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
-        .set_description("**Value:** " + std::to_string(stock.getValue()) + " (+/- x)\n"
-            + "**Authorized:** " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n'
-            + "**Outstanding:** " + std::to_string(stock.getOutstanding()) + '\n'
-            + "**Unissued:** " + std::to_string(stock.getUnissued()) + '\n');
+        .set_description("**Value: " + std::to_string(stock.getValue()) + "** (" + (valueDiff >= 0 ? '+' : '-') + std::to_string(std::abs(valueDiff)) + ")\n"
+            + "__Authorized__: " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n'
+            + "__Outstanding__: " + std::to_string(stock.getOutstanding()) + '\n'
+            + "__Unissued__: " + std::to_string(stock.getUnissued()) + '\n');
 
     msg.add_embed(embed);
     return msg;
@@ -102,6 +105,7 @@ void adr::Stock::saveJSON()
         stock["value"] = obj.m_value;
         stock["outstanding"] = obj.m_outstanding;
         stock["unissued"] = obj.m_unissued;
+        stock["history"] = obj.m_history;
     }
 
     std::ofstream fs{ path };
@@ -122,12 +126,19 @@ void adr::Stock::parseJSON()
 
     for (std::size_t i{}; i < adr::Stock::stocks.size(); ++i) {
         const json& stock{ data["stocks"][i] };
+
+        std::array<int, adr::Stock::historyLength> history{};
+        for (std::size_t hi{}; hi < stock["history"].size(); ++hi) {
+            history[hi] = stock["history"][hi];
+        }
+
         adr::Stock::stocks[i] = { 
             stock["name"].get<std::string>(), 
             static_cast<adr::Stock::Id>(i),
             stock["value"].get<int>(),
             stock["outstanding"].get<int>(),
-            stock["unissued"].get<int>()
+            stock["unissued"].get<int>(),
+            history
         };
     }
 
@@ -166,8 +177,7 @@ void adr::Stock::newDay()
 
     std::cout << "Stock day now: " << adr::Stock::day << '\n';
 
-    // Randomly change the values of every stock
-
+    // Randomly change the values of every stock and edit the history
     // In this case, the percentages are in integer form because of limitations of Random::get()
     constexpr int lowerPercent{ 5 };
     constexpr int upperPercent{ 150 };
@@ -175,6 +185,10 @@ void adr::Stock::newDay()
     for (adr::Stock& stock : adr::Stock::stocks) {
         // They are divided by 100 here to compensate for the change --->                     vvvvv
         stock.changeValue(static_cast<double>(Random::get<int>(lowerPercent, upperPercent)) / 100.0);
+
+        // Shift the history
+        adr::arrayShiftRight<int, adr::Stock::historyLength>(stock.m_history);
+        stock.m_history[0] = stock.m_value;
     }
 }
 

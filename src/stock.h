@@ -32,18 +32,21 @@ namespace adr
         int m_outstanding{};
         // how many are still in the company's possesion
         int m_unissued{};
+        // How many days back the history will go
+        static constexpr std::size_t historyLength{ 100 };
+        // History (of values only)
+        // Element 0 is current day, Element 1 is yesterday, etc
+        std::array<int, historyLength> m_history{};
         
         // The time for all of the stocks, in days
         static unsigned int day;
         // List of all stocks, gotten via getStock()
         static std::array<Stock, MAX> stocks;
-        // How many days back the history will go
-        static constexpr std::size_t historyLength{ 100 };
 
     public:
         Stock() = default;
-        Stock(const std::string& name, Id id, int value, int outstanding, int unissued)
-            : m_name{ name }, m_id{ id }, m_value{ value }, m_outstanding{ outstanding }, m_unissued{ unissued }
+        Stock(const std::string& name, Id id, int value, int outstanding, int unissued, std::array<int, historyLength> history)
+            : m_name{ name }, m_id{ id }, m_value{ value }, m_outstanding{ outstanding }, m_unissued{ unissued }, m_history{ history }
         {
         };
 
@@ -73,6 +76,7 @@ namespace adr
         void changeOutstanding(int diff);
         int getOutstanding() const { return m_outstanding; };
         int getUnissued() const { return m_unissued; };
+        int getHistory(std::size_t i) const { assert(i <= historyLength); return m_history[i]; };
 
         // Increments the day by 1
         static void newDay();

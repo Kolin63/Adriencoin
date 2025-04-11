@@ -228,6 +228,7 @@
     <ClInclude Include="src\shop.h" />
     <ClInclude Include="src\stock.h" />
     <ClInclude Include="src\trade.h" />
+    <ClInclude Include="src\util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cache.cpp" />

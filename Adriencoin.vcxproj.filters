@@ -58,6 +58,9 @@
     <ClInclude Include="src\trade.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cache.cpp">
@@ -96,6 +99,8 @@
     <ClCompile Include="src\trade.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\stock.cpp" />
+    <ClCompile Include="src\stock.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
