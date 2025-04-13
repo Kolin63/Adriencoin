@@ -66,23 +66,7 @@ dpp::message adr::Stock::getEmbed(std::string name)
 {
     dpp::message msg{};
 
-    if (name == "everything") {
-        dpp::embed embed{};
-        embed.set_title("Stocks")
-            .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
-            .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/distantphone-wide.jpg")
-            .set_description(dpp::utility::timestamp(std::time(0), dpp::utility::tf_long_date) + "\n");
-
-        for (const adr::Stock& stock : adr::Stock::stocks) {
-            embed.set_description(embed.description + "## " + stock.getName() + '\n' + getEmbed(stock.getName()).embeds[0].description + '\n');
-        }
-
-        embed.set_description(embed.description + "\n" + getEmbed("compact").content);
-
-        msg.add_embed(embed);
-        return msg;
-    }
-    else if (name == "compact") {
+    if (name == "compact") {
         dpp::embed embed{};
         embed
             .set_title("Stocks")
@@ -261,7 +245,6 @@ void adr::Stock::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcomma
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "buy", "Buy a stock" }.add_option(stockopt).add_option(amtopt));
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "sell", "Sell a stock" }.add_option(stockopt).add_option(amtopt));
 
-    stockopt.add_choice(dpp::command_option_choice{ "everything", "everything" });
     stockopt.add_choice(dpp::command_option_choice{ "compact", "compact" });
     stockopt.add_choice(dpp::command_option_choice{ "graph", "graph" });
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "view", "View a stock" }.add_option(stockopt));
