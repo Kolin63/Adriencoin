@@ -23,11 +23,6 @@ namespace adr
         // How tall the graph is in characters
         std::uint16_t m_height{};
 
-        // The max character width of columns along the x axis when represented in decimal
-        std::size_t m_col_width{};
-        // The max character width of the row label numbers along the y axis when represented in decimal
-        std::size_t m_row_num_width{};
-
         // Returns a one-dimensional index given a two-dimensional coordinate which can be used to index the body string
         // Note: (0, 0) is the top-left corner
         std::uint32_t coord_to_index(std::uint16_t x, std::uint16_t y) const;
@@ -55,10 +50,6 @@ namespace adr
         // How wide the graph is in characters
         // Does not include \n or \0
         std::uint16_t get_width() const { return m_width; }
-        // Returns without re-calculating the value
-        std::size_t get_col_width_const() const { return m_col_width; }
-        // Re-calculates the value and stores it before returning
-        std::size_t get_col_width();
         // Re-calculates the value but does not store it
         std::size_t get_col_width() const;
 
@@ -66,10 +57,6 @@ namespace adr
         void set_height(std::uint16_t height) { m_height = height; }
         // How tall the graph is in characters
         std::uint16_t get_height() const { return m_height; }
-        // Returns without re-calculating the value
-        std::size_t get_row_num_width_const() const { return m_row_num_width; }
-        // Re-calculates the value and stores it before returning
-        std::size_t get_row_num_width();
         // Re-calculates the value but does not store it
         std::size_t get_row_num_width() const;
     };

@@ -38,22 +38,10 @@ void adr::graph::set_point(std::uint16_t x, std::uint16_t y, char c, std::uint8_
     m_body[point_to_index(x, y, interval, start_x)] = c;
 }
 
-std::size_t adr::graph::get_col_width()
-{
-    m_col_width = get_col_width();
-    return m_col_width;
-}
-
 std::size_t adr::graph::get_col_width() const
 {
     // Adding 1 is padding, so the numbers aren't directly next to eachother
     return std::to_string(m_width).size() + 1;
-}
-
-std::size_t adr::graph::get_row_num_width()
-{
-    m_row_num_width = get_row_num_width();
-    return m_row_num_width;
 }
 
 std::size_t adr::graph::get_row_num_width() const
