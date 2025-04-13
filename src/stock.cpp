@@ -114,14 +114,16 @@ dpp::message adr::Stock::getEmbed(std::string name)
     const adr::Stock::Id id{ adr::Stock::getId(name) };
     const adr::Stock& stock{ adr::Stock::getStock(id) };
 
-    const int valueDiff{ stock.getValue() - stock.getHistory(1) };
+    const int diff{ stock.getValue() - stock.getHistory(1) };
+    const char c{ getDiffChar(diff) };
+    const std::string emoji{ getDiffEmoji(diff) };
 
     dpp::embed embed{};
     embed
         .set_title(name)
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
         .set_color(0xeeeeee)
-        .set_description("**Value: " + std::to_string(stock.getValue()) + "** (" + (valueDiff >= 0 ? '+' : '-') + std::to_string(std::abs(valueDiff)) + ")\n"
+        .set_description(emoji + " **Value: " + std::to_string(stock.getValue()) + "** (" + c + std::to_string(std::abs(diff)) + ")\n"
             + "__Outstanding__: " + std::to_string(stock.getOutstanding()) + '\n'
             + "__Unissued__: " + std::to_string(stock.getUnissued()) + '\n'
             + "__Authorized__: " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n');
