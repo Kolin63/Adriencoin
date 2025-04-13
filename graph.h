@@ -44,10 +44,10 @@ namespace adr
 
         // Returns a one-dimensional index given a two-dimensional coordinate which can be used to index the body string
         // Note: (0, 0) is the bottom-left corner, or the origin, of the graph
-        std::uint32_t point_to_index(std::uint16_t x, std::uint16_t y) const;
+        std::uint32_t point_to_index(std::uint16_t x, std::uint16_t y, std::uint8_t interval = 1, std::uint16_t start_x = 0) const;
         // Sets a character in the body given a two-dimensional coordinate
         // Note: (0, 0) is the bottom-left corner, or the origin, of the graph
-        void set_point(std::uint16_t x, std::uint16_t y, char c);
+        void set_point(std::uint16_t x, std::uint16_t y, char c, std::uint8_t interval = 1, std::uint16_t start_x = 0);
 
         // How wide the graph is in characters
         // Does not include \n or \0

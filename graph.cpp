@@ -20,26 +20,28 @@ void adr::graph::set_coord(std::uint16_t x, std::uint16_t y, char c)
 
 std::string adr::graph::make_body(std::uint8_t interval)
 {
-
+    return std::to_string(interval); // temp
 }
 
-std::uint32_t adr::graph::point_to_index(std::uint16_t x, std::uint16_t y) const
+std::uint32_t adr::graph::point_to_index(std::uint16_t x, std::uint16_t y, std::uint8_t interval, std::uint16_t start_x) const
 {
-    const std::uint16_t gx{ static_cast<std::uint16_t>(x - ( (get_col_width() * x) + (get_row_num_width() + 1) )) };
+    assert(x >= start_x && "x cannot be less than start x");
+
+    const std::uint16_t gx{ static_cast<std::uint16_t>(x - start_x - ( (get_col_width() * (x / interval)) + (get_row_num_width() + 1) )) };
     const std::uint16_t gy{ static_cast<std::uint16_t>(get_height() - y) };
 
     return coord_to_index(gx, gy);
 }
 
-void adr::graph::set_point(std::uint16_t x, std::uint16_t y, char c)
+void adr::graph::set_point(std::uint16_t x, std::uint16_t y, char c, std::uint8_t interval, std::uint16_t start_x)
 {
-    m_body[point_to_index(x, y)] = c;
+    m_body[point_to_index(x, y, interval, start_x)] = c;
 }
 
 std::size_t adr::graph::get_col_width()
 {
     m_col_width = get_col_width();
-    return get_col_width();
+    return m_col_width;
 }
 
 std::size_t adr::graph::get_col_width() const
