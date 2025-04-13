@@ -25,6 +25,7 @@ namespace adr
 
     private:
         std::string m_name{};
+        std::string m_ticker{};
         Id m_id{};
         // Value in Adriencoin
         int m_value{};
@@ -45,14 +46,15 @@ namespace adr
 
     public:
         Stock() = default;
-        Stock(const std::string& name, Id id, int value, int outstanding, int unissued, std::array<int, historyLength> history)
-            : m_name{ name }, m_id{ id }, m_value{ value }, m_outstanding{ outstanding }, m_unissued{ unissued }, m_history{ history }
+        Stock(const std::string& name, const std::string& ticker, Id id, int value, int outstanding, int unissued, std::array<int, historyLength> history)
+            : m_name{ name }, m_ticker{ ticker }, m_id { id }, m_value{ value }, m_outstanding{ outstanding }, m_unissued{ unissued }, m_history{ history }
         {
         };
 
         static Id getId(const std::string& str);
         Id getId() const { return m_id; };
         const std::string& getName() const { return m_name; }
+        const std::string& getTicker() const { return m_ticker; }
         static Stock& getStock(Id id); 
         static Stock& getStock(const std::string& str);
         static dpp::message getEmbed(std::string name);

@@ -3,48 +3,56 @@
     "stocks": [
         {
             "name": "Jerry's Carrots",
+            "ticker": "CRT",
             "value": 17,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "Divan's Gems",
+            "ticker": "GEM",
             "value": 21,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "Jack's Lumber Co",
+            "ticker": "LUM",
             "value": 5,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "Gerald's Fish",
+            "ticker": "FSH",
             "value": 4,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "Aatrox's Slaying Co",
+            "ticker": "SLY",
             "value": 16,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "Bert's Knowledge",
+            "ticker": "KNW",
             "value": 18,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "The Brewers",
+            "ticker": "BRW",
             "value": 22,
             "outstanding": 0,
             "unissued": 50
         },
         {
             "name": "Stonks Unlimited",
+            "ticker": "STK",
             "value": 0,
             "outstanding": 0,
             "unissued": 0

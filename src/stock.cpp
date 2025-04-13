@@ -80,7 +80,8 @@ dpp::message adr::Stock::getEmbed(std::string name)
             const char c{ getDiffChar(diff) };
             const std::string emoji{ getDiffEmoji(diff) };
 
-            embed.set_description(embed.description + emoji + ' ' + stock.getName() + ": "
+            embed.set_description(embed.description
+                + emoji + " `" + stock.getTicker() + "`: "
                 + "**" + std::to_string(stock.getValue()) + "**"
                 + (c == '=' ? " " : " (" + std::string{ c } + std::to_string(std::abs(diff))
                     + " : " + std::to_string(stock.getHistory(1)) + " -> " + std::to_string(stock.getValue()) + "), ")
@@ -104,7 +105,7 @@ dpp::message adr::Stock::getEmbed(std::string name)
 
     dpp::embed embed{};
     embed
-        .set_title(name)
+        .set_title(name + " (" + stock.getTicker() + ')')
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
         .set_color(0xeeeeee)
         .set_description(emoji + " **Value: " + std::to_string(stock.getValue()) + "** (" + c + std::to_string(std::abs(diff)) + ")\n"
@@ -166,6 +167,7 @@ void adr::Stock::parseJSON()
 
         adr::Stock::stocks[i] = { 
             stock["name"].get<std::string>(), 
+            stock["ticker"].get<std::string>(),
             static_cast<adr::Stock::Id>(i),
             stock["value"].get<int>(),
             stock["outstanding"].get<int>(),
