@@ -45,6 +45,23 @@ adr::Stock& adr::Stock::getStock(const std::string& str)
     return adr::Stock::stocks[0];
 }
 
+static char getDiffChar(int diff)
+{
+    if (diff > 0) return '+';
+    else if (diff < 0) return '-';
+    else return '=';
+}
+
+static std::string getDiffEmoji(int diff)
+{
+    if (diff > 0)
+        return dpp::emoji{ "green_circle" }.get_mention();
+    else if (diff < 0)
+        return dpp::emoji{ "red_circle" }.get_mention();
+    else 
+        return dpp::emoji{ "white_small_square" }.get_mention();
+}
+
 dpp::message adr::Stock::getEmbed(std::string name)
 {
     dpp::message msg{};
@@ -66,31 +83,27 @@ dpp::message adr::Stock::getEmbed(std::string name)
         return msg;
     }
     else if (name == "compact") {
-        msg.set_content("Day " + std::to_string(adr::Stock::getDay()) + " " + dpp::utility::timestamp(std::time(0), dpp::utility::tf_long_date) + "\n");
+        dpp::embed embed{};
+        embed
+            .set_title("Stocks")
+            .set_description("Day " + std::to_string(adr::Stock::getDay()) + " / " + dpp::utility::timestamp(std::time(0), dpp::utility::tf_long_date) + '\n')
+            .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
+            .set_color(0xeeeeee);
 
         for (const adr::Stock& stock : adr::Stock::stocks) {
             int diff{ stock.getValue() - stock.getHistory(1) };
 
-            char c{};
-            std::string emoji{};
-            if (diff > 0) {
-                c = '+';
-                emoji = dpp::emoji{ "green_circle" }.get_mention();
-            }
-            else if (diff < 0) {
-                c = '-';
-                emoji = dpp::emoji{ "red_circle" }.get_mention();
-            }
-            else {
-                c = '=';
-                emoji = dpp::emoji{ "white_small_square" }.get_mention();
-            }
+            const char c{ getDiffChar(diff) };
+            const std::string emoji{ getDiffEmoji(diff) };
 
-            msg.set_content(msg.content + emoji + ' ' + stock.getName() + ": " 
+            embed.set_description(embed.description + emoji + ' ' + stock.getName() + ": "
                 + "**" + std::to_string(stock.getValue()) + "**"
-                + (c == '=' ? "\n" : " (" + std::string{ c } + std::to_string(std::abs(diff)) + " : " + std::to_string(stock.getHistory(1)) + " -> " + std::to_string(stock.getValue()) + ")\n"));
+                + (c == '=' ? " " : " (" + std::string{ c } + std::to_string(std::abs(diff))
+                    + " : " + std::to_string(stock.getHistory(1)) + " -> " + std::to_string(stock.getValue()) + "), ")
+                + std::to_string(stock.getOutstanding()) + '/' + std::to_string(stock.getUnissued()) + '\n');
         }
 
+        msg.add_embed(embed);
         return msg;
     }
     else if (name == "graph") {
