@@ -213,10 +213,10 @@
     <None Include="data\shop.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="graph.h" />
     <ClInclude Include="src\botToken.h" />
     <ClInclude Include="src\cache.h" />
     <ClInclude Include="src\daily.h" />
+    <ClInclude Include="src\graph\graph.h" />
     <ClInclude Include="src\inventory.h" />
     <ClInclude Include="src\item.h" />
     <ClInclude Include="src\job.h" />
@@ -232,9 +232,9 @@
     <ClInclude Include="src\util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graph.cpp" />
     <ClCompile Include="src\cache.cpp" />
     <ClCompile Include="src\daily.cpp" />
+    <ClCompile Include="src\graph\graph.cpp" />
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\job.cpp" />
     <ClCompile Include="src\leaderboard.cpp" />

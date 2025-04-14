@@ -54,6 +54,16 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(adr::Stock::getEmbed(stockName));
             return;
         }
+        else if (action == "graph") {
+            std::int64_t historyLength{ getOptionalParam<std::int64_t>("history", event).value_or(10) };
+
+            if (historyLength <= 1) historyLength = 10;
+
+            if (historyLength > 100) historyLength = 100;
+
+            event.reply(adr::Stock::getGraph(stockName, static_cast<std::uint32_t>(historyLength)));
+            return;
+        }
         else {
             const bool buying{ action == "buy" };
 

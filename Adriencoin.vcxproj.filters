@@ -61,6 +61,9 @@
     <ClInclude Include="src\util.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="src\graph\graph.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cache.cpp">
@@ -100,6 +103,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\stock.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graph\graph.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

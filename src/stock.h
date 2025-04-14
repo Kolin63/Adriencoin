@@ -58,6 +58,7 @@ namespace adr
         static Stock& getStock(Id id); 
         static Stock& getStock(const std::string& str);
         static dpp::message getEmbed(std::string name);
+        static dpp::message getGraph(std::string name, std::uint32_t graphHistoryLength = 10);
 
         static void saveJSON();
         static void parseJSON();
@@ -78,7 +79,7 @@ namespace adr
         void changeOutstanding(int diff);
         int getOutstanding() const { return m_outstanding; };
         int getUnissued() const { return m_unissued; };
-        int getHistory(std::size_t i) const { assert(i <= historyLength); return m_history[i]; };
+        int getHistory(std::size_t i) const { if (i >= m_history.size()) throw 1; return m_history[i]; };
 
         // Increments the day by 1
         static void newDay();

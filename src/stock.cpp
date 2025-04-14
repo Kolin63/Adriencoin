@@ -3,10 +3,14 @@
 #include <filesystem>
 #include <fstream>
 #include <utility>
+#include <cmath>
+#include <utility>
+#include <numeric>
 #include <dpp/nlohmann/json.hpp>
 #include "stock.h"
 #include "util.h"
 #include "Random.h"
+#include "graph/graph.h"
 
 std::filesystem::path path{ "data/stock.json" };
 
@@ -43,6 +47,49 @@ adr::Stock& adr::Stock::getStock(const std::string& str)
 
     std::cerr << "getStock(string) Error: stock named " << str << " not found, returning jerry's carrots\n";
     return adr::Stock::stocks[0];
+}
+
+dpp::message adr::Stock::getGraph(std::string name, std::uint32_t graphHistoryLength)
+{
+    kolin::graph::dataset data;
+
+    if (graphHistoryLength == 0) graphHistoryLength = 10;
+    if (graphHistoryLength > adr::Stock::day + 1) graphHistoryLength = adr::Stock::day + 1;
+
+    constexpr std::uint8_t width{ 8 };
+    constexpr std::uint8_t height{ 8 };
+
+    data.reserve(graphHistoryLength);
+
+    std::uint32_t minY{ std::numeric_limits<std::uint32_t>::max() };
+    std::uint32_t maxY{};
+
+    for (std::int64_t i{ static_cast<std::int64_t>(graphHistoryLength) - 1 }; i >= 0; --i) {
+        kolin::graph::point p;
+
+        if (static_cast<std::int64_t>(adr::Stock::day) - 1 < 0) continue;
+        p.first = static_cast<std::uint32_t>(static_cast<std::int64_t>(adr::Stock::day) - i);
+        p.second = adr::Stock::getStock(name).getHistory(i);
+
+        data.push_back(p);
+
+        if (p.second > maxY) maxY = p.second;
+        if (p.second < minY) minY = p.second;
+    }
+
+    if (maxY == minY) {
+        --minY;
+        ++maxY;
+    }
+
+    const std::uint8_t xInt{ std::max(static_cast<std::uint8_t>(std::round(static_cast<double>(width) / graphHistoryLength)), std::uint8_t{ 1 })};
+    const std::uint8_t yInt{ std::max(static_cast<std::uint8_t>(std::floor(static_cast<double>(height) / (maxY - minY))), std::uint8_t{ 1 }) };
+
+    const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day - graphHistoryLength, minY) };
+
+    std::cout << str << "\n\n";
+
+    return dpp::message{ "```\n" + str + "```"};
 }
 
 static char getDiffChar(int diff)
@@ -90,10 +137,6 @@ dpp::message adr::Stock::getEmbed(std::string name)
 
         msg.add_embed(embed);
         return msg;
-    }
-    else if (name == "graph") {
-        // TODO
-        return dpp::message{ "Coming soon" };
     }
 
     const adr::Stock::Id id{ adr::Stock::getId(name) };
@@ -248,8 +291,11 @@ void adr::Stock::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcomma
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "sell", "Sell a stock" }.add_option(stockopt).add_option(amtopt));
 
     stockopt.add_choice(dpp::command_option_choice{ "compact", "compact" });
-    stockopt.add_choice(dpp::command_option_choice{ "graph", "graph" });
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "view", "View a stock" }.add_option(stockopt));
+    
+    cmd.add_option(dpp::command_option{ dpp::co_sub_command, "graph", "View a stock graph" }
+    .add_option(stockopt)
+    .add_option(dpp::command_option{ dpp::co_integer, "history", "How far back you want to look", false }));
 
     commandList.push_back(cmd);
 }
