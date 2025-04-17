@@ -1,3 +1,5 @@
+#include <dpp/appcommand.h>
+#include <dpp/message.h>
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <filesystem>
@@ -58,14 +60,14 @@ dpp::message adr::Stock::getGraph(std::string name, std::int64_t graphHistoryLen
 
     data.reserve(graphHistoryLength);
 
-    std::uint32_t minY{ std::numeric_limits<std::uint32_t>::max() };
-    std::uint32_t maxY{};
+    int minY{ adr::Stock::getStock(name).getValue() };
+    int maxY{ adr::Stock::getStock(name).getValue() };
 
-    for (std::int64_t i{ adr::Stock::day }; i < adr::Stock::day + graphHistoryLength; ++i) {
+    for (std::int64_t i{}; i < graphHistoryLength; ++i) {
         kolin::graph::point p;
 
         p.first = adr::Stock::day - i;
-        p.second = adr::Stock::getStock(name).getHistory(i - adr::Stock::day);
+        p.second = adr::Stock::getStock(name).getHistory(i);
 
         data.push_back(p);
 
@@ -89,14 +91,21 @@ dpp::message adr::Stock::getGraph(std::string name, std::int64_t graphHistoryLen
     if (yInt <= 0) yInt = 0;
 
     std::cout << "Getting a stock graph of " << name << " length of " << graphHistoryLength
-        << " width/height: " << width << '/' << height << " x/y interval: " << xInt << ' ' << yInt << '\n';
+        << " width/height: " << width << '/' << height << " x/y interval: " << xInt << '/' << yInt 
+        << " min / max: " << minY << '/' << maxY << " day: " << adr::Stock::day << '\n';
 
-    // const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day + 1 - graphHistoryLength, minY) };
-    const std::string str{ kolin::graph{ width, height, data }.make_body(1, 1, 0, 0) };
+    try {
+        const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day + 1 - graphHistoryLength, minY) };
 
-    std::cout << str << "\n\n";
+        std::cout << str << "\n\n";
 
-    return dpp::message{ "```\n" + str + "```"};
+        return dpp::message{ "```\n" + str + "```"};
+    }
+    catch (const std::exception& e) {
+        std::cerr << "adr::Stock::getGraph() error: " << e.what() << '\n';
+
+        return dpp::message{ "Sorry, an error occurred" }.set_flags(dpp::m_ephemeral);
+    }
 }
 
 static char getDiffChar(int diff)
@@ -312,8 +321,9 @@ void adr::Stock::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcomma
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "buy", "Buy a stock" }.add_option(stockopt).add_option(amtopt));
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "sell", "Sell a stock" }.add_option(stockopt).add_option(amtopt));
 
-    stockopt.add_choice(dpp::command_option_choice{ "compact", "compact" });
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "view", "View a stock" }.add_option(stockopt));
+
+    cmd.add_option(dpp::command_option{ dpp::co_sub_command, "compact", "Compact view of all stocks" });
     
     cmd.add_option(dpp::command_option{ dpp::co_sub_command, "graph", "View a stock graph" }
     .add_option(stockopt)

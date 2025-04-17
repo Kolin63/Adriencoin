@@ -57,6 +57,7 @@ namespace adr
         const std::string& getTicker() const { return m_ticker; }
         static Stock& getStock(Id id); 
         static Stock& getStock(const std::string& str);
+        static std::size_t getStockSize() { return stocks.size(); }
         static dpp::message getEmbed(std::string name);
         static dpp::message getGraph(std::string name, std::int64_t graphHistoryLength = 10);
 
@@ -71,6 +72,8 @@ namespace adr
         // Changes the stock's value by the percent
         // Note: 1.00 = 100%, 0.50 = 50%, etc
         void changeValue(double percent) { m_value = static_cast<int>(m_value * percent); }
+        // Sets value to an integer (NOT PERCENTAGE BASED)
+        void setValue(int value) { m_value = value; }
         int getValue() const { return m_value; };
         // To be called when a stock is bought or sold
         // Diff: the difference in stock outstanding

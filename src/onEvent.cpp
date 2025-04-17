@@ -42,17 +42,23 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     }
     else if (commandName == "stock") {
         const std::string action{ event.command.get_command_interaction().options[0].name };
-        const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
-        const int amount{ std::clamp(static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)), 1, 100) };
 
         adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
-        adr::Stock& stock{ adr::Stock::getStock(stockName) };
 
         if (action == "view") {
+            const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
+            adr::Stock& stock{ adr::Stock::getStock(stockName) };
+
             event.reply(adr::Stock::getEmbed(stockName));
             return;
         }
+        else if (action == "compact") {
+            event.reply(adr::Stock::getEmbed("compact"));
+            return;
+        }
         else if (action == "graph") {
+            const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
+            adr::Stock& stock{ adr::Stock::getStock(stockName) };
             std::int64_t historyLength{ getOptionalParam<std::int64_t>("history", event).value_or(10) };
 
             if (historyLength < 8) historyLength = 8;
@@ -63,6 +69,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             return;
         }
         else {
+            const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
+            const int amount{ std::clamp(static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)), 1, 100) };
+            adr::Stock& stock{ adr::Stock::getStock(stockName) };
+
             const bool buying{ action == "buy" };
 
             // If the player is buying, they are spending adriencoin
@@ -257,10 +267,25 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 body += std::to_string(i) + ": " + adr::Job::jobs[i].name + '\n';
             }
 
+            body += "\nstocks:\n";
+            for (int i{}; i < adr::Stock::getStockSize(); ++i) {
+                body += std::to_string(i) + ": " + adr::Stock::getStock(static_cast<adr::Stock::Id>(i)).getName() + '\n';
+            }
+
             event.reply(dpp::message(body).set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "dailies") {
             adr::daily::doDailyTasks(bot);
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "setstock") {
+                adr::Stock::getStock(static_cast<adr::Stock::Id>(std::get<std::int64_t>(event.get_parameter("index"))))
+                        .setValue(static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "percentstock") {
+                adr::Stock::getStock(static_cast<adr::Stock::Id>(std::get<std::int64_t>(event.get_parameter("index"))))
+                        .changeValue(static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
     }

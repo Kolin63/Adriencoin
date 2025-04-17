@@ -8,8 +8,10 @@ std::uint32_t kolin::graph::coord_to_index(std::uint32_t x, std::uint32_t y, std
     // Adding 1 to the width is to account for any \n characters
     std::uint32_t index{ y * (get_row_num_width() + 1 + m_width * get_col_width(int_x, start_x)) + x - 1 };
 
-    if (index > m_body.size())
+    if (index >= m_body.size()) {
+        std::cerr << "Index out of range: " << index << " >= " << m_body.size() << '\n';
         throw out_of_range;
+    }
 
     return index;
 }
