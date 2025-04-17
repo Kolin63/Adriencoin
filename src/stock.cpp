@@ -2,10 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
-#include <utility>
 #include <cmath>
-#include <utility>
-#include <numeric>
 #include <dpp/nlohmann/json.hpp>
 #include "stock.h"
 #include "util.h"
@@ -49,27 +46,26 @@ adr::Stock& adr::Stock::getStock(const std::string& str)
     return adr::Stock::stocks[0];
 }
 
-dpp::message adr::Stock::getGraph(std::string name, std::uint32_t graphHistoryLength)
+dpp::message adr::Stock::getGraph(std::string name, std::int64_t graphHistoryLength)
 {
     kolin::graph::dataset data;
 
     if (graphHistoryLength == 0) graphHistoryLength = 10;
     if (graphHistoryLength > adr::Stock::day + 1) graphHistoryLength = adr::Stock::day + 1;
 
-    constexpr std::uint8_t width{ 8 };
-    constexpr std::uint8_t height{ 8 };
+    constexpr int width{ 10 };
+    constexpr int height{ 28 };
 
     data.reserve(graphHistoryLength);
 
     std::uint32_t minY{ std::numeric_limits<std::uint32_t>::max() };
     std::uint32_t maxY{};
 
-    for (std::int64_t i{ static_cast<std::int64_t>(graphHistoryLength) - 1 }; i >= 0; --i) {
+    for (std::int64_t i{ adr::Stock::day }; i < adr::Stock::day + graphHistoryLength; ++i) {
         kolin::graph::point p;
 
-        if (static_cast<std::int64_t>(adr::Stock::day) - 1 < 0) continue;
-        p.first = static_cast<std::uint32_t>(static_cast<std::int64_t>(adr::Stock::day) - i);
-        p.second = adr::Stock::getStock(name).getHistory(i);
+        p.first = adr::Stock::day - i;
+        p.second = adr::Stock::getStock(name).getHistory(i - adr::Stock::day);
 
         data.push_back(p);
 
@@ -77,15 +73,26 @@ dpp::message adr::Stock::getGraph(std::string name, std::uint32_t graphHistoryLe
         if (p.second < minY) minY = p.second;
     }
 
+    // We don't want max and min to be equal,
+    // otherwise it would have a height of 0
     if (maxY == minY) {
         --minY;
         ++maxY;
     }
 
-    const std::uint8_t xInt{ std::max(static_cast<std::uint8_t>(std::round(static_cast<double>(width) / graphHistoryLength)), std::uint8_t{ 1 })};
-    const std::uint8_t yInt{ std::max(static_cast<std::uint8_t>(std::floor(static_cast<double>(height) / (maxY - minY))), std::uint8_t{ 1 }) };
+    // X Interval is Graph History Length / Width
+    // If the GHL is bigger than the Width, the interval should be bigger
+    int xInt{ static_cast<int>(std::floor(static_cast<double>(graphHistoryLength) / width)) };
+    int yInt{ static_cast<int>(std::floor(static_cast<double>(maxY - minY) / height)) };
 
-    const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day - graphHistoryLength, minY) };
+    if (xInt <= 0) xInt = 0;
+    if (yInt <= 0) yInt = 0;
+
+    std::cout << "Getting a stock graph of " << name << " length of " << graphHistoryLength
+        << " width/height: " << width << '/' << height << " x/y interval: " << xInt << ' ' << yInt << '\n';
+
+    // const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day + 1 - graphHistoryLength, minY) };
+    const std::string str{ kolin::graph{ width, height, data }.make_body(1, 1, 0, 0) };
 
     std::cout << str << "\n\n";
 
@@ -173,14 +180,17 @@ void adr::Stock::saveJSON()
         json& stock{ data["stocks"][i] };
         const Stock& obj{ adr::Stock::stocks[i] };
         stock["name"] = obj.m_name;
+        stock["ticker"] = obj.m_ticker;
         stock["value"] = obj.m_value;
         stock["outstanding"] = obj.m_outstanding;
         stock["unissued"] = obj.m_unissued;
-        stock["history"] = obj.m_history;
+        for (std::size_t d{}; d < adr::Stock::day; ++d) {
+            stock["history"][d] = obj.getHistory(d);
+        }
     }
 
     std::ofstream fs{ path };
-    fs << std::setw(4) << data << std::endl;
+    fs << data;
     fs.close();
 
     std::cout << "Done saving stocks JSON!\n";
@@ -188,10 +198,20 @@ void adr::Stock::saveJSON()
 
 void adr::Stock::parseJSON()
 {
+    std::cout << "adr::Stock::parseJSON() called" << std::endl;
+
     using json = nlohmann::json;
 
     std::ifstream fs{ path };
-    const json data{ json::parse(fs) };
+    json data{};
+
+    try {
+        data = json::parse(fs); 
+    }
+    catch (const json::parse_error& e) {
+        std::cerr << "adr::Stock::parseJSON() error: " << e.what() << '\n';
+        return;
+    }
 
     adr::Stock::day = data["day"];
 
@@ -204,7 +224,7 @@ void adr::Stock::parseJSON()
                 history[hi] = stock.at("history").at(hi);
             }
         }
-        catch ([[maybe_unused]] const json::out_of_range& e) {
+        catch (const json::out_of_range&) {
             history[0] = stock["value"].get<int>();
         }
 
@@ -276,6 +296,8 @@ unsigned int adr::Stock::getDay()
 
 void adr::Stock::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcommand>& commandList)
 {
+    std::cout << "adr::Stock::addSlashCommands() called\n";
+
     parseJSON();
 
     dpp::command_option stockopt{ dpp::co_string, "stock", "Which stock", true };
@@ -298,4 +320,6 @@ void adr::Stock::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcomma
     .add_option(dpp::command_option{ dpp::co_integer, "history", "How far back you want to look", false }));
 
     commandList.push_back(cmd);
+
+    std::cout << "adr::Stock::addSlashCommands() finished\n";
 }

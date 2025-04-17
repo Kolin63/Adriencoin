@@ -2,14 +2,12 @@
 
 #include <string>
 #include <algorithm>
-#include <utility>
 #include <dpp/dpp.h>
 #include "onEvent.h"
 #include "onReady.h"
 #include "job.h"
 #include "player.h"
 #include "shop.h"
-#include "product.h"
 #include "cache.h"
 #include "leaderboard.h"
 #include "stock.h"
@@ -57,7 +55,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (action == "graph") {
             std::int64_t historyLength{ getOptionalParam<std::int64_t>("history", event).value_or(10) };
 
-            if (historyLength <= 1) historyLength = 10;
+            if (historyLength < 8) historyLength = 8;
 
             if (historyLength > 100) historyLength = 100;
 

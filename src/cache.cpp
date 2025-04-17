@@ -68,7 +68,7 @@ void adr::cache::saveCache([[maybe_unused]] const dpp::timer& timer)
 std::vector<dpp::snowflake> adr::cache::cacheAll() {
     using json = nlohmann::json;
 
-    const std::filesystem::path filepath{ "playerdata" };
+    const std::filesystem::path filepath{ "./../playerdata" };
     std::filesystem::create_directory(filepath);
 
     std::vector<dpp::snowflake> vector{};

@@ -58,7 +58,7 @@ namespace adr
         static Stock& getStock(Id id); 
         static Stock& getStock(const std::string& str);
         static dpp::message getEmbed(std::string name);
-        static dpp::message getGraph(std::string name, std::uint32_t graphHistoryLength = 10);
+        static dpp::message getGraph(std::string name, std::int64_t graphHistoryLength = 10);
 
         static void saveJSON();
         static void parseJSON();

@@ -2,7 +2,6 @@
 
 #include <filesystem>
 #include <cassert>
-#include <future>
 #include <dpp/nlohmann/json.hpp>
 #include "product.h"
 
@@ -50,6 +49,8 @@ std::tuple<Inventory, std::vector<std::string>> jsonToInv(const nlohmann::json j
 // Return false if error, true otherwise
 bool adr::Product::parseJson()
 {
+    std::cout << "adr::Product::parseJson() called\n";
+
     using json = nlohmann::json;
 
     std::filesystem::path filepath{ "./../data/shop.json" };
@@ -81,6 +82,8 @@ bool adr::Product::parseJson()
             std::get<Inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<Inventory>(jsonToInv(i["result"])), 
             std::get<std::vector<std::string>>(jsonToInv(i["result"])), noTimes });
     }
+
+    std::cout << "adr::Product::parseJson() finished\n";
 
     return true;
 }

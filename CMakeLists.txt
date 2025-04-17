@@ -60,5 +60,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 # Set Flags
-add_compile_options(-Wall -Werror -Wpedantic)
+add_compile_options(-Wall -Werror -Wpedantic -g)
 

@@ -3,6 +3,7 @@
 
 #include <string_view>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 
 inline std::string getBotToken()
