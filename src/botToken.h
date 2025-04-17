@@ -15,7 +15,7 @@ inline std::string getBotToken()
 #endif
 
 #ifdef linux
-    filename = "/root/token.txt";
+    filename = "./../token.txt";
     std::cout << "Linux detected, loading " << filename << '\n';
 #endif
 
@@ -23,6 +23,9 @@ inline std::string getBotToken()
 
     std::string token{};
     fs >> token;
+
+    std::cout << "Succesfully retrieved token " << token <<  '\n';
+
     return token;
 }
 

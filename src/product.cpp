@@ -52,7 +52,7 @@ bool adr::Product::parseJson()
 {
     using json = nlohmann::json;
 
-    std::filesystem::path filepath{ "data/shop.json" };
+    std::filesystem::path filepath{ "./../data/shop.json" };
     std::ifstream fs{ filepath };
     json data;
 
@@ -64,28 +64,6 @@ bool adr::Product::parseJson()
         fs.close();
         return false;
     }
-
-    /* Example structure:
-    {
-        "products": 
-        [
-            {
-                "name": "gay_to_coin",
-                "desc": "Gaydrien coins (:gaydriencoin:) can be traded for 1000 adrien coins (:adriencoin:). 1000 :adriencoin: CANNOT be traded in for 1 :gaydriencoin:",
-                "joke": "If there's Gaydrien, is there Bidrien?",
-                "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/gaydriencoin.png",
-                "color": 16766497, (converted uint32_t in hex to decimal)
-                "cost": {
-                    "gaydriencoin": 1
-                },
-                "resultType": "all",
-                "result": {
-                    "adriencoin": 1000
-                }
-            }
-        ]
-    }
-    */
 
     adr::Product::products.reserve(5);
 

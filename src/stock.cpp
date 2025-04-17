@@ -12,7 +12,7 @@
 #include "Random.h"
 #include "graph/graph.h"
 
-std::filesystem::path path{ "data/stock.json" };
+std::filesystem::path path{ "./../data/stock.json" };
 
 namespace adr
 {

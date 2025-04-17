@@ -1,6 +1,8 @@
 build/
 build/*
 
+token.txt
+
 # Prerequisites
 *.d
 

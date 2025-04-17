@@ -2,6 +2,7 @@
 
 #include <time.h>
 #include <dpp/nlohmann/json.hpp>
+#include <filesystem>
 #include "player.h"
 #include "item.h"
 #include "job.h"
@@ -39,8 +40,8 @@ void adr::Player::save() const
     using json = nlohmann::json;
     std::cout << "Saving player " << m_uuid << '\n';
 
-    std::filesystem::create_directory("playerdata");
-    const std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".json" };
+    std::filesystem::create_directory("../playerdata");
+    const std::string filename{ "./../playerdata/" + std::to_string(m_uuid) + ".json" };
 
     json data;
 
@@ -60,7 +61,7 @@ void adr::Player::load()
 {
     using json = nlohmann::json;
     std::cout << "Loading player " << m_uuid << '\n';
-    std::string filename{ "playerdata/" + std::to_string(m_uuid) + ".json" };
+    std::string filename{ "./../playerdata/" + std::to_string(m_uuid) + ".json" };
 
     if (!exists()) {
         std::cerr << "Error: " << filename << " does not exist.\n";
@@ -147,12 +148,12 @@ const dpp::embed adr::Player::viewEmbed() const
 
 bool adr::Player::exists() const
 {
-    return std::filesystem::exists("playerdata/" + std::to_string(m_uuid) + ".json");
+    return std::filesystem::exists("./../playerdata/" + std::to_string(m_uuid) + ".json");
 }
 
 bool adr::Player::exists(const dpp::snowflake& uuid)
 {
-    return std::filesystem::exists("playerdata/" + std::to_string(uuid) + ".json");
+    return std::filesystem::exists("./../playerdata/" + std::to_string(uuid) + ".json");
 }
 
 void adr::Player::updateLastWorked() 

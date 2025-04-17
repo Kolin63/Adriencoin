@@ -42,7 +42,7 @@ dpp::message adr::shop::getMessage(const std::string name)
             listItems(false, product.result);
 
             if (name == "everything") msg.add_embed(embed);
-            else return dpp::message{ embed };
+            else return dpp::message{}.add_embed(embed);
         }
     }
 
