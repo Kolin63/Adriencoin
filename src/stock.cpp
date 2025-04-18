@@ -176,6 +176,8 @@ dpp::message adr::Stock::getEmbed(std::string name)
         .set_color(0xeeeeee)
         .set_description(emoji + " **Value: " + std::to_string(stock.getValue()) + "** (" + c + std::to_string(std::abs(diff)) + ")\n"
             + "__Stabililty__: " + std::to_string(stock.m_stability) + "%\n"
+            + "__Times Worked__: " + std::to_string(stock.m_timesWorked) + '\n'
+            + "__Potential Stability__: " + std::to_string(stock.m_potentialStability) + '\n'
             + "__Outstanding__: " + std::to_string(stock.getOutstanding()) + '\n'
             + "__Unissued__: " + std::to_string(stock.getUnissued()) + '\n'
             + "__Authorized__: " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n');
@@ -200,6 +202,8 @@ void adr::Stock::saveJSON()
         stock["ticker"] = obj.m_ticker;
         stock["value"] = obj.m_value;
         stock["stability"] = obj.m_stability;
+        stock["timesWorked"] = obj.m_timesWorked;
+        stock["potentialStability"] = obj.m_potentialStability;
         stock["outstanding"] = obj.m_outstanding;
         stock["unissued"] = obj.m_unissued;
         for (std::size_t d{}; d < adr::Stock::day; ++d) {
@@ -251,7 +255,9 @@ void adr::Stock::parseJSON()
             stock["ticker"].get<std::string>(),
             static_cast<adr::Stock::Id>(i),
             stock["value"].get<int>(),
-            stock["stability"].get<std::int8_t>(),
+            stock["stability"].get<std::uint8_t>(),
+            stock["timesWorked"].get<std::uint8_t>(),
+            stock["potentialStability"].get<std::uint8_t>(),
             stock["outstanding"].get<int>(),
             stock["unissued"].get<int>(),
             history
@@ -263,22 +269,32 @@ void adr::Stock::parseJSON()
     std::cout << "Done parsing stocks JSON.\n";
 }
 
-void adr::Stock::updateValue(adr::Job::Id id)
+void adr::Stock::jobWorked(adr::Job::Id id)
 {
     // Job Id % Tier One Job Size essentially turns tier 2 jobs into their tier one counterparts
     // With tier one job numbers, we can get the corresponding stock
     adr::Stock::Id sid{ static_cast<adr::Stock::Id>(id % adr::Job::tierOneJobsSize) };
 
-    constexpr std::int8_t base{ 10 };
-    constexpr std::int8_t increase{ 5 };
+    adr::Stock& stock{ adr::Stock::getStock(sid) };
 
-    // Tier 1 Job - base adriencoin increase
-    // Tier 2 Job - base + increase adriencoin
+    std::cout << "adr::Stock::jobWorked() called for stock: " << stock.m_name << '\n';
+
+    // Tier 1 Job - base pot stable increase
+    // Tier 2 Job - base + increase pot stable increase
     // https://www.desmos.com/calculator/e06yhf1wsb
+
+    constexpr std::uint8_t base{ 10 };
+    constexpr std::uint8_t increase{ 5 };
+
     const int change{ static_cast<int>(id) / static_cast<int>(adr::Job::tierOneJobsSize) * increase + base };
 
-    // Change the stability to the new stability
-    adr::Stock::stocks[sid].m_stability += static_cast<std::int8_t>(change);
+    // Update Potential Stability
+    stock.m_potentialStability += change;
+    if (stock.m_potentialStability > adr::Stock::maxStability)
+        stock.m_potentialStability = adr::Stock::maxStability;
+
+    // Increment times worked today
+    ++stock.m_timesWorked;
 }
 
 void adr::Stock::changeOutstanding(int diff)
@@ -294,17 +310,44 @@ void adr::Stock::newDay()
     std::cout << "Stock day now: " << adr::Stock::day << '\n';
 
     // Randomly change the values of every stock and edit the history
-    // In this case, the percentages are in integer form because of limitations of Random::get()
-    constexpr int lowerPercent{ 5 };
-    constexpr int upperPercent{ 150 };
+    // In this case, the percentages are in integer form because of RNG limitations
+
+    // Inclusive
+    const int lowerPercent{ 75 };
+    constexpr int upperPercent{ 125 };
 
     for (adr::Stock& stock : adr::Stock::stocks) {
-        // They are divided by 100 here to compensate for the change --->                     vvvvv
-        stock.changeValue(static_cast<double>(Random::get<int>(lowerPercent, upperPercent)) / 100.0);
+        // Update stability if work threshold has been met
+        if (stock.m_timesWorked >= adr::Stock::timesWorkedThreshold) {
+            stock.m_stability += stock.m_potentialStability;
+
+            // Cap the stability
+            if (stock.m_stability > adr::Stock::maxStability)
+                stock.m_stability = adr::Stock::maxStability;
+        }
+
+        int change{ Random::get<int>(lowerPercent, upperPercent) };
+        
+        if (change < 100 && stock.m_stability > 0) {
+            // How far change is below 100
+            const int diff{ 100 - change };
+
+            // New change is:  100 - (og change * (stability / 100))
+            // Effectively reduces percent below 100 by stability (converted to a fraction)
+            change = 100 - static_cast<int>(std::round(diff * (static_cast<double>(stock.m_stability) / 100)));
+        }
+
+        // Divide by 100 to convert to a percent
+        stock.changeValue(change / 100.0);
 
         // Shift the history
         adr::arrayShiftRight<int, adr::Stock::historyLength>(stock.m_history);
         stock.m_history[0] = stock.m_value;
+
+        // Reset times worked today
+        stock.m_timesWorked = 0;
+        // Reset Potential Stability
+        stock.m_potentialStability = 0;
     }
 }
 

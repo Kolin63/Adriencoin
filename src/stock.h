@@ -33,10 +33,23 @@ namespace adr
         int m_value{};
 
         // Stability Factor
-        std::int8_t m_stability{};
+        std::uint8_t m_stability{};
+
+        // How many times the stock's job has
+        // been worked today 
+        std::uint8_t m_timesWorked{ 0 };
+
+        // How much the stability can increase at the end
+        // of the day if the stock job was worked enough
+        std::uint8_t m_potentialStability{};
+
     public:
-        // Stability can be the negative of this number to the positive, inclusive
-        static constexpr std::int8_t maxStability{ 50 };
+        // Stability cannot be greater than this number
+        static constexpr std::uint8_t maxStability{ 50 };
+
+        // How much the job needs to be worked to affect
+        // the stability
+        static constexpr std::uint8_t timesWorkedThreshold{ 3 };
 
     private:
         // how many do the people own
@@ -56,8 +69,27 @@ namespace adr
 
     public:
         Stock() = default;
-        Stock(const std::string& name, const std::string& ticker, Id id, int value, std::int8_t stability, int outstanding, int unissued, std::array<int, historyLength> history)
-            : m_name{ name }, m_ticker{ ticker }, m_id { id }, m_value{ value }, m_stability{ stability }, m_outstanding{ outstanding }, m_unissued{ unissued }, m_history{ history }
+        Stock(  const std::string& name, 
+                const std::string& ticker,
+                Id id,
+                int value,
+                std::uint8_t stability,
+                std::uint8_t timesWorked,
+                std::uint8_t potentialStability,
+                int outstanding,
+                int unissued,
+                std::array<int, historyLength> history)
+
+            :   m_name{ name },
+                m_ticker{ ticker },
+                m_id { id },
+                m_value{ value },
+                m_stability{ stability },
+                m_timesWorked{ timesWorked },
+                m_potentialStability{ potentialStability },
+                m_outstanding{ outstanding },
+                m_unissued{ unissued },
+                m_history{ history }
         {
         };
 
@@ -75,7 +107,7 @@ namespace adr
         static void parseJSON();
 
         // Used when a player works
-        static void updateValue(adr::Job::Id id);
+        static void jobWorked(adr::Job::Id id);
 
         // Changes the stock's value by diff
         void changeValue(int diff) { m_value += diff; };
@@ -87,7 +119,7 @@ namespace adr
         int getValue() const { return m_value; };
 
         // Gets the stock's stability factor
-        std::int8_t getStability() const { return m_stability; }
+        std::uint8_t getStability() const { return m_stability; }
 
         // To be called when a stock is bought or sold
         // Diff: the difference in stock outstanding
