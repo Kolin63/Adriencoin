@@ -2,10 +2,8 @@
 
 #include <iostream>
 #include <vector>
-#include <chrono>
 #include "daily.h"
 #include "cache.h"
-#include "botToken.h"
 #include "stock.h"
 
 void adr::daily::doDailyTasks(dpp::cluster& bot)
@@ -42,6 +40,8 @@ void adr::daily::doTitleMoney()
         case adr::daily::t_duke:
             player.changeInv(adr::Item::adriencoin, 10);
             break;
+        default:
+            break;
         }
     }
 }
@@ -57,16 +57,25 @@ void adr::daily::doStocks()
 
 uint64_t adr::daily::getTimeToMidnight()
 {
-    using namespace std::chrono;
+    // How much padding it should give in seconds
+    constexpr std::uint64_t paddingSeconds{ 60 * 5 };
 
-    auto now = system_clock::now();
-    auto now_utc = time_point_cast<seconds>(now);
-    auto now_est = now_utc - hours(4); // EST is UTC-4
+    // Difference between UTC and preferred time zone in seconds
+    // Example: UTC is 4 hours ahead of EST, so the value should be positive 4 hours
+    constexpr std::int64_t utcDiffSeconds{ 60 * 60 * 4 };
 
-    auto tomorrow_est = floor<days>(now_est) + days{1};
-    auto midnight_est = time_point_cast<system_clock::duration>(tomorrow_est);
-    uint64_t out{ static_cast<uint64_t>(duration_cast<seconds>(midnight_est - now_est).count()) };
+    // Get current time
+    const std::time_t now = std::time(nullptr);
 
-    std::cout << "time until midnight EST: " << out << '\n';
-    return out;
+    // 60 seconds * 60 minutes * 24 hours = 86400
+    constexpr std::uint64_t secInDay{ 60 * 60 * 24 };
+
+    // Seconds that have passed today
+    const std::uint64_t todaySeconds{ now % secInDay };
+
+    // Time to Midnight in Seconds
+    const std::uint64_t timeToMidnight{ secInDay - todaySeconds - paddingSeconds + utcDiffSeconds };
+
+    std::cout << "time until midnight EST: " << timeToMidnight << '\n';
+    return timeToMidnight;
 }
