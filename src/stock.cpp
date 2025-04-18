@@ -1,5 +1,6 @@
 #include <dpp/appcommand.h>
 #include <dpp/message.h>
+#include <string>
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <filesystem>
@@ -50,6 +51,9 @@ adr::Stock& adr::Stock::getStock(const std::string& str)
 
 dpp::message adr::Stock::getGraph(std::string name, std::int64_t graphHistoryLength)
 {
+    // Need to fix the bugs
+    return dpp::message{ "Coming Soon\nhttps://tenor.com/view/turtle-friends-funny-dog-slow-gif-13962148" }.set_flags(dpp::m_ephemeral);
+
     kolin::graph::dataset data;
 
     if (graphHistoryLength == 0) graphHistoryLength = 10;
@@ -146,14 +150,17 @@ dpp::message adr::Stock::getEmbed(std::string name)
             embed.set_description(embed.description
                 + emoji + " `" + stock.getTicker() + "`: "
                 + "**" + std::to_string(stock.getValue()) + "**"
-                + (c == '=' ? " " : " (" + std::string{ c } + std::to_string(std::abs(diff))
-                    + " : " + std::to_string(stock.getHistory(1)) + " -> " + std::to_string(stock.getValue()) + "), ")
+                + (c == '=' ? ", " : " (" + std::string{ c } + std::to_string(std::abs(diff)) + "), ")
+                + std::to_string(stock.m_stability) + "%, "
                 + std::to_string(stock.getOutstanding()) + '/' + std::to_string(stock.getUnissued()) + '\n');
         }
 
         msg.add_embed(embed);
         return msg;
     }
+
+
+    // If it is not the compact view:
 
     const adr::Stock::Id id{ adr::Stock::getId(name) };
     const adr::Stock& stock{ adr::Stock::getStock(id) };
@@ -168,6 +175,7 @@ dpp::message adr::Stock::getEmbed(std::string name)
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
         .set_color(0xeeeeee)
         .set_description(emoji + " **Value: " + std::to_string(stock.getValue()) + "** (" + c + std::to_string(std::abs(diff)) + ")\n"
+            + "__Stabililty__: " + std::to_string(stock.m_stability) + "%\n"
             + "__Outstanding__: " + std::to_string(stock.getOutstanding()) + '\n'
             + "__Unissued__: " + std::to_string(stock.getUnissued()) + '\n'
             + "__Authorized__: " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n');
@@ -191,6 +199,7 @@ void adr::Stock::saveJSON()
         stock["name"] = obj.m_name;
         stock["ticker"] = obj.m_ticker;
         stock["value"] = obj.m_value;
+        stock["stability"] = obj.m_stability;
         stock["outstanding"] = obj.m_outstanding;
         stock["unissued"] = obj.m_unissued;
         for (std::size_t d{}; d < adr::Stock::day; ++d) {
@@ -242,6 +251,7 @@ void adr::Stock::parseJSON()
             stock["ticker"].get<std::string>(),
             static_cast<adr::Stock::Id>(i),
             stock["value"].get<int>(),
+            stock["stability"].get<std::int8_t>(),
             stock["outstanding"].get<int>(),
             stock["unissued"].get<int>(),
             history
@@ -259,16 +269,16 @@ void adr::Stock::updateValue(adr::Job::Id id)
     // With tier one job numbers, we can get the corresponding stock
     adr::Stock::Id sid{ static_cast<adr::Stock::Id>(id % adr::Job::tierOneJobsSize) };
 
-    constexpr int base{ 1 };
-    constexpr int increase{ 2 };
+    constexpr std::int8_t base{ 10 };
+    constexpr std::int8_t increase{ 5 };
 
     // Tier 1 Job - base adriencoin increase
     // Tier 2 Job - base + increase adriencoin
     // https://www.desmos.com/calculator/e06yhf1wsb
-    const int value{ static_cast<int>(id) / static_cast<int>(adr::Job::tierOneJobsSize) * increase + base };
+    const int change{ static_cast<int>(id) / static_cast<int>(adr::Job::tierOneJobsSize) * increase + base };
 
-    // Change the value to the new value
-    adr::Stock::stocks[sid].m_value = adr::Stock::stocks[sid].m_value + value;
+    // Change the stability to the new stability
+    adr::Stock::stocks[sid].m_stability += static_cast<std::int8_t>(change);
 }
 
 void adr::Stock::changeOutstanding(int diff)

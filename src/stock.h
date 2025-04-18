@@ -26,9 +26,19 @@ namespace adr
     private:
         std::string m_name{};
         std::string m_ticker{};
+
         Id m_id{};
+
         // Value in Adriencoin
         int m_value{};
+
+        // Stability Factor
+        std::int8_t m_stability{};
+    public:
+        // Stability can be the negative of this number to the positive, inclusive
+        static constexpr std::int8_t maxStability{ 50 };
+
+    private:
         // how many do the people own
         int m_outstanding{};
         // how many are still in the company's possesion
@@ -46,8 +56,8 @@ namespace adr
 
     public:
         Stock() = default;
-        Stock(const std::string& name, const std::string& ticker, Id id, int value, int outstanding, int unissued, std::array<int, historyLength> history)
-            : m_name{ name }, m_ticker{ ticker }, m_id { id }, m_value{ value }, m_outstanding{ outstanding }, m_unissued{ unissued }, m_history{ history }
+        Stock(const std::string& name, const std::string& ticker, Id id, int value, std::int8_t stability, int outstanding, int unissued, std::array<int, historyLength> history)
+            : m_name{ name }, m_ticker{ ticker }, m_id { id }, m_value{ value }, m_stability{ stability }, m_outstanding{ outstanding }, m_unissued{ unissued }, m_history{ history }
         {
         };
 
@@ -75,6 +85,10 @@ namespace adr
         // Sets value to an integer (NOT PERCENTAGE BASED)
         void setValue(int value) { m_value = value; }
         int getValue() const { return m_value; };
+
+        // Gets the stock's stability factor
+        std::int8_t getStability() const { return m_stability; }
+
         // To be called when a stock is bought or sold
         // Diff: the difference in stock outstanding
         // > Positive means stock was bought
