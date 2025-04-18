@@ -341,13 +341,18 @@ void adr::doJob(const dpp::slashcommand_t& event)
         player[adr::Item::adriencoin] += i.adriencoin;
         player.updateLastWorked();
 
-        adr::Stock::updateValue(i.id);
+        adr::Stock::jobWorked(i.id);
 
         event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + dpp::emoji{ adr::Item::names[i.item.id], adr::Item::emojiIDs[i.item.id] }.get_mention()
             + " and +" + std::to_string(i.adriencoin) + ' ' + dpp::emoji{adr::Item::names[adr::Item::adriencoin], adr::Item::emojiIDs[adr::Item::adriencoin]}.get_mention());
     }
 
     if (!didAJob) {
-        event.reply("You could not do that! If you were trying to do a job, do you have a job assigned?");
+        if (player.job() == adr::Job::MAX) {
+            event.reply("You don't have a job!");
+        }
+        else {
+            event.reply("That is not your job! Your job is " + adr::Job::jobs[player.job()].name);
+        }
     }
 }
