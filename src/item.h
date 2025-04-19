@@ -3,7 +3,8 @@
 
 #include <string>
 #include <array>
-#include <dpp/dpp.h>
+#include <dpp/snowflake.h>
+#include "emoji.h"
 
 namespace adr
 {

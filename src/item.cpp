@@ -44,14 +44,6 @@ const std::array<dpp::snowflake, adr::Item::MAX> adr::Item::emojiIDs
     1342730457414111273, // adriresource
     1342341836949295106, // null (fish texture)
     1353479698021224488, // stockofstonks
-
-    1356787387463766046, // paper (stock)
-    1356787387463766046, // paper (stock)
-    1356787387463766046, // paper (stock)
-    1356787387463766046, // paper (stock)
-    1356787387463766046, // paper (stock)
-    1356787387463766046, // paper (stock)
-    1356787387463766046, // paper (stock)
     1356787387463766046, // paper (stock)
 };
 
