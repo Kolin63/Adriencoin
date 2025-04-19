@@ -327,6 +327,9 @@ void adr::Stock::newDay()
         }
 
         int change{ Random::get<int>(lowerPercent, upperPercent) };
+
+        std::cout << "newDay/" << stock.m_name << "/stable:" << stock.m_stability
+            << "/worked:" << stock.m_timesWorked << "/rawChange:" << change;
         
         if (change < 100 && stock.m_stability > 0) {
             // How far change is below 100
@@ -336,6 +339,8 @@ void adr::Stock::newDay()
             // Effectively reduces percent below 100 by stability (converted to a fraction)
             change = 100 - static_cast<int>(std::round(diff * (static_cast<double>(stock.m_stability) / 100)));
         }
+
+        std::cout << "/finalchange:" << change << '\n';
 
         // Divide by 100 to convert to a percent
         stock.changeValue(change / 100.0);
