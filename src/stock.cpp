@@ -322,6 +322,24 @@ void adr::Stock::newDay()
             if (stock.m_stability > adr::Stock::maxStability)
                 stock.m_stability = adr::Stock::maxStability;
         }
+        // Otherwise, stability goes down
+        else {
+            // Convert to signed so we don't worry about overflow
+            int s_stability{ stock.m_stability };
+
+            // How much the stabililty will go down if the work threshold
+            // was not met
+            constexpr int stability_inactive_decrease{ 20 };
+
+            // Subtract from (signed) stabililty
+            s_stability -= stability_inactive_decrease;
+
+            // Make sure its not below 0
+            if (s_stability < 0) s_stability = 0;
+
+            // Set the actual stability to it
+            stock.m_stability = s_stability;
+        }
 
         int change{ Random::get<int>(lowerPercent, upperPercent) };
 
