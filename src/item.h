@@ -44,7 +44,7 @@ namespace adr
     // A constexpr array of C-Style Strings that contain item names,
     // where the index is the item_id and the element is the name
     //
-    static constexpr const char* item_names[]
+    static constexpr std::string_view item_names[]
     {
         "carrot",
         "gemstone",

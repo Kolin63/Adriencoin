@@ -1,6 +1,4 @@
 #include "item.h"
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <iostream>
 #include <vector>
 #include "daily.h"

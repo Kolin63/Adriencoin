@@ -1,6 +1,4 @@
 #include <dpp/appcommand.h>
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <string>
 #include <filesystem>
 #include <dpp/dpp.h>
@@ -24,7 +22,7 @@ namespace adr {
 
         for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i)
         {
-            dpp::slashcommand slashcommand{ adr::Job::jobs[i].action, (adr::Job::jobs[i].action + ' ' + adr::item_names[adr::Job::jobs[i].item.id]), bot.me.id};
+            dpp::slashcommand slashcommand{ adr::Job::jobs[i].action, (adr::Job::jobs[i].action + ' ' + std::string{ adr::item_names[adr::Job::jobs[i].item.id] }), bot.me.id};
             std::cout << adr::Job::jobs[i].name << ' ' << adr::Job::jobs[i].action << '\n';
             commandList.push_back(slashcommand);
         }
@@ -38,8 +36,10 @@ namespace adr {
         commandList.push_back(view);
 
         dpp::command_option tradeItemOption{ dpp::co_string, "item", "The item that is being traded", true };
-        for (const std::string& i : adr::item_names)
-            tradeItemOption.add_choice(dpp::command_option_choice{ i, i });
+        for (const std::string_view i : adr::item_names) {
+            std::string str{ i };
+            tradeItemOption.add_choice(dpp::command_option_choice{ str, str });
+        }
 
         dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
         trade.add_option(

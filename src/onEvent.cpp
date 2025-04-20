@@ -1,7 +1,5 @@
 ﻿#include "emoji.h"
 #include "item.h"
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <string>
 #include <algorithm>
 #include <dpp/dpp.h>
@@ -49,8 +47,6 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
         if (action == "view") {
             const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
-            adr::Stock& stock{ adr::Stock::getStock(stockName) };
-
             event.reply(adr::Stock::getEmbed(stockName));
             return;
         }
@@ -60,7 +56,6 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (action == "graph") {
             const std::string stockName{ std::get<std::string>(event.get_parameter("stock")) };
-            adr::Stock& stock{ adr::Stock::getStock(stockName) };
             std::int64_t historyLength{ getOptionalParam<std::int64_t>("history", event).value_or(10) };
 
             if (historyLength < 8) historyLength = 8;
@@ -101,8 +96,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
             stock.changeOutstanding(buying * receivingAmount + !buying * -spendingAmount);
 
-            event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::get_emoji(itemSpending) + ' ' + adr::item_names[itemSpending]
-                + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::get_emoji(itemReceiving) + ' ' + adr::item_names[itemReceiving] });
+            event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::get_emoji(itemSpending) + ' ' + std::string{ adr::item_names[itemSpending] }
+                + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::get_emoji(itemReceiving) + ' ' + std::string{ adr::item_names[itemReceiving] } });
 
             return;
         }
@@ -210,7 +205,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
             for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
                 select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name, (
-                    std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::item_names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
+                    std::to_string(adr::Job::jobs[i].item.amount) + ' ' + std::string{ adr::item_names[adr::Job::jobs[i].item.id] } + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
                     .set_emoji(adr::emojis[i].first, adr::emojis[i].second));
             }
 
@@ -261,7 +256,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (subcmd == "getindices") {
             std::string body{ "items:\n" };
             for (std::size_t i{}; i < adr::i_MAX; ++i) {
-                body += std::to_string(i) + ": " + adr::item_names[i] + '\n';
+                body += std::to_string(i) + ": " + std::string{ adr::item_names[i] } + '\n';
             }
 
             body += "\njobs:\n";
@@ -270,7 +265,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             }
 
             body += "\nstocks:\n";
-            for (int i{}; i < adr::Stock::getStockSize(); ++i) {
+            for (std::size_t i{}; i < adr::Stock::getStockSize(); ++i) {
                 body += std::to_string(i) + ": " + adr::Stock::getStock(static_cast<adr::Stock::Id>(i)).getName() + '\n';
             }
 

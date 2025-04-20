@@ -1,9 +1,6 @@
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <dpp/dpp.h>
 #include "botToken.h"
 #include "onReady.h"
-#include "player.h"
 #include "onEvent.h"
 #include "cache.h"
 #include "daily.h"

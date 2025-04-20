@@ -1,8 +1,6 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <array>
 #include <algorithm>
 #include "item.h"
@@ -19,7 +17,7 @@ namespace adr
         {
             if (inv[i] != 0)
                 output += get_emoji(static_cast<adr::item_id>(i))
-                + ' ' + adr::item_names[i] + ": " 
+                + ' ' + std::string{ adr::item_names[i] } + ": " 
                 + std::to_string(inv[i]) + '\n';
         }
 

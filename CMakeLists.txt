@@ -35,8 +35,6 @@ add_executable(${PROJECT_NAME}
     src/trade.cpp
     src/trade.h
     src/util.h
-    src/graph/graph.h
-    src/graph/graph.cpp
     src/emoji.h
 )
  

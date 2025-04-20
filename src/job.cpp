@@ -1,5 +1,3 @@
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <array>
 #include <dpp/dpp.h>
 #include "item.h"

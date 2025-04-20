@@ -1,6 +1,4 @@
 #include "item.h"
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <filesystem>
 #include <cassert>
 #include <dpp/nlohmann/json.hpp>
@@ -102,8 +100,10 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
             dpp::command_option result{ dpp::co_string, "result", "result", true };
 
             for (std::size_t i{}; i < product.result.size(); ++i) {
-                if (product.result[i] > 0)
-                    result.add_choice(dpp::command_option_choice{ adr::item_names[i], adr::item_names[i] });
+                if (product.result[i] > 0) {
+                    std::string str{ adr::item_names[i] };
+                    result.add_choice(dpp::command_option_choice{ str, str });
+                }
             }
 
             for (const std::string& str : product.customResult) {

@@ -1,8 +1,6 @@
 #include <dpp/appcommand.h>
 #include <dpp/message.h>
 #include <string>
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <filesystem>
 #include <fstream>
 #include <cmath>
@@ -10,7 +8,6 @@
 #include "stock.h"
 #include "util.h"
 #include "Random.h"
-#include "graph/graph.h"
 
 std::filesystem::path path{ "./../data/stock.json" };
 
@@ -54,62 +51,62 @@ dpp::message adr::Stock::getGraph(std::string name, std::int64_t graphHistoryLen
     // Need to fix the bugs
     return dpp::message{ "Coming Soon\nhttps://tenor.com/view/turtle-friends-funny-dog-slow-gif-13962148" }.set_flags(dpp::m_ephemeral);
 
-    kolin::graph::dataset data;
+    // kolin::graph::dataset data;
 
-    if (graphHistoryLength == 0) graphHistoryLength = 10;
-    if (graphHistoryLength > adr::Stock::day + 1) graphHistoryLength = adr::Stock::day + 1;
+    // if (graphHistoryLength == 0) graphHistoryLength = 10;
+    // if (graphHistoryLength > adr::Stock::day + 1) graphHistoryLength = adr::Stock::day + 1;
 
-    constexpr int width{ 10 };
-    constexpr int height{ 28 };
+    // constexpr int width{ 10 };
+    // constexpr int height{ 28 };
 
-    data.reserve(graphHistoryLength);
+    // data.reserve(graphHistoryLength);
 
-    int minY{ adr::Stock::getStock(name).getValue() };
-    int maxY{ adr::Stock::getStock(name).getValue() };
+    // int minY{ adr::Stock::getStock(name).getValue() };
+    // int maxY{ adr::Stock::getStock(name).getValue() };
 
-    for (std::int64_t i{}; i < graphHistoryLength; ++i) {
-        kolin::graph::point p;
+    // for (std::int64_t i{}; i < graphHistoryLength; ++i) {
+    //     kolin::graph::point p;
 
-        p.first = adr::Stock::day - i;
-        p.second = adr::Stock::getStock(name).getHistory(i);
+    //     p.first = adr::Stock::day - i;
+    //     p.second = adr::Stock::getStock(name).getHistory(i);
 
-        data.push_back(p);
+    //     data.push_back(p);
 
-        if (p.second > maxY) maxY = p.second;
-        if (p.second < minY) minY = p.second;
-    }
+    //     if (p.second > maxY) maxY = p.second;
+    //     if (p.second < minY) minY = p.second;
+    // }
 
-    // We don't want max and min to be equal,
-    // otherwise it would have a height of 0
-    if (maxY == minY) {
-        --minY;
-        ++maxY;
-    }
+    // // We don't want max and min to be equal,
+    // // otherwise it would have a height of 0
+    // if (maxY == minY) {
+    //     --minY;
+    //     ++maxY;
+    // }
 
-    // X Interval is Graph History Length / Width
-    // If the GHL is bigger than the Width, the interval should be bigger
-    int xInt{ static_cast<int>(std::floor(static_cast<double>(graphHistoryLength) / width)) };
-    int yInt{ static_cast<int>(std::floor(static_cast<double>(maxY - minY) / height)) };
+    // // X Interval is Graph History Length / Width
+    // // If the GHL is bigger than the Width, the interval should be bigger
+    // int xInt{ static_cast<int>(std::floor(static_cast<double>(graphHistoryLength) / width)) };
+    // int yInt{ static_cast<int>(std::floor(static_cast<double>(maxY - minY) / height)) };
 
-    if (xInt <= 0) xInt = 0;
-    if (yInt <= 0) yInt = 0;
+    // if (xInt <= 0) xInt = 0;
+    // if (yInt <= 0) yInt = 0;
 
-    std::cout << "Getting a stock graph of " << name << " length of " << graphHistoryLength
-        << " width/height: " << width << '/' << height << " x/y interval: " << xInt << '/' << yInt 
-        << " min / max: " << minY << '/' << maxY << " day: " << adr::Stock::day << '\n';
+    // std::cout << "Getting a stock graph of " << name << " length of " << graphHistoryLength
+    //     << " width/height: " << width << '/' << height << " x/y interval: " << xInt << '/' << yInt 
+    //     << " min / max: " << minY << '/' << maxY << " day: " << adr::Stock::day << '\n';
 
-    try {
-        const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day + 1 - graphHistoryLength, minY) };
+    // try {
+    //     const std::string str{ kolin::graph{ width, height, data }.make_body(xInt, yInt, adr::Stock::day + 1 - graphHistoryLength, minY) };
 
-        std::cout << str << "\n\n";
+    //     std::cout << str << "\n\n";
 
-        return dpp::message{ "```\n" + str + "```"};
-    }
-    catch (const std::exception& e) {
-        std::cerr << "adr::Stock::getGraph() error: " << e.what() << '\n';
+    //     return dpp::message{ "```\n" + str + "```"};
+    // }
+    // catch (const std::exception& e) {
+    //     std::cerr << "adr::Stock::getGraph() error: " << e.what() << '\n';
 
-        return dpp::message{ "Sorry, an error occurred" }.set_flags(dpp::m_ephemeral);
-    }
+    //     return dpp::message{ "Sorry, an error occurred" }.set_flags(dpp::m_ephemeral);
+    // }
 }
 
 static char getDiffChar(int diff)

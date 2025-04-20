@@ -1,6 +1,4 @@
 #include "emoji.h"
-#pragma warning(disable: 4251) // disables a silly warning from dpp
-
 #include <vector>
 #include <algorithm>
 #include <dpp/nlohmann/json.hpp>
