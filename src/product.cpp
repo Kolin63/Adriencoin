@@ -25,13 +25,12 @@ std::tuple<inventory, std::vector<std::string>> jsonToInv(const nlohmann::json j
     for (std::size_t i{}; i < adr::i_MAX; ++i) {
         // If the JSON has this item, and it is an int
         try {
-            if (json.at(adr::item_names[i]).is_number_integer()) {
+            if (json.at(std::string{ adr::item_names[i] }).is_number_integer()) {
                 // Set the passed Inventory's value to the JSON's value
                 inv[i] = json[adr::item_names[i]];
             }
         }
-        catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {
-        }
+        catch (const nlohmann::json::out_of_range&) {}
     }
 
     try {
@@ -41,8 +40,7 @@ std::tuple<inventory, std::vector<std::string>> jsonToInv(const nlohmann::json j
             }
         }
     }
-    catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {
-    }
+    catch (const nlohmann::json::out_of_range&) {}
     
     return { inv, custom };
 }
@@ -70,10 +68,11 @@ bool adr::Product::parseJson()
     adr::Product::products.reserve(5);
 
     // Puts the JSON data into the vector for future access
-    for (auto i : data["products"]) { 
+    for (const json& i : data["products"]) { 
+        std::cout << i["name"] << '\n';
         bool noTimes{ false };
         try {
-            if (i.at("noTimes").is_boolean()) { // breaks here
+            if (i.at("noTimes").is_boolean()) { 
                 noTimes = i.at("noTimes");
             }
         }
