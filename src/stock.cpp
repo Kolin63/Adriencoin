@@ -172,12 +172,12 @@ dpp::message adr::Stock::getEmbed(std::string name)
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
         .set_color(0xeeeeee)
         .set_description(emoji + " **Value: " + std::to_string(stock.getValue()) + "** (" + c + std::to_string(std::abs(diff)) + ")\n"
-            + "__Stabililty__: " + std::to_string(stock.m_stability) + "%\n"
-            + "__Times Worked__: " + std::to_string(stock.m_timesWorked) + '\n'
-            + "__Potential Stability__: " + std::to_string(stock.m_potentialStability) + '\n'
-            + "__Outstanding__: " + std::to_string(stock.getOutstanding()) + '\n'
-            + "__Unissued__: " + std::to_string(stock.getUnissued()) + '\n'
-            + "__Authorized__: " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n');
+            + "Stabililty: " + std::to_string(stock.m_stability) + "%\n"
+            + "Times Worked: " + std::to_string(stock.m_timesWorked) + '\n'
+            + "Potential Stability: " + std::to_string(stock.m_potentialStability) + '\n'
+            + "Outstanding: " + std::to_string(stock.getOutstanding()) + '\n'
+            + "Unissued: " + std::to_string(stock.getUnissued()) + '\n'
+            + "Authorized: " + std::to_string(stock.getOutstanding() + stock.getUnissued()) + '\n');
 
     msg.add_embed(embed);
     return msg;
