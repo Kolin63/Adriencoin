@@ -20,13 +20,13 @@ namespace adr {
         static constexpr std::time_t workCooldownSeconds{ 60 * 60 * 6 }; // 6 hours
 
         // the player's inventory, where the index is the item ID and the value is the amount (int)
-        Inventory m_inv{};
+        inventory m_inv{};
 
         adr::daily::Title m_title{ adr::daily::t_none };
 
     public:
         Player(const dpp::snowflake& uuid);
-        Player(const dpp::snowflake& uuid, const Inventory& inv);
+        Player(const dpp::snowflake& uuid, const inventory& inv);
         ~Player();
 
         const dpp::snowflake& uuid() const { return m_uuid; }
@@ -47,16 +47,16 @@ namespace adr {
         std::time_t nextWork() const;
         std::string nextWorkTimestamp() const;
 
-        void setInv(const Inventory& inv) { m_inv = inv; }
-        void setInv(const adr::Item& item) { m_inv[item.id] = item.amount; }
-        void setInv(const adr::Item::Id& id, int amount) { m_inv[id] = amount; }
-        void changeInv(const adr::Item::Id& id, int difference) { m_inv[id] += difference; }
-        void changeInv(const Inventory& difference);
-        void subtractInv(const Inventory& difference);
-        bool canBuy(const Inventory& cost);
+        void setInv(const inventory& inv) { m_inv = inv; }
+        void setInv(const adr::item& item) { m_inv[item.id] = item.amount; }
+        void setInv(const adr::item_id& id, int amount) { m_inv[id] = amount; }
+        void changeInv(const adr::item_id& id, int difference) { m_inv[id] += difference; }
+        void changeInv(const inventory& difference);
+        void subtractInv(const inventory& difference);
+        bool canBuy(const inventory& cost);
 
-        Inventory inv() const { return m_inv; }
-        int inv(adr::Item::Id id) const { return m_inv[id]; }
+        inventory inv() const { return m_inv; }
+        int inv(adr::item_id id) const { return m_inv[id]; }
 
         adr::daily::Title getTitle() const { return m_title; }
         void setTitle(adr::daily::Title title) { m_title = title; }

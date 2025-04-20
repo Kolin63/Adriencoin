@@ -1,4 +1,6 @@
-﻿#pragma warning(disable: 4251) // disables a silly warning from dpp
+﻿#include "emoji.h"
+#include "item.h"
+#pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <string>
 #include <algorithm>
@@ -9,8 +11,8 @@
 #include "player.h"
 #include "shop.h"
 #include "cache.h"
-#include "leaderboard.h"
 #include "stock.h"
+#include "leaderboard.h"
 
 template <typename T>
 std::optional<T> getOptionalParam(const std::string& name, const dpp::slashcommand_t& event) {
@@ -78,10 +80,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             // If the player is buying, they are spending adriencoin
             // If the player is selling, they are spending the stock they are selling
             // Branchless programming just for funzies
-            const adr::Item::Id itemSpending{ static_cast<adr::Item::Id>(buying * adr::Item::adriencoin + !buying * adr::Item::getId(stockName)) };
+            const adr::item_id itemSpending{ static_cast<adr::item_id>(buying * adr::i_adriencoin + !buying * adr::get_item_id(stockName)) };
             const int spendingAmount{ buying * amount * stock.getValue() + !buying * amount };
             // Vice Versa for Item Receiving
-            const adr::Item::Id itemReceiving{ static_cast<adr::Item::Id>(!buying * adr::Item::adriencoin + buying * adr::Item::getId(stockName)) };
+            const adr::item_id itemReceiving{ static_cast<adr::item_id>(!buying * adr::i_adriencoin + buying * adr::get_item_id(stockName)) };
             const int receivingAmount{ !buying * amount * stock.getValue() + buying * amount };
 
             if (player.inv(itemSpending) < spendingAmount) {
@@ -99,8 +101,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
             stock.changeOutstanding(buying * receivingAmount + !buying * -spendingAmount);
 
-            event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::Item::getEmojiMention(itemSpending) + ' ' + adr::Item::names[itemSpending]
-                + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::Item::getEmojiMention(itemReceiving) + ' ' + adr::Item::names[itemReceiving] });
+            event.reply(dpp::message{ "**Stock Transaction Complete!**\n**Spent:** " + std::to_string(spendingAmount) + ' ' + adr::get_emoji(itemSpending) + ' ' + adr::item_names[itemSpending]
+                + "\n**Received:** " + std::to_string(receivingAmount) + ' ' + adr::get_emoji(itemReceiving) + ' ' + adr::item_names[itemReceiving] });
 
             return;
         }
@@ -120,7 +122,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
             pce.tradeOffers[slot].setInventory(
                 (std::get<std::string>(event.get_parameter("type")) == "give" ? adr::TradeOffer::give : adr::TradeOffer::receive), 
-                adr::Item::getId(std::get<std::string>(event.get_parameter("item"))),
+                adr::get_item_id(std::get<std::string>(event.get_parameter("item"))),
                 static_cast<int>(std::get<int64_t>(event.get_parameter("amount")))
             );
 
@@ -194,7 +196,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(adr::shop::getMessage());
         }
         else if (subcmd == "leaderboardembed") {
-            event.reply(adr::leaderboard::getLeaderboardEmbed());
+            event.reply(adr::leaderboard::get_leaderboard_embed());
         }
         else if (subcmd == "jobembed") {
             dpp::message msg{ dpp::embed{}.set_title("Choose a Job").set_description("This cannot be reversed")
@@ -208,8 +210,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
             for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i) {
                 select.add_select_option(dpp::select_option{ adr::Job::jobs[i].name, adr::Job::jobs[i].name, (
-                    std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::Item::names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
-                    .set_emoji(adr::Item::names[i], adr::Item::emojiIDs[i]));
+                    std::to_string(adr::Job::jobs[i].item.amount) + ' ' + adr::item_names[adr::Job::jobs[i].item.id] + ", " + std::to_string(adr::Job::jobs[i].adriencoin) + " adriencoin") }
+                    .set_emoji(adr::emojis[i].first, adr::emojis[i].second));
             }
 
             dpp::component confirm{};
@@ -240,7 +242,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "setinv") {
             adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
-            .setInv(static_cast<adr::Item::Id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
+            .setInv(static_cast<adr::item_id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "resetworktimer") {
@@ -258,8 +260,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "getindices") {
             std::string body{ "items:\n" };
-            for (std::size_t i{}; i < adr::Item::names.size(); ++i) {
-                body += std::to_string(i) + ": " + adr::Item::names[i] + '\n';
+            for (std::size_t i{}; i < adr::i_MAX; ++i) {
+                body += std::to_string(i) + ": " + adr::item_names[i] + '\n';
             }
 
             body += "\njobs:\n";
@@ -338,13 +340,13 @@ void adr::doJob(const dpp::slashcommand_t& event)
     for (const adr::Job& i : adr::Job::jobs) if (player.job() == i.id && commandName == i.action) {
         didAJob = true;
         player[i.item.id] += i.item.amount;
-        player[adr::Item::adriencoin] += i.adriencoin;
+        player[adr::i_adriencoin] += i.adriencoin;
         player.updateLastWorked();
 
         adr::Stock::jobWorked(i.id);
 
-        event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + dpp::emoji{ adr::Item::names[i.item.id], adr::Item::emojiIDs[i.item.id] }.get_mention()
-            + " and +" + std::to_string(i.adriencoin) + ' ' + dpp::emoji{adr::Item::names[adr::Item::adriencoin], adr::Item::emojiIDs[adr::Item::adriencoin]}.get_mention());
+        event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + get_emoji(i.item.id)
+            + " and +" + std::to_string(i.adriencoin) + ' ' + get_emoji(e_adriencoin));
     }
 
     if (!didAJob) {

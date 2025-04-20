@@ -201,30 +201,6 @@ src/graph/graph.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/discord-bot.dir/build.make CMakeFiles/discord-bot.dir/src/graph/graph.cpp.s
 .PHONY : src/graph/graph.cpp.s
 
-src/item.o: src/item.cpp.o
-.PHONY : src/item.o
-
-# target to build an object file
-src/item.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/discord-bot.dir/build.make CMakeFiles/discord-bot.dir/src/item.cpp.o
-.PHONY : src/item.cpp.o
-
-src/item.i: src/item.cpp.i
-.PHONY : src/item.i
-
-# target to preprocess a source file
-src/item.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/discord-bot.dir/build.make CMakeFiles/discord-bot.dir/src/item.cpp.i
-.PHONY : src/item.cpp.i
-
-src/item.s: src/item.cpp.s
-.PHONY : src/item.s
-
-# target to generate assembly for a file
-src/item.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/discord-bot.dir/build.make CMakeFiles/discord-bot.dir/src/item.cpp.s
-.PHONY : src/item.cpp.s
-
 src/job.o: src/job.cpp.o
 .PHONY : src/job.o
 
@@ -483,9 +459,6 @@ help:
 	@echo "... src/graph/graph.o"
 	@echo "... src/graph/graph.i"
 	@echo "... src/graph/graph.s"
-	@echo "... src/item.o"
-	@echo "... src/item.i"
-	@echo "... src/item.s"
 	@echo "... src/job.o"
 	@echo "... src/job.i"
 	@echo "... src/job.s"

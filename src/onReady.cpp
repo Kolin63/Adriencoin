@@ -24,7 +24,7 @@ namespace adr {
 
         for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i)
         {
-            dpp::slashcommand slashcommand{ adr::Job::jobs[i].action, (adr::Job::jobs[i].action + ' ' + adr::Item::names[adr::Job::jobs[i].item.id]), bot.me.id};
+            dpp::slashcommand slashcommand{ adr::Job::jobs[i].action, (adr::Job::jobs[i].action + ' ' + adr::item_names[adr::Job::jobs[i].item.id]), bot.me.id};
             std::cout << adr::Job::jobs[i].name << ' ' << adr::Job::jobs[i].action << '\n';
             commandList.push_back(slashcommand);
         }
@@ -38,7 +38,7 @@ namespace adr {
         commandList.push_back(view);
 
         dpp::command_option tradeItemOption{ dpp::co_string, "item", "The item that is being traded", true };
-        for (const std::string& i : adr::Item::names)
+        for (const std::string& i : adr::item_names)
             tradeItemOption.add_choice(dpp::command_option_choice{ i, i });
 
         dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
@@ -140,7 +140,7 @@ namespace adr {
 
     void addEmojis(dpp::cluster& bot, const dpp::snowflake& guildID)
     {
-        auto addEmoji = [&bot, &guildID](const std::string& emojiName, const dpp::snowflake& emojiID) {
+        auto addEmoji = [&bot, &guildID](const std::string emojiName, const dpp::snowflake& emojiID) {
             dpp::emoji emoji{ emojiName, emojiID };
             std::filesystem::path path{ std::filesystem::current_path() / "art" / "item" / (emojiName + ".png")};
             std::cout << "PATH: " << path << '\n';
@@ -161,9 +161,9 @@ namespace adr {
             bot.guild_emoji_create(guildID, emoji);
         };
 
-        for (std::size_t i {}; i < adr::Item::emojiIDs.size(); ++i)
+        for (std::size_t i {}; i < adr::e_MAX; ++i)
         {
-            addEmoji(adr::Item::names[i], adr::Item::emojiIDs[i]);
+            addEmoji(std::string{ adr::emojis[i].first }, adr::emojis[i].second);
         }
     }
 

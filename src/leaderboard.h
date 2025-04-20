@@ -7,7 +7,7 @@ namespace adr
 {
     namespace leaderboard
     {
-        dpp::embed getLeaderboardEmbed();
+        dpp::embed get_leaderboard_embed();
     }
 }
 

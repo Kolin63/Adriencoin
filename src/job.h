@@ -38,7 +38,7 @@ namespace adr {
         Id id{};
         std::string name{};
         std::string action{};
-        adr::Item item{};
+        adr::item item{};
         int adriencoin{};
         uint32_t color{};
     };

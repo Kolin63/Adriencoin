@@ -1,3 +1,4 @@
+#include "item.h"
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <iostream>
@@ -35,10 +36,10 @@ void adr::daily::doTitleMoney()
         switch (player.getTitle()) 
         {
         case adr::daily::t_baron:
-            player.changeInv(adr::Item::adriencoin, 5);
+            player.changeInv(adr::i_adriencoin, 5);
             break;
         case adr::daily::t_duke:
-            player.changeInv(adr::Item::adriencoin, 10);
+            player.changeInv(adr::i_adriencoin, 10);
             break;
         default:
             break;

@@ -1,7 +1,6 @@
+#include "emoji.h"
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
-#include <time.h>
-#include <filesystem>
 #include <vector>
 #include <algorithm>
 #include <dpp/nlohmann/json.hpp>
@@ -10,14 +9,22 @@
 #include "cache.h"
 #include "leaderboard.h"
 
-// Return an embed with a list of all players 
-dpp::embed adr::leaderboard::getLeaderboardEmbed()
+//
+// get_leaderboard_embed
+//
+// Returns a DPP embed that contains a list of all players sorted by
+// amount of Adriencoin 
+//
+dpp::embed adr::leaderboard::get_leaderboard_embed()
 {
     std::vector<dpp::snowflake> vector{ adr::cache::cacheAll() };
 
     // Sort the list, greatest to least using the adriencoin (first) element
-    std::sort(vector.begin(), vector.end(), [](const dpp::snowflake& a, const dpp::snowflake& b) {
-        return adr::cache::getPlayerFromCache(a).inv(adr::Item::adriencoin) > adr::cache::getPlayerFromCache(b).inv(adr::Item::adriencoin);
+    std::sort(vector.begin(), vector.end(), 
+        [](const dpp::snowflake& a, const dpp::snowflake& b) {
+            const adr::Player x{ adr::cache::getPlayerFromCache(a) };
+            const adr::Player y{ adr::cache::getPlayerFromCache(b) };
+            return x.inv(adr::i_adriencoin) > y.inv(adr::i_adriencoin);
         });
 
     // Make the embed
@@ -31,8 +38,9 @@ dpp::embed adr::leaderboard::getLeaderboardEmbed()
         const adr::playerCacheElement& pce{ adr::cache::getElementFromCache(vector[i])};
         
         embed.set_description(embed.description + std::to_string(i + 1) + ". "
-            + pce.username + ": " + adr::Item::getEmojiMention(adr::Item::adriencoin) + ' '
-            + std::to_string(pce.player.inv(adr::Item::adriencoin)) + " Adriencoin" + '\n');
+            + pce.username + ": " + adr::get_emoji(e_adriencoin) + ' '
+            + std::to_string(pce.player.inv(adr::i_adriencoin)) 
+            + " Adriencoin" + '\n');
     }
 
     return embed;

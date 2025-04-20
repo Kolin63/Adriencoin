@@ -14,7 +14,6 @@ add_executable(${PROJECT_NAME}
     src/daily.cpp
     src/daily.h
     src/inventory.h
-    src/item.cpp
     src/item.h
     src/job.cpp
     src/job.h
@@ -38,6 +37,7 @@ add_executable(${PROJECT_NAME}
     src/util.h
     src/graph/graph.h
     src/graph/graph.cpp
+    src/emoji.h
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).

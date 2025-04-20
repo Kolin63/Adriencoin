@@ -11,8 +11,8 @@ namespace adr {
         bool m_active{ false };
         const dpp::snowflake m_giverUUID;
         dpp::snowflake m_receiverUUID{ m_giverUUID };
-        Inventory m_giverGives{};
-        Inventory m_receiverGives{};
+        inventory m_giverGives{};
+        inventory m_receiverGives{};
         std::string m_seed{};
         std::size_t m_slot{};
 

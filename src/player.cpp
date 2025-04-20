@@ -1,6 +1,5 @@
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
-#include <time.h>
 #include <dpp/nlohmann/json.hpp>
 #include <filesystem>
 #include "player.h"
@@ -20,7 +19,7 @@ adr::Player::Player(const dpp::snowflake& uuid)
     }
 }
 
-adr::Player::Player(const dpp::snowflake& uuid, const Inventory& inv) 
+adr::Player::Player(const dpp::snowflake& uuid, const inventory& inv) 
     : m_uuid{ uuid }
 {
     if (!exists()) {
@@ -117,7 +116,7 @@ void adr::Player::print() const
         << "current time: " << std::time(0) << '\n';
 
     for (std::size_t i{}; i < m_inv.size(); ++i) {
-        std::cout << adr::Item::names[i] << " (" << i << "):\t" << m_inv[i] << '\n';
+        std::cout << adr::item_names[i] << " (" << i << "):\t" << m_inv[i] << '\n';
     }
     std::cout << '\n';
 }
@@ -176,21 +175,21 @@ std::string adr::Player::nextWorkTimestamp() const
     return dpp::utility::timestamp(t, dpp::utility::tf_relative_time) + " (" + dpp::utility::timestamp(t, dpp::utility::tf_short_time) + ")";
 }
 
-void adr::Player::changeInv(const Inventory& difference)
+void adr::Player::changeInv(const inventory& difference)
 {
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         m_inv[i] += difference[i];
     }
 }
 
-void adr::Player::subtractInv(const Inventory& difference)
+void adr::Player::subtractInv(const inventory& difference)
 {
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         m_inv[i] -= difference[i];
     }
 }
 
-bool adr::Player::canBuy(const Inventory& cost)
+bool adr::Player::canBuy(const inventory& cost)
 {
     for (std::size_t i{}; i < m_inv.size(); ++i) {
         if (m_inv[i] < cost[i]) return false;

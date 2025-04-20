@@ -1,3 +1,4 @@
+#include "item.h"
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
 #include <filesystem>
@@ -16,17 +17,17 @@ adr::Product::ResultType adr::Product::getResultType(const std::string& str) {
 }
 
 // Take a JSON object, "cost":{} or "result":{}, and return an Inventory or a String Vector of custom results
-std::tuple<Inventory, std::vector<std::string>> jsonToInv(const nlohmann::json json) {
-    Inventory inv{};
+std::tuple<inventory, std::vector<std::string>> jsonToInv(const nlohmann::json json) {
+    inventory inv{};
     std::vector<std::string> custom(0);
 
     // For every item that exists 
-    for (std::size_t i{}; i < adr::Item::names.size(); ++i) {
+    for (std::size_t i{}; i < adr::i_MAX; ++i) {
         // If the JSON has this item, and it is an int
         try {
-            if (json.at(adr::Item::names[i]).is_number_integer()) {
+            if (json.at(adr::item_names[i]).is_number_integer()) {
                 // Set the passed Inventory's value to the JSON's value
-                inv[i] = json[adr::Item::names[i]];
+                inv[i] = json[adr::item_names[i]];
             }
         }
         catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {
@@ -69,17 +70,17 @@ bool adr::Product::parseJson()
     adr::Product::products.reserve(5);
 
     // Puts the JSON data into the vector for future access
-    for (auto i : data["products"]) {
+    for (auto i : data["products"]) { 
         bool noTimes{ false };
         try {
-            if (i.at("noTimes").is_boolean()) {
+            if (i.at("noTimes").is_boolean()) { // breaks here
                 noTimes = i.at("noTimes");
             }
         }
-        catch ([[maybe_unused]] const nlohmann::json::out_of_range& e) {}
+        catch (const nlohmann::json::out_of_range&) {}
 
         adr::Product::products.push_back({ i["name"], i["display"], i["desc"], i["joke"], i["picURL"], i["color"],
-            std::get<Inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<Inventory>(jsonToInv(i["result"])), 
+            std::get<inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<inventory>(jsonToInv(i["result"])), 
             std::get<std::vector<std::string>>(jsonToInv(i["result"])), noTimes });
     }
 
@@ -90,8 +91,9 @@ bool adr::Product::parseJson()
 
 void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcommand>& commandList)
 {
-    parseJson();
-
+    if (!parseJson()) {
+        std::cerr << "adr::Product::parseJSON() failed\n";
+    }
 
     dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
     for (const adr::Product& product : adr::Product::products) {
@@ -102,7 +104,7 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
 
             for (std::size_t i{}; i < product.result.size(); ++i) {
                 if (product.result[i] > 0)
-                    result.add_choice(dpp::command_option_choice{ adr::Item::names[i], adr::Item::names[i] });
+                    result.add_choice(dpp::command_option_choice{ adr::item_names[i], adr::item_names[i] });
             }
 
             for (const std::string& str : product.customResult) {

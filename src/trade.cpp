@@ -1,7 +1,6 @@
+#include "inventory.h"
 #pragma warning(disable: 4251) // disables a silly warning from dpp
 
-#include <utility>
-#include <array>
 #include <chrono>
 #include "trade.h"
 #include "cache.h"
@@ -23,7 +22,11 @@ void adr::TradeOffer::clear()
 
 void adr::TradeOffer::setInventory(invTypes invType, std::size_t index, int amount)
 {
-    (invType == adr::TradeOffer::give ? m_giverGives : m_receiverGives).at(index) = amount;
+    (invType == adr::TradeOffer::give 
+        ? m_giverGives 
+        : m_receiverGives
+    ).at(index) = amount;
+
     m_active = true;
 }
 
@@ -32,20 +35,24 @@ bool adr::TradeOffer::isValid() const
     if (m_receiverUUID == m_giverUUID || m_active == false || m_seed == ""
 
     // that ugly lambda is to check if any of the values are negative
-        || [](const Inventory& a, const Inventory& b) -> bool {
+        || [](const inventory& a, const inventory& b) -> bool {
             for (std::size_t i{}; i < a.size(); ++i) 
-                if (a[i] < 0 || b[i] < 0) return true; // true: values are negative
-            return false; // false: not negative
+                // true: values are negative
+                if (a[i] < 0 || b[i] < 0) return true; 
+            // false: not negative
+            return false; 
         } (m_giverGives, m_receiverGives)
     ) 
         return false;
 
     // check that the players inventory satisfies the trade inventory
-    auto validInv = [](const dpp::snowflake& uuid, const Inventory& inv) -> bool {
+    auto validInv = 
+    [](const dpp::snowflake& uuid, const inventory& inv) -> bool {
         return adr::cache::getPlayerFromCache(uuid).canBuy(inv);
     };
 
-    return validInv(m_giverUUID, m_giverGives) && validInv(m_receiverUUID, m_receiverGives);
+    return validInv(m_giverUUID, m_giverGives) 
+        && validInv(m_receiverUUID, m_receiverGives);
 }
 
 void adr::TradeOffer::executeTrade()
