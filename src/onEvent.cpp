@@ -250,6 +250,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "save") {
             adr::cache::saveCache();
+            adr::Stock::saveJSON();
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "clearcache") {
