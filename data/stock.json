@@ -1,24 +1,25 @@
 {
     "channel": 1363701696684888096,
-    "day": 34,
+    "day": 2,
     "stocks": [
         {
             "history": [
-                22,
+                26,
+                22
             ],
             "name": "jerrys_carrots",
-            "outstanding": 4,
-            "potentialStability": 0,
+            "outstanding": 8,
+            "potentialStability": 50,
             "stability": 0,
             "ticker": "CRT",
-            "timesWorked": 0,
-            "unissued": 50,
-            "item": "carrot",
-            "value": 22
+            "timesWorked": 4,
+            "unissued": 42,
+            "value": 26
         },
         {
             "history": [
-                31,
+                35,
+                31
             ],
             "name": "divans_gems",
             "outstanding": 0,
@@ -27,12 +28,12 @@
             "ticker": "GEM",
             "timesWorked": 0,
             "unissued": 50,
-            "item": "gemstone",
-            "value": 31
+            "value": 35
         },
         {
             "history": [
                 52,
+                52
             ],
             "name": "jacks_lumber",
             "outstanding": 0,
@@ -41,12 +42,12 @@
             "ticker": "LMB",
             "timesWorked": 0,
             "unissued": 50,
-            "item": "wood",
             "value": 52
         },
         {
             "history": [
-                50,
+                55,
+                50
             ],
             "name": "geralds_fish",
             "outstanding": 0,
@@ -55,12 +56,12 @@
             "ticker": "FSH",
             "timesWorked": 0,
             "unissued": 50,
-            "item": "fish",
-            "value": 50
+            "value": 55
         },
         {
             "history": [
-                47,
+                50,
+                47
             ],
             "name": "aatroxs_slaying",
             "outstanding": 0,
@@ -69,12 +70,12 @@
             "ticker": "SLY",
             "timesWorked": 0,
             "unissued": 50,
-            "item": "rottenflesh",
-            "value": 47
+            "value": 50
         },
         {
             "history": [
-                37,
+                35,
+                37
             ],
             "name": "berts_knowledge",
             "outstanding": 0,
@@ -83,12 +84,12 @@
             "ticker": "KNW",
             "timesWorked": 0,
             "unissued": 50,
-            "item": "book",
-            "value": 37
+            "value": 35
         },
         {
             "history": [
-                35,
+                32,
+                35
             ],
             "name": "the_brewers",
             "outstanding": 0,
@@ -97,12 +98,12 @@
             "ticker": "BRW",
             "timesWorked": 0,
             "unissued": 50,
-            "item": "potion",
-            "value": 35
+            "value": 32
         },
         {
             "history": [
-                34,
+                42,
+                34
             ],
             "name": "stonks_unlimited",
             "outstanding": 0,
@@ -111,8 +112,7 @@
             "ticker": "STK",
             "timesWorked": 0,
             "unissued": 0,
-            "item": "null",
-            "value": 34
+            "value": 42
         }
     ]
 }
