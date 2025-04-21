@@ -131,10 +131,6 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             pce.tradeOffers[slot].generateSeed();
 
             pce.tradeOffers[slot].setReceiverUUID(std::get<dpp::snowflake>(event.get_parameter("player")));
-            if (!pce.tradeOffers[slot].isValid()) {
-                event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
-                return;
-            }
 
             event.reply(dpp::message{ pce.tradeOffers[slot].getEmbed()
                 .set_image("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/highfive-wide.jpg") });
@@ -153,9 +149,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 event.reply(dpp::message{ "Something went wrong. Did you specify the correct player?" }.set_flags(dpp::m_ephemeral));
                 return;
             }
-                
+
             if (!giverPCE.tradeOffers[slot].isValid()) {
-                event.reply(dpp::message{ "That trade is invalid. Did you specify the correct slot?" }.set_flags(dpp::m_ephemeral));
+                event.reply(dpp::message{ "That trade is invalid. Check that both players can afford the proposed trade and that the correct slot is specified." }.set_flags(dpp::m_ephemeral));
                 return;
             }
 
