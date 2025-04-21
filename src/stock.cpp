@@ -1,5 +1,6 @@
 #include <dpp/appcommand.h>
 #include <dpp/message.h>
+#include <dpp/restresults.h>
 #include <string>
 #include <filesystem>
 #include <fstream>
@@ -7,6 +8,7 @@
 #include <dpp/nlohmann/json.hpp>
 #include "stock.h"
 #include "util.h"
+#include "botToken.h"
 #include "Random.h"
 
 std::filesystem::path path{ "./../data/stock.json" };
@@ -15,6 +17,7 @@ namespace adr
 {
     unsigned int adr::Stock::day{ 0 };
     std::array<adr::Stock, adr::Stock::MAX> Stock::stocks{};
+    dpp::snowflake adr::Stock::channel_id{}; 
 }
 
 adr::Stock::Id adr::Stock::getId(const std::string& str)
@@ -191,6 +194,7 @@ void adr::Stock::saveJSON()
 
     json data;
     data["day"] = adr::Stock::day;
+    data["channel"] = static_cast<std::uint64_t>(adr::Stock::channel_id);
 
     for (std::size_t i{}; i < adr::Stock::stocks.size(); ++i) {
         json& stock{ data["stocks"][i] };
@@ -233,6 +237,7 @@ void adr::Stock::parseJSON()
     }
 
     adr::Stock::day = data["day"];
+    adr::Stock::channel_id = data["channel"];
 
     for (std::size_t i{}; i < adr::Stock::stocks.size(); ++i) {
         const json& stock{ data["stocks"][i] };
@@ -369,6 +374,24 @@ void adr::Stock::newDay()
         // Reset Potential Stability
         stock.m_potentialStability = 0;
     }
+
+    // Now that the stocks values have changed, we will send the message
+    std::cout << "Sending daily stock message in " << adr::Stock::channel_id << '\n';
+
+    dpp::cluster bot{ getBotToken() };
+
+    bot.message_create(dpp::message{ 
+        adr::Stock::channel_id, 
+        // adr::Stock::getEmbed("compact").embeds[0] 
+        "test"
+    });
+    // }, [](const dpp::confirmation_callback_t& e){
+    //     if (e.is_error())
+    //         std::cerr << "adr::Stock::newDay() error: " 
+    //         << e.get_error().human_readable << '\n';
+    //     else
+    //         std::cout << "Stock daily message sent\n";
+    // });
 }
 
 unsigned int adr::Stock::getDay()

@@ -67,6 +67,9 @@ namespace adr
         // List of all stocks, gotten via getStock()
         static std::array<Stock, MAX> stocks;
 
+        // The channel where the daily messages will be sent
+        static dpp::snowflake channel_id;
+
     public:
         Stock() = default;
         Stock(  const std::string& name, 
