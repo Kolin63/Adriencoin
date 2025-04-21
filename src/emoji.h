@@ -24,18 +24,18 @@ namespace adr
     };
 
     constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
-        { "adr-carrot",	        1342341829894471811 },
-        { "adr-gemstone",	    1342341843181899900 },
-        { "adr-wood",	        1342341866464739359 },
-        { "adr-fish",	        1342341836949295106 },
-        { "adr-rottenflesh",	1342341859984543764 },
-        { "adr-book",	        1342341814979657788 },
-        { "adr-potion",	        1342341851440615454 },
-        { "adr-adriencoin",	    1342319536300621876 },
-        { "adr-gaydriencoin",	1342730469640376352 },
-        { "adr-adriresource",	1342730457414111273 },
-        { "adr-stockofstonks",	1353479698021224488 },
-        { "adr-paper",	        1356787387463766046 },
+        { "adr_carrot",	        1342341829894471811 },
+        { "adr_gemstone",	    1342341843181899900 },
+        { "adr_wood",	        1342341866464739359 },
+        { "adr_fish",	        1342341836949295106 },
+        { "adr_rottenflesh",	1342341859984543764 },
+        { "adr_book",	        1342341814979657788 },
+        { "adr_potion",	        1342341851440615454 },
+        { "adr_adriencoin",	    1342319536300621876 },
+        { "adr_gaydriencoin",	1342730469640376352 },
+        { "adr_adriresource",	1342730457414111273 },
+        { "adr_stockofstonks",	1353479698021224488 },
+        { "adr_paper",	        1356787387463766046 },
     };
 
     //

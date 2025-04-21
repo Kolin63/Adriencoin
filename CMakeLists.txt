@@ -58,5 +58,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 # Set Flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Werror -Wpedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wpedantic")
 

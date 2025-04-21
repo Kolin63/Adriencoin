@@ -142,7 +142,7 @@ namespace adr {
     {
         auto addEmoji = [&bot, &guildID](const std::string emojiName, const dpp::snowflake& emojiID) {
             dpp::emoji emoji{ emojiName, emojiID };
-            std::filesystem::path path{ std::filesystem::current_path() / "art" / "item" / (emojiName + ".png")};
+            std::filesystem::path path{ "./../art/item/" + emojiName + ".png" };
             std::cout << "PATH: " << path << '\n';
 
             // Load the image from a file
