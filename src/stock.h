@@ -131,6 +131,7 @@ namespace adr
         void changeOutstanding(int diff);
         int getOutstanding() const { return m_outstanding; };
         int getUnissued() const { return m_unissued; };
+        int getAuthorized() const { return m_outstanding + m_unissued; };
         int getHistory(std::size_t i) const { if (i >= m_history.size()) throw 1; return m_history[i]; };
 
         // Increments the day by 1

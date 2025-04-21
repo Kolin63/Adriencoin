@@ -152,7 +152,7 @@ dpp::message adr::Stock::getEmbed(std::string name)
                 + "**" + std::to_string(stock.getValue()) + "**"
                 + (c == '=' ? ", " : " (" + std::string{ c } + std::to_string(std::abs(diff)) + "), ")
                 + std::to_string(stock.m_stability) + "%, "
-                + std::to_string(stock.getOutstanding()) + '/' + std::to_string(stock.getUnissued()) + '\n');
+                + std::to_string(stock.getOutstanding()) + '/' + std::to_string(stock.getAuthorized()) + '\n');
         }
 
         msg.add_embed(embed);
