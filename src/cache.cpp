@@ -1,15 +1,14 @@
 #include <iostream>
 #include <unordered_map>
 #include <dpp/dpp.h>
-#include "cache.h"
 #include "botToken.h"
+#include "cache.h"
 
 std::unordered_map<dpp::snowflake, adr::playerCacheElement> adr::cache::playerCache;
 
 void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
 {
     std::cout << "Caching Username and Avatar for Player " << elem.player.uuid() << '\n';
-    dpp::cluster bot{ getBotToken(), dpp::i_default_intents | dpp::i_guild_members };
 
     std::function<void(const dpp::confirmation_callback_t&)> func{ [&elem](const dpp::confirmation_callback_t& callback) {
         if (callback.is_error()) {

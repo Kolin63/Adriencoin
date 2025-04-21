@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include <iostream>
+#include <dpp/dpp.h>
 
 inline std::string getBotToken()
 {
@@ -29,5 +30,10 @@ inline std::string getBotToken()
 
     return token;
 }
+
+inline dpp::cluster bot { getBotToken()
+                        , dpp::i_default_intents 
+                        | dpp::i_guild_members 
+};
 
 #endif

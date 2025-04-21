@@ -378,20 +378,16 @@ void adr::Stock::newDay()
     // Now that the stocks values have changed, we will send the message
     std::cout << "Sending daily stock message in " << adr::Stock::channel_id << '\n';
 
-    dpp::cluster bot{ getBotToken() };
-
     bot.message_create(dpp::message{ 
         adr::Stock::channel_id, 
-        // adr::Stock::getEmbed("compact").embeds[0] 
-        "test"
+        adr::Stock::getEmbed("compact").embeds[0] 
+    }, [](const dpp::confirmation_callback_t& e){
+        if (e.is_error())
+            std::cerr << "adr::Stock::newDay() error: " 
+            << e.get_error().human_readable << '\n';
+        else
+            std::cout << "Stock daily message sent\n";
     });
-    // }, [](const dpp::confirmation_callback_t& e){
-    //     if (e.is_error())
-    //         std::cerr << "adr::Stock::newDay() error: " 
-    //         << e.get_error().human_readable << '\n';
-    //     else
-    //         std::cout << "Stock daily message sent\n";
-    // });
 }
 
 unsigned int adr::Stock::getDay()
