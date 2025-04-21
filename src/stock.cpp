@@ -40,7 +40,9 @@ adr::Stock& adr::Stock::getStock(Id id)
 adr::Stock& adr::Stock::getStock(const std::string& str)
 {
     for (adr::Stock& stock : adr::Stock::stocks) {
+        std::cout << "adr::Stock::getStock(): " << stock.m_name << '\n';
         if (stock.m_name == str) {
+            std::cout << "adr::Stock::getStock() found!\n";
             return stock;
         }
     }
@@ -213,7 +215,7 @@ void adr::Stock::saveJSON()
     }
 
     std::ofstream fs{ path };
-    fs << data;
+    fs << std::setw(4) << data << std::endl;
     fs.close();
 
     std::cout << "Done saving stocks JSON!\n";

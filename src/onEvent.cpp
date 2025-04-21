@@ -70,6 +70,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             const int amount{ std::clamp(static_cast<int>(getOptionalParam<int64_t>("amount", event).value_or(1)), 1, 100) };
             adr::Stock& stock{ adr::Stock::getStock(stockName) };
 
+            std::cout << "Stock transaction, expected " << stockName
+                << ", got " << stock.getName() << '\n';
+
             const bool buying{ action == "buy" };
 
             // If the player is buying, they are spending adriencoin

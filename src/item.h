@@ -66,6 +66,7 @@ namespace adr
         "aatroxs_slaying",
         "berts_knowledge",
         "the_brewers",
+        "stonks_unlimited",
     };
 
     // 
