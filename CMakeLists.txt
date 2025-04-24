@@ -36,6 +36,8 @@ add_executable(${PROJECT_NAME}
     src/trade.h
     src/util.h
     src/emoji.h
+    src/dungeon.cpp
+    src/dungeon.h
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).
