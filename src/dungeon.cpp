@@ -13,25 +13,32 @@
 bool adr::dungeon::try_win() const
 {
     // Get a random number between 0 and 100, inclusive
-    const uint8_t roll{ Random::get<uint8_t>(0, 100) };
+    const int roll{ Random::get<int>(0, 100) };
+
+    // This is where we can apply modifiers from mayors, items, or anything
+    // else
+    // It is an int so we don't have to worry about overflow
+    const int chance{ win_chance };
 
     // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 
-    return win_chance >= roll;
+    return chance >= roll;
 }
 
 bool adr::dungeon::try_drop(adr::item_id i) const
 {
-    // Reference for easy typing
-    const uint8_t& chance{ item_chances[i].first };
+    // This is where we can apply modifiers from mayors, items, or anything
+    // else
+    // It is an int so we don't have to worry about overflow
+    const int chance{ item_chances[i].first };
 
     // If the item never drops or always drops, we don't need
     // to waste time generating a random number
-    if (chance == 0 || chance == 100)
-        return chance;
+    if (chance == 0 || chance >= 100) return chance;
+    if (chance < 0) return 0;
 
     // Get a random number between 0 and 100, inclusive
-    const uint8_t roll{ Random::get<uint8_t>(0, 100) };
+    const int roll{ Random::get<int>(0, 100) };
 
     // If the drop chance is greater than or equal to the roll, 
     // then the item was dropped.
