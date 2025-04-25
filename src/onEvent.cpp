@@ -246,6 +246,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (subcmd == "resetworktimer") {
             adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user"))) };
             player.setLastWorked(0);
+            player.setLastFought(0);
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "save") {
