@@ -7,6 +7,7 @@
 #include "item.h"
 #include "product.h"
 #include "stock.h"
+#include "dungeon.h"
 
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
@@ -72,6 +73,8 @@ namespace adr {
             .add_option(dpp::command_option{ dpp::co_integer, "slot", "Specify what trade slot you are using, defaults to 0", false })
         );
         commandList.push_back(trade);
+
+        adr::dungeon::add_slash_commands(bot, commandList);
 
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
         admin.default_member_permissions = dpp::p_administrator;
