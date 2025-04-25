@@ -142,8 +142,18 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         .set_flags(dpp::m_ephemeral);
     }
 
+    // Check that they are not on cooldown
+    if (player.nextFight() >= 0) {
+        return dpp::message{ 
+            "You can fight next " + player.nextFightTimestamp() 
+        }.set_flags(dpp::m_ephemeral);
+    }
+
     // If the can, subtract the price from their inventory 
     player.changeInv(adr::i_adriencoin, -price);
+
+    // And update their fight cooldown
+    player.updateLastFought();
 
     // Fight the boss
     const std::optional<inventory> fight_results{ fight(uuid) };
