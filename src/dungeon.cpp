@@ -126,59 +126,84 @@ int adr::dungeon::get_price() const
 
 dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
 {
+    // The player that is buying
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
+    // Check that they can afford it
     if (player.inv(adr::i_adriencoin) < price) {
         return dpp::message{ "You can't afford that!" }
         .set_flags(dpp::m_ephemeral);
     }
 
+    // If the can, subtract the price from their inventory 
     player.changeInv(adr::i_adriencoin, -price);
 
+    // Fight the boss
     const std::optional<inventory> fight_results{ fight(uuid) };
 
+    // Make the embed that we will be using for the message
     dpp::embed embed{};
+    embed.set_thumbnail(thumbnail_url);
 
+    // Make the String Stream that we will be using to put text in the embed
     std::stringstream ss{};
 
+    // Boss Name, Floor Number, and Cost
     ss << name << " (Floor " << id << ")\n\n"
         << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
+    // If the player lost the fight
     if (!fight_results.has_value()) {
         // TODO: Make it have an option to use Bonzo Mask
 
+        // Set embed Title, Color, Description
         embed.set_title("Dungeon Lost!")
-            .set_thumbnail(thumbnail_url)
             .set_color(0xEE0000)
             .set_description(ss.str());
 
+        // Return to the caller to be sent to the player
         return dpp::message{}.add_embed(embed);
     }
 
+    // If the player won the fight
+
+    // Put the item drops into an inventory
     const inventory& inv{ fight_results.value() };
 
+    // Set title and color
     embed.set_title("Dungeon Won!")
-        .set_thumbnail(thumbnail_url)
         .set_color(0x00EE00);
 
+    // Header for Item Drops
     ss << "\n\n**Item Drops:**\n";
 
+    // Add item drops to the embed
     for (std::size_t i{}; i < adr::i_MAX; ++i) 
     {
         // Shortcut
         const int amt{ item_chances[i].second };
 
         // Only show drops that actually exist
+        //
+        // Even if we didn't drop any for this fight, we should still show
+        // that we didn't drop any
+        // 
+        // However, this will filter out any drops that never drop from
+        // the boss.
         if (amt <= 0) continue;
 
         // Shortcuts
         const item_id item{ static_cast<item_id>(i) };
 
+        // Add item emoji, name, and amount
         ss << get_emoji(item) << ' ' << adr::item_names[i] << ": " 
             << inv[i] << '\n';
     }
 
+    // Set embed description
     embed.set_description(ss.str());
+
+    // Return to the caller to be sent to the player 
     return dpp::message{}.add_embed(embed);
 }
 
@@ -186,28 +211,35 @@ void adr::dungeon::add_slash_commands(
         dpp::cluster& bot, 
         std::vector<dpp::slashcommand>& command_list) 
 {
+    // The main slashcommand (`/dungeon`)
     dpp::slashcommand sc{ "dungeon", "Dungeons", bot.me.id };
 
+    // The command option that includes the names of all bosses
     dpp::command_option bosses{ dpp::co_string, "boss", "Which Boss", true };
 
+    // Put the boss names into the command option
     for (adr::dungeon d : adr::dungeons)
     {
         std::string str{ d.name };
         bosses.add_choice(dpp::command_option_choice{ str, str });
     }
 
+    // `/dungeon view`
     sc.add_option(
             dpp::command_option{ dpp::co_sub_command, "view", "View a Boss" }
             .add_option(bosses)
     );
 
+    // `/dungeon fight`
     sc.add_option(
             dpp::command_option{ dpp::co_sub_command, "fight", "Fight a Boss" }
             .add_option(bosses)
     );
 
+    // Add `/dungeon` to the command list
     command_list.push_back(sc);
 
+    // Logging
     std::cout << "Done making dungeon slash commands\n";
 }
 
@@ -215,22 +247,30 @@ void adr::dungeon::handle_slash_command(
         dpp::cluster& bot, 
         const dpp::slashcommand_t& event)
 {
+    // The subcommand action
+    // Ex `/dungeon view`, the action is 'view'
     const std::string_view action{ 
         event.command.get_command_interaction().options[0].name 
     };
 
+    // Name of the boss in a string
     const std::string_view name{ 
         std::get<std::string>(event.get_parameter("boss")) 
     };
 
+    // Boss ID
     const adr::dungeon_id id{ adr::get_dungeon_id(name) };
 
+    // Check if the Boss Name was invalid
     if (id == adr::d_MAX) {
         event.reply(dpp::message{ "That is an invalid name!" }
         .set_flags(dpp::m_ephemeral));
     }
 
+    // Dungeon class from the ID
     const adr::dungeon& dung{ adr::dungeons[id] };
+
+    // Actual handling of the commands below
 
     if (action == "view") {
         event.reply(dung.get_embed());
