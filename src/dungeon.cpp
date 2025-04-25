@@ -99,7 +99,7 @@ dpp::embed adr::dungeon::get_embed() const
         const int amt{ item_chances[i].second };
 
         // Only show drops that actually exist
-        if (amt <= 0) break;
+        if (amt <= 0) continue;
 
         // Shortcuts
         const uint8_t chance{ item_chances[i].first };
@@ -132,14 +132,46 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
 
     const std::optional<inventory> fight_results{ fight(uuid) };
 
+    dpp::embed embed{};
+
+    std::stringstream ss{};
+
+    ss << name << "\nFloor " << id
+        << "\nCost: " << price << ' ' << get_emoji(adr::e_adriencoin);
+
     if (!fight_results.has_value()) {
-        // TODO: Make a custom embed, that also gives the option
-        // to rety with Bonzo Mask
-        return dpp::message{ "You lost!" };
+        // TODO: Make it have an option to use Bonzo Mask
+
+        embed.set_title("Dungeon Lost!")
+            .set_thumbnail(thumbnail_url)
+            .set_color(0xEE0000)
+            .set_description(ss.str());
+
+        return dpp::message{}.add_embed(embed);
     }
 
-    [[maybe_unused]]
     const inventory& inv{ fight_results.value() };
 
-    return dpp::message{ "Dungeon won! Gotta finish this message later" };
+    embed.set_title("Dungeon Won!")
+        .set_thumbnail(thumbnail_url)
+        .set_color(0x00EE00);
+
+    ss << "\n\nItem Drops:\n";
+
+    for (std::size_t i{}; i < adr::i_MAX; ++i) 
+    {
+        // Shortcut
+        const int amt{ item_chances[i].second };
+
+        // Only show drops that actually exist
+        if (amt <= 0) continue;
+
+        // Shortcuts
+        const item_id item{ static_cast<item_id>(i) };
+
+        ss << get_emoji(item) << ": " << inv[i] << '\n';
+    }
+
+    embed.set_description(ss.str());
+    return dpp::message{}.add_embed(embed);
 }
