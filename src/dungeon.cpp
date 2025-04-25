@@ -174,7 +174,8 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         // Shortcuts
         const item_id item{ static_cast<item_id>(i) };
 
-        ss << get_emoji(item) << ": " << inv[i] << '\n';
+        ss << get_emoji(item) << ' ' << adr::item_names[i] << ": " 
+            << inv[i] << '\n';
     }
 
     embed.set_description(ss.str());
