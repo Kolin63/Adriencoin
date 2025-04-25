@@ -179,6 +179,26 @@ std::string adr::Player::nextWorkTimestamp() const
     return dpp::utility::timestamp(t, dpp::utility::tf_relative_time) + " (" + dpp::utility::timestamp(t, dpp::utility::tf_short_time) + ")";
 }
 
+void adr::Player::updateLastFought() 
+{ 
+    m_lastFought = std::time(nullptr); 
+    std::cout << m_uuid << " updateLastFought(), m_lastFought = " << m_lastFought 
+        << " next fight: " << nextFight() << '\n'
+        << "current: " << std::time(0) << '\n';
+}
+
+std::time_t adr::Player::nextFight() const 
+{ 
+    // relative time, not since epoch
+    return m_lastFought - std::time(nullptr) + workCooldownSeconds; 
+} 
+
+std::string adr::Player::nextFightTimestamp() const
+{ 
+    std::time_t t{ std::time(nullptr) + nextFight() };
+    return dpp::utility::timestamp(t, dpp::utility::tf_relative_time) + " (" + dpp::utility::timestamp(t, dpp::utility::tf_short_time) + ")";
+}
+
 void adr::Player::changeInv(const inventory& difference)
 {
     for (std::size_t i{}; i < m_inv.size(); ++i) {
