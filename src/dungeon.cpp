@@ -133,7 +133,7 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         .set_flags(dpp::m_ephemeral);
     }
 
-    player.changeInv(adr::i_adriencoin, price);
+    player.changeInv(adr::i_adriencoin, -price);
 
     const std::optional<inventory> fight_results{ fight(uuid) };
 
