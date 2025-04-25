@@ -1,4 +1,5 @@
-﻿#include "emoji.h"
+﻿#include "dungeon.h"
+#include "emoji.h"
 #include "item.h"
 #include <string>
 #include <algorithm>
@@ -39,6 +40,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         //event.reply(adr::shop::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
         dpp::message tmp = adr::shop::buy(event.command.usr.id, event.command.get_command_interaction().options[0].name, resultName, std::min(static_cast<int>(times), 100));
         event.reply(tmp);
+    }
+    else if (commandName == "dungeon") {
+        adr::dungeon::handle_slash_command(bot, event);
     }
     else if (commandName == "stock") {
         const std::string action{ event.command.get_command_interaction().options[0].name };

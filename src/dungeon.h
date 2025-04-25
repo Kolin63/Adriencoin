@@ -2,6 +2,7 @@
 #define KOLIN_DUNGEON_H
 
 #include <array>
+#include <dpp/appcommand.h>
 #include <optional>
 #include <dpp/message.h>
 #include "item.h"
@@ -16,6 +17,8 @@ namespace adr
     ///
     enum dungeon_id
     {
+        d_foo,
+
         d_MAX
     };
 
@@ -25,7 +28,7 @@ namespace adr
     ///
     class dungeon
     {
-    private:
+    public:
 
         ///
         /// id
@@ -39,6 +42,7 @@ namespace adr
         ///
         const std::string_view name;
 
+    private:
         ///
         /// price
         /// @brief The price of the boss, in Adriencoin
@@ -141,9 +145,53 @@ namespace adr
         /// of the fight
         /// 
         dpp::message buy(const dpp::snowflake& uuid) const;
+
+        ///
+        /// add_slash_commands()
+        /// @brief A function that adds all slash commands related to
+        /// dungeons
+        /// @param bot The Discord Bot
+        /// @param command_list The list of commands that will be added to
+        ///
+        static void add_slash_commands(
+                dpp::cluster& bot, 
+                std::vector<dpp::slashcommand>& command_list
+        );
+
+        ///
+        /// handle_slash_command()
+        /// @brief To be called on a slash command to handle it
+        ///
+        static void handle_slash_command(
+                dpp::cluster& bot,
+                const dpp::slashcommand_t& event
+        );
     };
 
-    const std::array<dungeon, d_MAX> dungeons;
+    ///
+    /// get_dungeon_id()
+    /// @return The Dungeon ID for the given name.
+    /// Returns d_MAX if it is invalid
+    ///
+    dungeon_id get_dungeon_id(std::string_view name);
+
+    const std::array<dungeon, d_MAX> dungeons{{
+        { d_foo, "Foo", 10, 50, {
+            {
+                { 100, 10 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 25, 500 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 100, 20 },
+                { 10, 1 },
+            }
+        }, "https://media.npr.org/assets/img/2014/08/07/monkey-selfie_custom-6624e8356a07d872997e801d7a04aa8cdc8fbaac.jpg?s=1100&c=50&f=jpeg"}
+    }};
 }
 
 #endif
