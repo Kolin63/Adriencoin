@@ -15,9 +15,9 @@ bool adr::dungeon::try_win() const
     // Get a random number between 0 and 100, inclusive
     const uint8_t roll{ Random::get<uint8_t>(0, 100) };
 
-    // If the win chance is less than or equal to the roll, 
+    // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 
-    return win_chance <= roll;
+    return win_chance >= roll;
 }
 
 bool adr::dungeon::try_drop(adr::item_id i) const
@@ -33,9 +33,9 @@ bool adr::dungeon::try_drop(adr::item_id i) const
     // Get a random number between 0 and 100, inclusive
     const uint8_t roll{ Random::get<uint8_t>(0, 100) };
 
-    // If the drop chance is less than or equal to the roll, 
+    // If the drop chance is greater than or equal to the roll, 
     // then the item was dropped.
-    return chance <= roll;
+    return chance >= roll;
 }
 
 std::optional<inventory> adr::dungeon::fight(const dpp::snowflake& uuid) const
