@@ -38,6 +38,8 @@ add_executable(${PROJECT_NAME}
     src/emoji.h
     src/dungeon.cpp
     src/dungeon.h
+    src/attributes.cpp
+    src/attributes.h
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).

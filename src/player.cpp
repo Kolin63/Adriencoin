@@ -48,6 +48,8 @@ void adr::Player::save() const
     data["inv"] = m_inv;
     data["title"] = m_title;
 
+    m_atr.save_json(data);
+
     std::ofstream fs(filename);
     fs << std::setw(4) << data << std::endl;
 
@@ -101,6 +103,8 @@ void adr::Player::load()
     }
 
     m_title = data.value("title", adr::daily::t_none);
+
+    m_atr.load_json(data);
 
     fs.close();
 }
