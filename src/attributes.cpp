@@ -32,7 +32,7 @@ void try_load(const nlohmann::json& data, std::string_view name, T& var)
     // Try to get the value, with bounds checking
     try
     {
-        var = data.at(name);
+        var = data.at("attributes").at(name);
     }
     // If there is an exception, catch it, zero-initialize the variable,
     // and send an error message.
