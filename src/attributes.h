@@ -1,6 +1,7 @@
 #ifndef KOLIN_ADRIENCOIN_ATTRIBUTES_H
 #define KOLIN_ADRIENCOIN_ATTRIBUTES_H
 
+#include "emoji.h"
 #include <dpp/nlohmann/json.hpp>
 #include <string>
 
@@ -37,6 +38,33 @@ namespace adr
         /// their default values.
         ///
         std::string list() const;
+
+        ///
+        /// atrib
+        /// @brief A struct that contains the necessary information for an
+        /// attribute
+        /// @param def The default value
+        /// @param nam The attribute name
+        /// @param emo The attribute emoji
+        /// @param val The value, should not be initialized by the user
+        ///
+        template <typename T>
+        struct atrib
+        {
+            const T def{};
+            const std::string_view nam{ "NULL" };
+            const adr::emoji_id emo{ adr::e_fish };
+            T val{ def };
+        };
+
+        // ====================================================================
+        //
+        // Below are the actual attributes
+        //
+        // ====================================================================
+
+        atrib<bool> example{ false, "example", e_stockofstonks };
+        atrib<int> axample{ 100, "axample", e_paper };
     };
 }
 
