@@ -142,6 +142,8 @@ const dpp::embed adr::Player::viewEmbed() const
 
     desc += adr::getNonZeroItems(m_inv);
 
+    desc += "\n**Attributes:**\n" + m_atr.list();
+
     embed.set_description(desc);
 
     return embed;
