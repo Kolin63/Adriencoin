@@ -20,6 +20,16 @@ namespace adr
         e_stockofstonks,
         e_paper,
 
+        e_bonzo_mask,
+        e_loving_scarf,
+        e_spirit_sceptre,
+        e_livid_dagger,
+        e_giant_sword,
+        e_wither_shield,
+        e_shadow_warp,
+        e_implosion,
+        e_hyperion,
+
         e_MAX
     };
 
@@ -36,6 +46,17 @@ namespace adr
         { "adr_adriresource",	1342730457414111273 },
         { "adr_stockofstonks",	1353479698021224488 },
         { "adr_paper",	        1356787387463766046 },
+
+        { "adr_bonzo_mask",     1366630925148098611 },
+        { "adr_loving_scarf",   1366631057696358450 },
+        { "adr_spirit_scepter", 1366631149564203050 },
+        { "adr_livid_dagger",   1366631402719674408 },
+        { "adr_giant_sword",    1366631433027981443 },
+        { "adr_wither_shield",  1366631457531101215 },
+        { "adr_shadow_warp",    1366631581250355253 },
+        { "adr_implosion",      1366631617941995570 },
+        { "adr_hyperion",       1366631645863481384 },
+
     };
 
     //
