@@ -1,4 +1,8 @@
 {
+    "attributes": {
+        "axample": 100,
+        "example": false
+    },
     "inv": [
         1280,
         0,

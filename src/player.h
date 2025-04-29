@@ -8,6 +8,7 @@
 #include "job.h"
 #include "inventory.h"
 #include "daily.h"
+#include "attributes.h"
 
 namespace adr {
 
@@ -21,6 +22,10 @@ namespace adr {
 
         // the player's inventory, where the index is the item ID and the value is the amount (int)
         inventory m_inv{};
+
+    public:
+        attributes m_atr{};
+    private:
 
         adr::daily::Title m_title{ adr::daily::t_none };
 
