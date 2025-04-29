@@ -261,7 +261,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (subcmd == "getindices") {
             std::string body{ "items:\n" };
             for (std::size_t i{}; i < adr::i_MAX; ++i) {
-                body += std::to_string(i) + ": " + std::string{ adr::item_names[i] } + '\n';
+                body += adr::get_emoji(static_cast<adr::item_id>(i)) + ' ' 
+                    + std::to_string(i) + ": " 
+                    + std::string{ adr::item_names[i] } + '\n';
             }
 
             body += "\njobs:\n";

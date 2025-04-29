@@ -33,6 +33,8 @@ namespace adr
         e_MAX
     };
 
+// This should be false if on the Test Bot, True if on the Release Bot
+#if false
     constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
         { "adr_carrot",	        1342341829894471811 },
         { "adr_gemstone",	    1342341843181899900 },
@@ -58,6 +60,33 @@ namespace adr
         { "adr_hyperion",       1366631645863481384 },
 
     };
+#else
+    constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
+        { "adr_carrot",	        1366636287313842268 },
+        { "adr_gemstone",	    1366636272830906408 },
+        { "adr_wood",	        1366636255487721472 },
+        { "adr_fish",	        1366636235103146024 },
+        { "adr_rottenflesh",	1366636215323070474 },
+        { "adr_book",	        1366636193470615622 },
+        { "adr_potion",	        1366636162395013241 },
+        { "adr_adriencoin",	    1366636135077511178 },
+        { "adr_gaydriencoin",	1366636056723853383 },
+        { "adr_adriresource",	1366636032350752811 },
+        { "adr_stockofstonks",	1366635996602568735 },
+        { "adr_paper",	        1366635951446822973 },
+
+        { "adr_bonzo_mask",     1366635930185764955 },
+        { "adr_loving_scarf",   1366635912917684264 },
+        { "adr_spirit_scepter", 1366635884740345917 },
+        { "adr_livid_dagger",   1366635847235141722 },
+        { "adr_giant_sword",    1366635825030238279 },
+        { "adr_wither_shield",  1366635780478599192 },
+        { "adr_shadow_warp",    1366635754612330527 },
+        { "adr_implosion",      1366635726900297809 },
+        { "adr_hyperion",       1366635701113716746 },
+
+    };
+#endif
 
     //
     // get_emoji
