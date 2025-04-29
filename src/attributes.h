@@ -63,8 +63,7 @@ namespace adr
         //
         // ====================================================================
 
-        atrib<bool> example{ false, "example", e_stockofstonks };
-        atrib<int> axample{ 100, "axample", e_paper };
+        // atrib<bool> example{ false, "example", e_stockofstonks };
     };
 }
 

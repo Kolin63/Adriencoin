@@ -4,7 +4,6 @@
 #include <ios>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <iostream>
 
 ///
@@ -19,17 +18,6 @@ template <typename T>
 void save(nlohmann::json& data, const adr::attributes::atrib<T>& atrib)
 {
     data["attributes"][atrib.nam] = atrib.val;
-}
-
-void adr::attributes::save_json(nlohmann::json& data) const
-{
-    std::cout << "adr::attributes::save_json() called!\n";
-
-    // Save attributes here
-    save(data, example);
-    save(data, axample);
-
-    std::cout << "adr::attributes::save_json() finished!\n";
 }
 
 ///
@@ -61,17 +49,6 @@ void try_load(const nlohmann::json& data, adr::attributes::atrib<T>& atrib)
     }
 }
 
-void adr::attributes::load_json(const nlohmann::json& data)
-{
-    std::cout << "adr::attributes::load_json() called!\n";
-
-    // Load attributes here
-    try_load(data, example);
-    try_load(data, axample);
-
-    std::cout << "adr::attributes::load_json() finished!\n";
-}
-
 ///
 /// condlist()
 /// @brief A helper function that lists an attribute via a string stream if it
@@ -87,6 +64,32 @@ void condlist(std::stringstream& ss, const adr::attributes::atrib<T>& a)
     }
 }
 
+// ============================================================================
+//
+// To add new attributes, put them in the following three functions:
+//
+// ============================================================================
+
+void adr::attributes::save_json(nlohmann::json& data) const
+{
+    std::cout << "adr::attributes::save_json() called!\n";
+
+    // Save attributes here
+    // save(data, example);
+
+    std::cout << "adr::attributes::save_json() finished!\n";
+}
+
+void adr::attributes::load_json(const nlohmann::json& data)
+{
+    std::cout << "adr::attributes::load_json() called!\n";
+
+    // Load attributes here
+    // try_load(data, example);
+
+    std::cout << "adr::attributes::load_json() finished!\n";
+}
+
 std::string adr::attributes::list() const
 {
     // The string stream to put in all of the attribute names and values
@@ -96,8 +99,7 @@ std::string adr::attributes::list() const
     ss << std::boolalpha;
 
     // List attributes here
-    condlist(ss, example);
-    condlist(ss, axample);
+    // condlist(ss, example);
 
     return ss.str();
 }
