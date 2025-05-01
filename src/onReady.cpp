@@ -37,10 +37,10 @@ namespace adr {
         commandList.push_back(view);
 
         dpp::command_option tradeItemOption{ dpp::co_string, "item", "The item that is being traded", true };
-        for (const std::string_view i : adr::item_names) {
-            std::string str{ i };
-            tradeItemOption.add_choice(dpp::command_option_choice{ str, str });
-        }
+        // for (const std::string_view i : adr::item_names) {
+        //     std::string str{ i };
+        //     tradeItemOption.add_choice(dpp::command_option_choice{ str, str });
+        // }
 
         dpp::slashcommand trade{ "trade", "trade with another player", bot.me.id };
         trade.add_option(

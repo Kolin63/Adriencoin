@@ -17,7 +17,13 @@ namespace adr
     ///
     enum dungeon_id
     {
-        d_foo,
+        d_bonzo,
+        d_scarf,
+        d_the_professor,
+        d_thorn,
+        d_livid,
+        d_sadan,
+        d_necron,
 
         d_MAX
     };
@@ -175,22 +181,274 @@ namespace adr
     ///
     dungeon_id get_dungeon_id(std::string_view name);
 
+    /*
+    dungeon(
+            dungeon_id _id,
+            std::string_view _name,
+            int _price,
+            uint8_t _win_chance, 
+            const std::array<std::pair<uint8_t, int>, i_MAX>& _item_chances,
+            std::string_view _thumbnail_url
+    ) 
+    */
+
     const std::array<dungeon, d_MAX> dungeons{{
-        { d_foo, "Foo", 10, 50, {
-            {
-                { 100, 10 },
-                { 0, 0 },
-                { 0, 0 },
-                { 0, 0 },
-                { 25, 500 },
-                { 0, 0 },
-                { 0, 0 },
-                { 0, 0 },
-                { 0, 0 },
-                { 100, 20 },
-                { 10, 1 },
-            }
-        }, "https://media.npr.org/assets/img/2014/08/07/monkey-selfie_custom-6624e8356a07d872997e801d7a04aa8cdc8fbaac.jpg?s=1100&c=50&f=jpeg"}
+        /*
+        { 
+            d_foo, "Foo", int_cost, int_win_chance, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 0, 0 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 0, 0 }, // i_bonzo_mask,
+                { 0, 0 }, // i_loving_scarf,
+                { 0, 0 }, // i_spirit_sceptre,
+                { 0, 0 }, // i_livid_dagger,
+                { 0, 0 }, // i_giant_sword,
+                { 0, 0 }, // i_wither_shield,
+                { 0, 0 }, // i_shadow_warp,
+                { 0, 0 }, // i_implosion,
+                { 0, 0 }, // i_hyperion,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        */
+
+        { 
+            d_bonzo, "Bonzo", 10, 100, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 100, 5 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 10, 1 }, // i_bonzo_mask,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        {
+            d_scarf, "Scarf", 20, 80, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 100, 1 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 0, 0 }, // i_bonzo_mask,
+                { 10, 1 }, // i_loving_scarf,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        {
+            d_the_professor, "The Professor", 30, 60, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 10, 300 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 10, 20 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 100, 15 }, // i_adriresource,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        { 
+            d_thorn, "Thorn", 40, 40, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 100, 20 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 0, 0 }, // i_bonzo_mask,
+                { 0, 0 }, // i_loving_scarf,
+                { 10, 1 }, // i_spirit_sceptre,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        { 
+            d_livid, "Livid", 50, 30, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 100, 25 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 0, 0 }, // i_bonzo_mask,
+                { 0, 0 }, // i_loving_scarf,
+                { 0, 0 }, // i_spirit_sceptre,
+                { 10, 1 }, // i_livid_dagger,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        { 
+            d_sadan, "Sadan", 50, 30, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 0, 0 }, // i_gaydriencoin,
+                { 100, 30 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 0, 0 }, // i_bonzo_mask,
+                { 0, 0 }, // i_loving_scarf,
+                { 0, 0 }, // i_spirit_sceptre,
+                { 0, 0 }, // i_livid_dagger,
+                { 10, 1 }, // i_giant_sword,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
+        { 
+            d_necron, "Necron", 70, 0, 
+            {{
+            //  { chance, price }
+                { 0, 0 }, // i_carrot,
+                { 0, 0 }, // i_gemstone,
+                { 0, 0 }, // i_wood,
+                { 0, 0 }, // i_fish,
+                { 0, 0 }, // i_rottenflesh,
+                { 0, 0 }, // i_book,
+                { 0, 0 }, // i_potion,
+                { 0, 0 }, // i_adriencoin,
+                { 20, 1 }, // i_gaydriencoin,
+                { 100, 50 }, // i_adriresource,
+                { 0, 0 }, // i_null,
+                { 0, 0 }, // i_stockofstonks,
+
+                { 0, 0 }, // i_jerrys_carrots,
+                { 0, 0 }, // i_divans_gems,
+                { 0, 0 }, // i_jacks_lumber,
+                { 0, 0 }, // i_geralds_fish,
+                { 0, 0 }, // i_aatroxs_slaying,
+                { 0, 0 }, // i_berts_knowledge,
+                { 0, 0 }, // i_the_brewers,
+                { 0, 0 }, // i_stonks_unlimited,
+
+                { 0, 0 }, // i_bonzo_mask,
+                { 0, 0 }, // i_loving_scarf,
+                { 0, 0 }, // i_spirit_sceptre,
+                { 0, 0 }, // i_livid_dagger,
+                { 0, 0 }, // i_giant_sword,
+                { 10, 1 }, // i_wither_shield,
+                { 10, 1 }, // i_shadow_warp,
+                { 10, 1 }, // i_implosion,
+                { 5, 1 }, // i_hyperion,
+            }}, 
+            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+        },
     }};
 }
 
