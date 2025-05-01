@@ -6,6 +6,7 @@
 #include "player.h"
 #include "cache.h"
 #include <dpp/appcommand.h>
+#include <dpp/exception.h>
 #include <dpp/message.h>
 #include <optional>
 #include <sstream>
@@ -241,15 +242,18 @@ void adr::dungeon::add_slash_commands(
         bosses.add_choice(dpp::command_option_choice{ str, str });
     }
 
-    // `/dungeon view`
-    sc.add_option(
-            dpp::command_option{ dpp::co_sub_command, "view", "View a Boss" }
-            .add_option(bosses)
-    );
-
     // `/dungeon fight`
     sc.add_option(
             dpp::command_option{ dpp::co_sub_command, "fight", "Fight a Boss" }
+            .add_option(bosses)
+    );
+
+    // add 'all' option to boss list for view command
+    bosses.add_choice(dpp::command_option_choice{ "all", "all" });
+
+    // `/dungeon view`
+    sc.add_option(
+            dpp::command_option{ dpp::co_sub_command, "view", "View a Boss" }
             .add_option(bosses)
     );
 
@@ -274,6 +278,21 @@ void adr::dungeon::handle_slash_command(
     const std::string_view name{ 
         std::get<std::string>(event.get_parameter("boss")) 
     };
+
+    // Handle viewing all bosses
+    if (name == "all" && action == "view") {
+        // The message we will return
+        dpp::message msg{};
+
+        // Add every embed to the message
+        for (const adr::dungeon& d : adr::dungeons) {
+            msg.add_embed(d.get_embed());
+        }
+
+        // Reply and early return
+        event.reply(msg);
+        return;
+    }
 
     // Boss ID
     const adr::dungeon_id id{ adr::get_dungeon_id(name) };
