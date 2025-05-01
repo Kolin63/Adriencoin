@@ -91,7 +91,8 @@ dpp::embed adr::dungeon::get_embed() const
     // Set the title and thumbnail
     embed
         .set_title(name)
-        .set_thumbnail(thumbnail_url);
+        .set_thumbnail(thumbnail_url)
+        .set_color(0xf54b42);
 
     // Make a String Stream, which is easier than concatenating strings
     std::stringstream ss{};
