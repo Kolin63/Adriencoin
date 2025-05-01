@@ -2,6 +2,7 @@
 #define KOLIN_ADRIENCOIN_ATTRIBUTES_H
 
 #include "emoji.h"
+#include <bitset>
 #include <dpp/nlohmann/json.hpp>
 #include <string>
 
@@ -64,6 +65,15 @@ namespace adr
         // ====================================================================
 
         // atrib<bool> example{ false, "example", e_stockofstonks };
+
+        ///
+        /// @brief True if the Loving Scarf has been used
+        ///
+        atrib<bool> bonzo_love{ false, "bonzo_love", e_bonzo_mask };
+
+        atrib<bool> wither_shield{ false, "wither_shield", e_wither_shield };
+        atrib<bool> shadow_warp{ false, "shadow_warp", e_shadow_warp };
+        atrib<bool> implosion{ false, "implosion", e_implosion };
     };
 }
 

@@ -64,6 +64,15 @@ void condlist(std::stringstream& ss, const adr::attributes::atrib<T>& a)
     }
 }
 
+// void condlist(std::stringstream& ss, const adr::attributes::atrib<bool>& a)
+// {
+//     if (a.val != a.def) {
+//         ss << std::boolalpha;
+//         ss << adr::get_emoji(a.emo) << ' ' << a.nam << ": " << a.val << '\n';
+//         ss << std::noboolalpha;
+//    }
+// }
+
 // ============================================================================
 //
 // To add new attributes, put them in the following three functions:
@@ -76,6 +85,10 @@ void adr::attributes::save_json(nlohmann::json& data) const
 
     // Save attributes here
     // save(data, example);
+    save(data, bonzo_love);
+    save(data, wither_shield);
+    save(data, shadow_warp);
+    save(data, implosion);
 
     std::cout << "adr::attributes::save_json() finished!\n";
 }
@@ -86,6 +99,10 @@ void adr::attributes::load_json(const nlohmann::json& data)
 
     // Load attributes here
     // try_load(data, example);
+    try_load(data, bonzo_love);
+    try_load(data, wither_shield);
+    try_load(data, shadow_warp);
+    try_load(data, implosion);
 
     std::cout << "adr::attributes::load_json() finished!\n";
 }
@@ -95,11 +112,15 @@ std::string adr::attributes::list() const
     // The string stream to put in all of the attribute names and values
     std::stringstream ss{};
 
-    // Bool Alpha makes it print True and False rather than 1 and 0
+    // Bool Alpha prints True / False, not 1 / 0
     ss << std::boolalpha;
 
     // List attributes here
     // condlist(ss, example);
+    condlist(ss, bonzo_love);
+    condlist(ss, wither_shield);
+    condlist(ss, shadow_warp);
+    condlist(ss, implosion);
 
     return ss.str();
 }
