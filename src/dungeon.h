@@ -262,7 +262,7 @@ namespace adr
 
                 { 10, 1 }, // i_bonzo_mask,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/7/7f/SkyBlock_npcs_bonzo_undead.png"
         },
         {
             d_scarf, "Scarf", 20, 80, 
@@ -293,7 +293,7 @@ namespace adr
                 { 0, 0 }, // i_bonzo_mask,
                 { 10, 1 }, // i_loving_scarf,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/a/a0/SkyBlock_entities_scarf.png"
         },
         {
             d_the_professor, "The Professor", 30, 60, 
@@ -310,7 +310,7 @@ namespace adr
                 { 0, 0 }, // i_gaydriencoin,
                 { 100, 15 }, // i_adriresource,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/9/99/SkyBlock_npcs_professor.png"
         },
         { 
             d_thorn, "Thorn", 40, 40, 
@@ -342,7 +342,7 @@ namespace adr
                 { 0, 0 }, // i_loving_scarf,
                 { 10, 1 }, // i_spirit_sceptre,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/4/4f/Minecraft_entities_ghast.gif"
         },
         { 
             d_livid, "Livid", 50, 30, 
@@ -375,7 +375,7 @@ namespace adr
                 { 0, 0 }, // i_spirit_sceptre,
                 { 10, 1 }, // i_livid_dagger,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/3/34/SkyBlock_npcs_livid.png"
         },
         { 
             d_sadan, "Sadan", 50, 30, 
@@ -409,7 +409,7 @@ namespace adr
                 { 0, 0 }, // i_livid_dagger,
                 { 10, 1 }, // i_giant_sword,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/1/17/SkyBlock_npcs_sadan.png"
         },
         { 
             d_necron, "Necron", 70, 0, 
@@ -447,7 +447,7 @@ namespace adr
                 { 10, 1 }, // i_implosion,
                 { 5, 1 }, // i_hyperion,
             }}, 
-            "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
+            "https://wiki.hypixel.net/images/a/a4/Minecraft_entities_wither.png"
         },
     }};
 }
