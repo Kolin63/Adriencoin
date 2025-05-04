@@ -86,6 +86,7 @@ void adr::attributes::save_json(nlohmann::json& data) const
     // Save attributes here
     // save(data, example);
     save(data, bonzo_love);
+    save(data, bonzo_can_use);
     save(data, wither_shield);
     save(data, shadow_warp);
     save(data, implosion);
@@ -100,6 +101,7 @@ void adr::attributes::load_json(const nlohmann::json& data)
     // Load attributes here
     // try_load(data, example);
     try_load(data, bonzo_love);
+    try_load(data, bonzo_can_use);
     try_load(data, wither_shield);
     try_load(data, shadow_warp);
     try_load(data, implosion);
@@ -118,6 +120,7 @@ std::string adr::attributes::list() const
     // List attributes here
     // condlist(ss, example);
     condlist(ss, bonzo_love);
+    condlist(ss, bonzo_can_use);
     condlist(ss, wither_shield);
     condlist(ss, shadow_warp);
     condlist(ss, implosion);

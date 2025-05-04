@@ -18,11 +18,6 @@ bool adr::dungeon::try_win(adr::Player& p) const
 
     using namespace adr;
 
-    // Check for requirements
-    if (p.m_high_dung + 1 < id) return false;
-    if (id == d_sadan && (p.inv(i_livid_dagger) < 0)) return false;
-    if (id == d_necron && (p.inv(i_giant_sword) < 0)) return false;
-
     // This is where we can apply modifiers from mayors, items, 
     // or anything else
     // It is an int so we don't have to worry about overflow
@@ -165,10 +160,17 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     }
 
     // Check that they are not on cooldown
-    if (player.nextFight() >= 0) {
+    if (player.nextFight() >= 0 && !player.m_atr.bonzo_can_use.val) {
         return dpp::message{ 
             "You can fight next " + player.nextFightTimestamp() 
         }.set_flags(dpp::m_ephemeral);
+    }
+
+    // Bonzo Mask
+    bool bonzo_used{ false };
+    if (player.m_atr.bonzo_can_use.val) {
+        player.m_atr.bonzo_can_use.val = false;
+        bonzo_used = true;
     }
 
     // If the can, subtract the price from their inventory 
@@ -193,7 +195,19 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
 
     // If the player lost the fight
     if (!fight_results.has_value()) {
-        // TODO: Make it have an option to use Bonzo Mask
+        // Bonzo Mask can be used if:
+        // * the player has a bonzo mask
+        // * the player has failed the last dungeon they did
+        // * the player did not use a bonzo mask on their last dungeon
+        // * the player is on dungeon cooldown
+        player.m_atr.bonzo_can_use.val = 
+            player.inv(i_bonzo_mask) > 0
+            && !bonzo_used
+            && player.nextFight() > 0;
+
+        if (player.m_atr.bonzo_can_use.val) {
+            ss << "\n\n" << get_emoji(e_bonzo_mask) << "Bonzo Mask Available";
+        }
 
         // Set embed Title, Color, Description
         embed.set_title("Dungeon Lost!")
