@@ -159,6 +159,20 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         .set_flags(dpp::m_ephemeral);
     }
 
+    // Check for other requirements
+    if (player.m_high_dung + 1 < id) { 
+        return dpp::message{ "You must beat the previous dungeon!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (id == d_sadan && (player.inv(i_livid_dagger) < 0)) {
+        return dpp::message{ "You need a livid dagger!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (id == d_necron && (player.inv(i_giant_sword) < 0)) {
+        return dpp::message{ "You need a Giant Sword!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+
     // Check that they are not on cooldown
     if (player.nextFight() >= 0 && !player.m_atr.bonzo_can_use.val) {
         return dpp::message{ 
@@ -222,6 +236,9 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
 
     // Put the item drops into an inventory
     const inventory& inv{ fight_results.value() };
+
+    // Update highest dungeon
+    player.m_high_dung = id;
 
     // Set title and color
     embed.set_title("Dungeon Won!")
