@@ -11,7 +11,7 @@
 #include <optional>
 #include <sstream>
 
-bool adr::dungeon::try_win(const adr::Player& p) const
+bool adr::dungeon::try_win(adr::Player& p) const
 {
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
@@ -34,7 +34,12 @@ bool adr::dungeon::try_win(const adr::Player& p) const
         + (p.m_atr.wither_shield.val)   * 5
         + (p.m_atr.shadow_warp.val)     * 5
         + (p.m_atr.implosion.val)       * 5
+        + (p.inv(i_dungeon_potion) > 0) * 5
     };
+
+    // If the player has a dungeon pot, decrement it by one
+    p.setInv(i_dungeon_potion, 
+            (p.inv(i_dungeon_potion) > 0) * -1 + p.inv(i_dungeon_potion));
 
     // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 

@@ -85,7 +85,7 @@ namespace adr
         /// their inventory.
         /// @return True if succesful, false otherwise
         /// 
-        bool try_win(const adr::Player& p) const;
+        bool try_win(adr::Player& p) const;
 
         ///
         /// try_drop()

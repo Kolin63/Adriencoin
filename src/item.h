@@ -45,6 +45,8 @@ namespace adr
         i_implosion,
         i_hyperion,
 
+        i_dungeon_potion,
+
         i_MAX
     };
 
@@ -87,6 +89,8 @@ namespace adr
         "shadow_warp",
         "implosion",
         "hyperion",
+
+        "dungeon_potion",
     };
 
     // 
@@ -130,6 +134,8 @@ namespace adr
         e_shadow_warp,
         e_implosion,
         e_hyperion,
+
+        e_potion,
 
         e_fish,
     };
