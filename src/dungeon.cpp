@@ -169,11 +169,11 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         return dpp::message{ "You must beat the previous dungeon!" }
         .set_flags(dpp::m_ephemeral);
     }
-    if (id == d_sadan && (player.inv(i_livid_dagger) < 0)) {
+    if (id == d_sadan && (player.inv(i_livid_dagger) <= 0)) {
         return dpp::message{ "You need a livid dagger!" }
         .set_flags(dpp::m_ephemeral);
     }
-    if (id == d_necron && (player.inv(i_giant_sword) < 0)) {
+    if (id == d_necron && (player.inv(i_giant_sword) <= 0)) {
         return dpp::message{ "You need a Giant Sword!" }
         .set_flags(dpp::m_ephemeral);
     }
@@ -187,9 +187,16 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
 
     // Bonzo Mask
     bool bonzo_used{ false };
-    if (player.m_atr.bonzo_can_use.val) {
+    if (player.m_atr.bonzo_can_use.val && player.nextFight() >= 0) {
         player.m_atr.bonzo_can_use.val = false;
         bonzo_used = true;
+
+        if (!player.m_atr.bonzo_love.val) {
+            player.changeInv(i_bonzo_mask, -1);
+        }
+    }
+    else if (player.m_atr.bonzo_can_use.val && player.nextFight() < 0) {
+        player.m_atr.bonzo_can_use.val = false;
     }
 
     // If the can, subtract the price from their inventory 
@@ -209,7 +216,7 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     std::stringstream ss{};
 
     // Boss Name, Floor Number, and Cost
-    ss << name << " (Floor " << id << ")\n\n"
+    ss << name << " (Floor " << id + 1 << ")\n\n"
         << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
     // If the player lost the fight
