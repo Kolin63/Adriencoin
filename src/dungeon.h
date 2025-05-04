@@ -280,7 +280,7 @@ namespace adr
                 { 0, 0 }, // i_potion,
                 { 0, 0 }, // i_adriencoin,
                 { 0, 0 }, // i_gaydriencoin,
-                { 100, 1 }, // i_adriresource,
+                { 100, 10 }, // i_adriresource,
                 { 0, 0 }, // i_null,
                 { 0, 0 }, // i_stockofstonks,
 
