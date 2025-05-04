@@ -143,7 +143,8 @@ const dpp::embed adr::Player::viewEmbed() const
         + (getTitle() == adr::daily::t_none ? "" : "\nTitle: " + adr::daily::titleNames[m_title])
         + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
         + "\nCan Work Next " + nextWorkTimestamp()
-        + "\n\n**Inventory:**\n"};
+        + "\n\n**Inventory:**\n"
+    };
 
     desc += adr::getNonZeroItems(m_inv);
 

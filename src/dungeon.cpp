@@ -36,6 +36,11 @@ bool adr::dungeon::try_win(adr::Player& p) const
     p.setInv(i_dungeon_potion, 
             (p.inv(i_dungeon_potion) > 0) * -1 + p.inv(i_dungeon_potion));
 
+    // Debug
+    std::cout << p.uuid() << " dungeoning, chance is " << chance 
+        << ", base chance is " << static_cast<short>(win_chance) 
+        << ", rolled a " << roll << ", status is " << (chance >= roll) << '\n';
+
     // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 
     return chance >= roll;
@@ -220,7 +225,7 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
             && player.nextFight() > 0;
 
         if (player.m_atr.bonzo_can_use.val) {
-            ss << "\n\n" << get_emoji(e_bonzo_mask) << "Bonzo Mask Available";
+            ss << "\n\n" << get_emoji(e_bonzo_mask) << " Bonzo Mask Available";
         }
 
         // Set embed Title, Color, Description
