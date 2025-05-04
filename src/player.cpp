@@ -47,6 +47,7 @@ void adr::Player::save() const
     data["lastWorked"] = m_lastWorked;
     data["inv"] = m_inv;
     data["title"] = m_title;
+    data["highdung"] = m_high_dung;
 
     m_atr.save_json(data);
 
@@ -90,16 +91,20 @@ void adr::Player::load()
 
     try {
         m_inv = data["inv"];
+
+        m_high_dung = data["highdung"];
     }
     catch (const json::out_of_range& e) {
         // If the JSON's inventory is outdated, we will need 
         // to put it into the user's inventory one at a time
         // and leave the new items as zeros
-        std::cout << m_uuid << "'s inventory possibly outdated. attempting to fix. error: " << e.what() << '\n';
+        std::cout << m_uuid << "'s save possibly outdated. attempting to fix. error: " << e.what() << '\n';
         m_inv = {};
         for (std::size_t i{}; i < data["inv"].size(); ++i) {
             m_inv[i] = data["inv"][i];
         }
+
+        m_high_dung = -1;
     }
 
     m_title = data.value("title", adr::daily::t_none);

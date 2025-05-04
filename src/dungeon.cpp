@@ -11,15 +11,30 @@
 #include <optional>
 #include <sstream>
 
-bool adr::dungeon::try_win() const
+bool adr::dungeon::try_win(const adr::Player& p) const
 {
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
 
-    // This is where we can apply modifiers from mayors, items, or anything
-    // else
+    using namespace adr;
+
+    // Check for requirements
+    if (p.m_high_dung + 1 < id) return false;
+    if (id == d_sadan && (p.inv(i_livid_dagger) < 0)) return false;
+    if (id == d_necron && (p.inv(i_giant_sword) < 0)) return false;
+
+    // This is where we can apply modifiers from mayors, items, 
+    // or anything else
     // It is an int so we don't have to worry about overflow
-    const int chance{ win_chance };
+    const int chance{
+        win_chance 
+        + (p.inv(i_spirit_sceptre) > 0) * 5
+        + (p.inv(i_giant_sword) > 0)    * 5
+        + (p.inv(i_hyperion) > 0)       * 10
+        + (p.m_atr.wither_shield.val)   * 5
+        + (p.m_atr.shadow_warp.val)     * 5
+        + (p.m_atr.implosion.val)       * 5
+    };
 
     // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 
@@ -48,11 +63,11 @@ bool adr::dungeon::try_drop(adr::item_id i) const
 
 std::optional<inventory> adr::dungeon::fight(const dpp::snowflake& uuid) const
 {
-    // If the boss fight was lost, return null
-    if (!try_win()) return std::nullopt;
-
     // The player that is fighting
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
+
+    // If the boss fight was lost, return null
+    if (!try_win(player)) return std::nullopt;
 
     // The temporary Inventory we will be adding to
     inventory inv{};

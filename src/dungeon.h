@@ -7,6 +7,7 @@
 #include <dpp/message.h>
 #include "item.h"
 #include "inventory.h"
+#include "player.h"
 
 namespace adr
 {
@@ -80,9 +81,11 @@ namespace adr
         /// 
         /// try_win()
         /// @brief Attempt to win a boss fight
+        /// @param p The player that is attempting. It is used for checking 
+        /// their inventory.
         /// @return True if succesful, false otherwise
         /// 
-        bool try_win() const;
+        bool try_win(const adr::Player& p) const;
 
         ///
         /// try_drop()
