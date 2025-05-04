@@ -195,7 +195,7 @@ void adr::Player::updateLastFought()
 std::time_t adr::Player::nextFight() const 
 { 
     // relative time, not since epoch
-    return m_lastFought - std::time(nullptr) + workCooldownSeconds; 
+    return m_lastFought - std::time(nullptr) + fightCooldownSeconds; 
 } 
 
 std::string adr::Player::nextFightTimestamp() const
