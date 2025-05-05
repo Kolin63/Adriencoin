@@ -108,9 +108,11 @@ namespace adr {
         owner.add_option(
             dpp::command_option{ dpp::co_string, "command", "the command to run", true }
             .add_choice(dpp::command_option_choice{ "setinv", "setinv" })
+            .add_choice(dpp::command_option_choice{ "changeinv", "changeinv" })
             .add_choice(dpp::command_option_choice{ "setjob", "setjob" })
             .add_choice(dpp::command_option_choice{ "save", "save" })
             .add_choice(dpp::command_option_choice{ "clearcache", "clearcache" })
+            .add_choice(dpp::command_option_choice{ "reloadstocks", "reloadstocks" })
             .add_choice(dpp::command_option_choice{ "getindices", "getindices" })
             .add_choice(dpp::command_option_choice{ "dailies", "dailies" })
             .add_choice(dpp::command_option_choice{ "setstock", "setstock" })
@@ -119,6 +121,7 @@ namespace adr {
         owner.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         owner.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
         owner.add_option(dpp::command_option{ dpp::co_integer, "amount", "amount of item", false });
+        owner.add_option(dpp::command_option{ dpp::co_string, "string", "wow! a string!", false });
         commandList.push_back(owner);
 
         std::cout << "commandList capacity: " << commandList.capacity() << " size: " << commandList.size() << '\n';

@@ -346,7 +346,12 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "setinv") {
             adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
-            .setInv(static_cast<adr::item_id>(std::get<std::int64_t>(event.get_parameter("index"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
+            .setInv(get_item_id(std::get<std::string>(event.get_parameter("string"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "changeinv") {
+            adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
+            .changeInv(get_item_id(std::get<std::string>(event.get_parameter("string"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "resetworktimer") {
@@ -363,6 +368,11 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (subcmd == "clearcache") {
             adr::cache::clear();
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "reloadstocks") {
+            adr::Stock::parseJSON();
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+            return;
         }
         else if (subcmd == "getindices") {
             std::string body{ "items:\n" };
