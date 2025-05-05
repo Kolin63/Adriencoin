@@ -105,7 +105,7 @@ namespace adr
         /// their inventory.
         /// @return True if succesful, false otherwise
         /// 
-        bool try_win(adr::Player& p) const;
+        bool try_win(adr::Player& p, bool dungeon_potion) const;
 
         ///
         /// try_drop()
@@ -122,7 +122,10 @@ namespace adr
         /// @return std::optional<Inventory> that will be null if the
         /// fight was unsuccesful, and contain the item drops otherwise
         ///
-        std::optional<inventory> fight(const dpp::snowflake& uuid) const;
+        std::optional<inventory> fight(
+            const dpp::snowflake& uuid,
+            bool dungeon_potion
+        ) const;
 
     public:
 
@@ -179,7 +182,11 @@ namespace adr
         /// @return A Discord message with a human-readable status
         /// of the fight
         /// 
-        dpp::message buy(const dpp::snowflake& uuid) const;
+        dpp::message buy(
+                const dpp::snowflake& uuid,
+                bool dungeon_potion,
+                bool bonzo_mask
+        ) const;
 
         ///
         /// add_slash_commands()

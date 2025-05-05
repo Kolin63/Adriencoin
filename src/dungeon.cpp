@@ -10,13 +10,17 @@
 #include <dpp/message.h>
 #include <optional>
 #include <sstream>
+#include <variant>
 
-bool adr::dungeon::try_win(adr::Player& p) const
+bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
 {
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
 
-    using namespace adr;
+    // Only use a dungeon pot if the player wants to and they have one
+    const bool use_dpot{ 
+        dungeon_potion && (p.inv(i_dungeon_potion) > 0)
+    };
 
     // This is where we can apply modifiers from mayors, items, 
     // or anything else
@@ -29,12 +33,12 @@ bool adr::dungeon::try_win(adr::Player& p) const
         + (p.m_atr.wither_shield.val)   * 5
         + (p.m_atr.shadow_warp.val)     * 5
         + (p.m_atr.implosion.val)       * 5
-        + (p.inv(i_dungeon_potion) > 0) * 5
+        + (use_dpot)                    * 5
     };
 
-    // If the player has a dungeon pot, decrement it by one
+    // If the player used a dungeon pot, decrement it by one
     p.setInv(i_dungeon_potion, 
-            (p.inv(i_dungeon_potion) > 0) * -1 + p.inv(i_dungeon_potion));
+            (use_dpot) * -1 + p.inv(i_dungeon_potion));
 
     // Debug
     std::cout << p.uuid() << " dungeoning, chance is " << chance 
@@ -66,13 +70,16 @@ bool adr::dungeon::try_drop(adr::item_id i) const
     return chance >= roll;
 }
 
-std::optional<inventory> adr::dungeon::fight(const dpp::snowflake& uuid) const
+std::optional<inventory> adr::dungeon::fight(
+        const dpp::snowflake& uuid,
+        bool dungeon_potion
+) const
 {
     // The player that is fighting
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
     // If the boss fight was lost, return null
-    if (!try_win(player)) return std::nullopt;
+    if (!try_win(player, dungeon_potion)) return std::nullopt;
 
     // The temporary Inventory we will be adding to
     inventory inv{};
@@ -153,7 +160,11 @@ int adr::dungeon::get_price() const
     return price;
 }
 
-dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
+dpp::message adr::dungeon::buy(
+        const dpp::snowflake& uuid,
+        bool dungeon_potion,
+        bool bonzo_mask
+) const
 {
     // The player that is buying
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
@@ -161,6 +172,14 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     // Check that they can afford it
     if (player.inv(adr::i_adriencoin) < price) {
         return dpp::message{ "You can't afford that!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (dungeon_potion && player.inv(i_dungeon_potion) <= 0) {
+        return dpp::message{ "You don't have any dungeon potions!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (bonzo_mask && player.inv(i_bonzo_mask) <= 0) {
+        return dpp::message{ "You don't have any bonzo masks!" }
         .set_flags(dpp::m_ephemeral);
     }
 
@@ -183,13 +202,18 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     }
 
     // Check that they are not on cooldown
-    if (player.nextFight() >= 0 && !player.m_atr.bonzo_can_use.val) {
+    if (player.nextFight() >= 0 && !bonzo_mask) {
         return dpp::message{ 
             "You can fight next " + player.nextFightTimestamp() 
         }.set_flags(dpp::m_ephemeral);
     }
 
     // Bonzo Mask
+    if (bonzo_mask && !player.m_atr.bonzo_can_use.val) {
+        return dpp::message{ "You can't use your bonzo mask right now!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+
     bool bonzo_used{ false };
     if (player.m_atr.bonzo_can_use.val && player.nextFight() >= 0) {
         player.m_atr.bonzo_can_use.val = false;
@@ -210,7 +234,7 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     player.updateLastFought();
 
     // Fight the boss
-    const std::optional<inventory> fight_results{ fight(uuid) };
+    const std::optional<inventory> fight_results{ fight(uuid, dungeon_potion) };
 
     // Make the embed that we will be using for the message
     dpp::embed embed{};
@@ -314,8 +338,10 @@ void adr::dungeon::add_slash_commands(
 
     // `/dungeon fight`
     sc.add_option(
-            dpp::command_option{ dpp::co_sub_command, "fight", "Fight a Boss" }
-            .add_option(bosses)
+        dpp::command_option{ dpp::co_sub_command, "fight", "Fight a Boss" }
+        .add_option(bosses)
+        .add_option(dpp::command_option{ dpp::co_boolean, "dungeon_potion", "Use a Dungeon Potion", false })
+        .add_option(dpp::command_option{ dpp::co_boolean, "bonzo_mask", "Use a Bonzo Mask", false })
     );
 
     // add 'all' option to boss list for view command
@@ -384,7 +410,15 @@ void adr::dungeon::handle_slash_command(
     }
 
     if (action == "fight") {
-        event.reply(dung.buy(event.command.usr.id));
+        bool dungeon_pot{ false };
+        bool bonzo_mask{ false };
+
+        try { dungeon_pot = std::get<bool>(event.get_parameter("dungeon_potion")); }
+        catch (const std::bad_variant_access&) {};
+        try { bonzo_mask = std::get<bool>(event.get_parameter("bonzo_mask")); }
+        catch (const std::bad_variant_access&) {};
+
+        event.reply(dung.buy(event.command.usr.id, dungeon_pot, bonzo_mask));
         return;
     }
 }
