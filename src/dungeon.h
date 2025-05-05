@@ -49,6 +49,13 @@ namespace adr
         ///
         const std::string_view name;
 
+        ///
+        /// description
+        /// @brief The description for the boss. It can include lore,
+        /// requirements, or drop information
+        ///
+        const std::string_view desc;
+
     private:
         ///
         /// price
@@ -121,11 +128,13 @@ namespace adr
                 std::string_view _name,
                 int _price,
                 uint8_t _win_chance, 
+                std::string_view _desc,
                 const std::array<std::pair<uint8_t, int>, i_MAX>& _item_chances,
                 std::string_view _thumbnail_url
         ) 
                 : id(_id)
                 , name(_name)
+                , desc(_desc)
                 , price(_price)
                 , win_chance(_win_chance)
                 , item_chances(_item_chances) 
@@ -199,8 +208,9 @@ namespace adr
         /*
         { 
             d_foo, "Foo", int_cost, int_win_chance, 
+            "Description",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -239,8 +249,14 @@ namespace adr
 
         { 
             d_bonzo, "Bonzo", 10, 100, 
+            "> Gratz for making it this far, but I'm basically unbeatable."
+            "\n> I don't even need to fight, this is the life!"
+            "\n> I can summon lots of Undead."
+            "\n> Check this out!"
+            "\n\nBonzo drops the **Bonzo Mask**, which allows you to "
+            "reattempt a failed dungeon (you still have to pay)",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -269,8 +285,15 @@ namespace adr
         },
         {
             d_scarf, "Scarf", 20, 80, 
+            "> This is where the journey ends for you, Adventurers."
+            "\n> The last few who tried fighting me are now in those Crypts."
+            "\n> If you can beat my Undeads, I'll personally grant you the privilege to replace them."
+            "\n> ARISE, MY CREATIONS!"
+            "\n> This should be interesting."
+            "\n\nScarf drops the **Loving Scarf**, which makes a Bonzo Mask "
+            "infinitely reusable when applied with `/use`",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -300,8 +323,11 @@ namespace adr
         },
         {
             d_the_professor, "The Professor", 30, 60, 
+            "> I was burdened with terrible news recently..."
+            "\n> My most talented student..."
+            "\n> I'll show you real power!",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -317,8 +343,14 @@ namespace adr
         },
         { 
             d_thorn, "Thorn", 40, 40, 
+            "> Welcome Adventurers! I am Thorn, the Spirit! And host of the Vegan Trials!"
+            "\n> My Arena is the most entertaining place in all the Catacombs!"
+            "\n> Today you'll be our spectacle."
+            "\n> Dance! Dance with my Spirit animals!"
+            "\n> And may you perish in a delightful way!"
+            "\n\nThorn drops the **Spirit Sceptre**, which increases win rate by 5%",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -349,8 +381,14 @@ namespace adr
         },
         { 
             d_livid, "Livid", 50, 30, 
+            "> Welcome, you arrive right on time. I am Livid, the Master of Shadows."
+            "\n> This Orb you see, is Thorn, or what is left of him."
+            "\n> In a way, I have to thank you for finally getting rid of him."
+            "\n> I can now turn those Spirits into shadows of myself, identical to their creator."
+            "\n> I respect you for making it to here, but I'll be your undoing."
+            "\n\nLivid drops the **Livid Dagger**, which is required to defeat Sadan",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -382,8 +420,14 @@ namespace adr
         },
         { 
             d_sadan, "Sadan", 50, 30, 
+            "> So you made it all the way here...and you wish to defy me? Sadan?!"
+            "\n> The audacity! I have been the ruler of these floors for a hundred years!"
+            "\n> I am the bridge between this realm and the world below! You shall not pass!"
+            "\n\nA Livid Dagger is required to fight Sadan"
+            "\nSadan drops the **Giant Sword**, which is required for Necron "
+            "and increases win rate by 5%",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
@@ -416,8 +460,18 @@ namespace adr
         },
         { 
             d_necron, "Necron", 70, 0, 
+            "> Finally, I heard so much about you. The Eye likes you very much."
+            "\n> You went further than any human before, congratulations."
+            "\n> I'm afraid, your journey ends now."
+            "\n> My master and I spent centuries building this factory...and this army."
+            "\n> I won't allow you to destroy it all now."
+            "\n> Goodbye."
+            "\n\nBoth the Spirit Sceptre and the Giant Sword are required to fight Necron"
+            "\nNecron drops the **Hyperion**, as well as three scrolls to improve it"
+            "\nAn unscrolled Hyperion increases win rate by 10%, "
+            "and each scroll applies gives an additional 5%",
             {{
-            //  { chance, price }
+            //  { chance, amount }
                 { 0, 0 }, // i_carrot,
                 { 0, 0 }, // i_gemstone,
                 { 0, 0 }, // i_wood,
