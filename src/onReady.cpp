@@ -76,6 +76,16 @@ namespace adr {
 
         adr::dungeon::add_slash_commands(bot, commandList);
 
+        dpp::slashcommand use{ "use", "Use an Item", bot.me.id };
+        use.add_option(
+            dpp::command_option{ dpp::co_string, "item", "The Item to Use", true }
+            .add_choice(dpp::command_option_choice{ "loving_scarf", "loving_scarf" })
+            .add_choice(dpp::command_option_choice{ "wither_shield", "wither_shield" })
+            .add_choice(dpp::command_option_choice{ "shadow_warp", "shadow_warp" })
+            .add_choice(dpp::command_option_choice{ "implosion", "implosion" })
+        );
+        commandList.push_back(use);
+
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
         admin.default_member_permissions = dpp::p_administrator;
         admin.add_option(
