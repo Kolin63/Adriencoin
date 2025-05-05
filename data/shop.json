@@ -5,7 +5,7 @@
             "display": "Gaydrien Coin Exchange",
             "desc": "Gaydrien coins can be traded for 1000 adrien coins.\n1000 Adriencoin CANNOT be traded in for 1 Gaydrien coin",
             "joke": "If there's Gaydrien, is there Bidrien?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/gaydriencoin.png",
+            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gaydriencoin.png",
             "color": 16766497,
             "cost": {
                 "gaydriencoin": 1
@@ -20,7 +20,7 @@
             "display": "Adriresource Trade",
             "desc": "",
             "joke": "If you get a resource for the first time, is it just a source?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/adriresource.png",
+            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_adriresource.png",
             "color": 14989557,
             "cost": {
                 "adriresource": 1
@@ -41,7 +41,7 @@
             "display": "Tier Upgrade",
             "desc": "Tier Upgrades only available when the buyer has no active loan",
             "joke": "If there's a teardrop, is there a tearpickup?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/item/carrot.png",
+            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_carrot.png",
             "color": 16744522,
             "cost": {
                 "book": 70,
@@ -60,7 +60,7 @@
             "display": "Job Change",
             "desc": "",
             "joke": "If there's a jaw-b, is there a chin-b?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/tags/0.0.4/art/jmart.jpg",
+            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg",
             "color": 5635993,
             "cost": {
                 "adriencoin": 100
@@ -84,7 +84,7 @@
             "display": "Resource Exchange",
             "desc": "",
             "joke": "If there is an Exchange, why is there no Ychange?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/3826f1b32eb2f25f43fcfef67ca81c24088c1447/art/item/gemstone.png",
+            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gemstone.png",
             "color": 16733002,
             "cost": {
                 "adriencoin": 10
