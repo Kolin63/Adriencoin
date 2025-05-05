@@ -50,15 +50,14 @@ namespace adr
         { "adr_paper",	        1356787387463766046 },
 
         { "adr_bonzo_mask",     1366630925148098611 },
-        { "adr_loving_scarf",   1366631057696358450 },
-        { "adr_spirit_scepter", 1366631149564203050 },
-        { "adr_livid_dagger",   1366631402719674408 },
-        { "adr_giant_sword",    1366631433027981443 },
-        { "adr_wither_shield",  1366631457531101215 },
-        { "adr_shadow_warp",    1366631581250355253 },
-        { "adr_implosion",      1366631617941995570 },
-        { "adr_hyperion",       1366631645863481384 },
-
+        { "adr_loving_scarf",   1368791550355574804 },
+        { "adr_spirit_scepter", 1368791532244832348 },
+        { "adr_livid_dagger",   1368791513294704781 },
+        { "adr_giant_sword",    1368791492788883566 },
+        { "adr_wither_shield",  1368791465047752796 },
+        { "adr_shadow_warp",    1368791443371458602 },
+        { "adr_implosion",      1368791422068723836 },
+        { "adr_hyperion",       1368791391441911838 },
     };
 #else
     constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
@@ -76,15 +75,14 @@ namespace adr
         { "adr_paper",	        1366635951446822973 },
 
         { "adr_bonzo_mask",     1366635930185764955 },
-        { "adr_loving_scarf",   1366635912917684264 },
-        { "adr_spirit_scepter", 1366635884740345917 },
-        { "adr_livid_dagger",   1366635847235141722 },
-        { "adr_giant_sword",    1366635825030238279 },
-        { "adr_wither_shield",  1366635780478599192 },
-        { "adr_shadow_warp",    1366635754612330527 },
-        { "adr_implosion",      1366635726900297809 },
-        { "adr_hyperion",       1366635701113716746 },
-
+        { "adr_loving_scarf",   1368790626187083848 },
+        { "adr_spirit_scepter", 1368790613394198659 },
+        { "adr_livid_dagger",   1368790596956983386 },
+        { "adr_giant_sword",    1368790581563625592 },
+        { "adr_wither_shield",  1368790420259082331 },
+        { "adr_shadow_warp",    1368790400613089350 },
+        { "adr_implosion",      1368790386297802893 },
+        { "adr_hyperion",       1368790219305783366 },
     };
 #endif
 
