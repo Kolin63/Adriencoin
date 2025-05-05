@@ -119,6 +119,22 @@
                 ]
             },
             "noTimes": true
+        },
+        {
+            "name": "dungeon_shop",
+            "display": "Dungeon Shop",
+            "desc": "Dungeon Potions Increase Win Chance by 5%",
+            "joke": "If there's a Dungeon, is there a Pee-geon?",
+            "picURL": "https://wiki.hypixel.net/images/6/66/SkyBlock_items_dungeoneering.png",
+            "color": 15971768,
+            "cost": {
+                "rottenflesh": 100,
+                "potion": 1
+            },
+            "resultType": "all",
+            "result": {
+                "dungeon_potion": 1
+            }
         }
     ]
 }

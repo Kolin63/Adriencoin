@@ -6,19 +6,40 @@
 #include "player.h"
 #include "cache.h"
 #include <dpp/appcommand.h>
+#include <dpp/exception.h>
 #include <dpp/message.h>
 #include <optional>
 #include <sstream>
 
-bool adr::dungeon::try_win() const
+bool adr::dungeon::try_win(adr::Player& p) const
 {
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
 
-    // This is where we can apply modifiers from mayors, items, or anything
-    // else
+    using namespace adr;
+
+    // This is where we can apply modifiers from mayors, items, 
+    // or anything else
     // It is an int so we don't have to worry about overflow
-    const int chance{ win_chance };
+    const int chance{
+        win_chance 
+        + (p.inv(i_spirit_sceptre) > 0) * 5
+        + (p.inv(i_giant_sword) > 0)    * 5
+        + (p.inv(i_hyperion) > 0)       * 10
+        + (p.m_atr.wither_shield.val)   * 5
+        + (p.m_atr.shadow_warp.val)     * 5
+        + (p.m_atr.implosion.val)       * 5
+        + (p.inv(i_dungeon_potion) > 0) * 5
+    };
+
+    // If the player has a dungeon pot, decrement it by one
+    p.setInv(i_dungeon_potion, 
+            (p.inv(i_dungeon_potion) > 0) * -1 + p.inv(i_dungeon_potion));
+
+    // Debug
+    std::cout << p.uuid() << " dungeoning, chance is " << chance 
+        << ", base chance is " << static_cast<short>(win_chance) 
+        << ", rolled a " << roll << ", status is " << (chance >= roll) << '\n';
 
     // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 
@@ -47,11 +68,11 @@ bool adr::dungeon::try_drop(adr::item_id i) const
 
 std::optional<inventory> adr::dungeon::fight(const dpp::snowflake& uuid) const
 {
-    // If the boss fight was lost, return null
-    if (!try_win()) return std::nullopt;
-
     // The player that is fighting
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
+
+    // If the boss fight was lost, return null
+    if (!try_win(player)) return std::nullopt;
 
     // The temporary Inventory we will be adding to
     inventory inv{};
@@ -90,14 +111,15 @@ dpp::embed adr::dungeon::get_embed() const
     // Set the title and thumbnail
     embed
         .set_title(name)
-        .set_thumbnail(thumbnail_url);
+        .set_thumbnail(thumbnail_url)
+        .set_color(0xf3b5b8);
 
     // Make a String Stream, which is easier than concatenating strings
     std::stringstream ss{};
 
     // Put in the Floor, Cost, and the header for Drops
-    ss << "Floor " << id << "\n"
-        << "Win Chance: " << static_cast<int>(win_chance) << "\n\n"
+    ss << "Floor " << id + 1 << "\n"
+        << "Win Chance: " << static_cast<int>(win_chance) << "%\n\n"
         << "**Costs: **" << price << ' ' << adr::get_emoji(e_adriencoin) << '\n'
         << "**Drops:**\n";
 
@@ -142,11 +164,39 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         .set_flags(dpp::m_ephemeral);
     }
 
+    // Check for other requirements
+    if (player.m_high_dung + 1 < id) { 
+        return dpp::message{ "You must beat the previous dungeon!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (id == d_sadan && (player.inv(i_livid_dagger) <= 0)) {
+        return dpp::message{ "You need a livid dagger!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (id == d_necron && (player.inv(i_giant_sword) <= 0)) {
+        return dpp::message{ "You need a Giant Sword!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+
     // Check that they are not on cooldown
-    if (player.nextFight() >= 0) {
+    if (player.nextFight() >= 0 && !player.m_atr.bonzo_can_use.val) {
         return dpp::message{ 
             "You can fight next " + player.nextFightTimestamp() 
         }.set_flags(dpp::m_ephemeral);
+    }
+
+    // Bonzo Mask
+    bool bonzo_used{ false };
+    if (player.m_atr.bonzo_can_use.val && player.nextFight() >= 0) {
+        player.m_atr.bonzo_can_use.val = false;
+        bonzo_used = true;
+
+        if (!player.m_atr.bonzo_love.val) {
+            player.changeInv(i_bonzo_mask, -1);
+        }
+    }
+    else if (player.m_atr.bonzo_can_use.val && player.nextFight() < 0) {
+        player.m_atr.bonzo_can_use.val = false;
     }
 
     // If the can, subtract the price from their inventory 
@@ -166,12 +216,24 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     std::stringstream ss{};
 
     // Boss Name, Floor Number, and Cost
-    ss << name << " (Floor " << id << ")\n\n"
+    ss << name << " (Floor " << id + 1 << ")\n\n"
         << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
     // If the player lost the fight
     if (!fight_results.has_value()) {
-        // TODO: Make it have an option to use Bonzo Mask
+        // Bonzo Mask can be used if:
+        // * the player has a bonzo mask
+        // * the player has failed the last dungeon they did
+        // * the player did not use a bonzo mask on their last dungeon
+        // * the player is on dungeon cooldown
+        player.m_atr.bonzo_can_use.val = 
+            player.inv(i_bonzo_mask) > 0
+            && !bonzo_used
+            && player.nextFight() > 0;
+
+        if (player.m_atr.bonzo_can_use.val) {
+            ss << "\n\n" << get_emoji(e_bonzo_mask) << " Bonzo Mask Available";
+        }
 
         // Set embed Title, Color, Description
         embed.set_title("Dungeon Lost!")
@@ -186,6 +248,9 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
 
     // Put the item drops into an inventory
     const inventory& inv{ fight_results.value() };
+
+    // Update highest dungeon
+    player.m_high_dung = id;
 
     // Set title and color
     embed.set_title("Dungeon Won!")
@@ -241,15 +306,18 @@ void adr::dungeon::add_slash_commands(
         bosses.add_choice(dpp::command_option_choice{ str, str });
     }
 
-    // `/dungeon view`
-    sc.add_option(
-            dpp::command_option{ dpp::co_sub_command, "view", "View a Boss" }
-            .add_option(bosses)
-    );
-
     // `/dungeon fight`
     sc.add_option(
             dpp::command_option{ dpp::co_sub_command, "fight", "Fight a Boss" }
+            .add_option(bosses)
+    );
+
+    // add 'all' option to boss list for view command
+    bosses.add_choice(dpp::command_option_choice{ "all", "all" });
+
+    // `/dungeon view`
+    sc.add_option(
+            dpp::command_option{ dpp::co_sub_command, "view", "View a Boss" }
             .add_option(bosses)
     );
 
@@ -274,6 +342,21 @@ void adr::dungeon::handle_slash_command(
     const std::string_view name{ 
         std::get<std::string>(event.get_parameter("boss")) 
     };
+
+    // Handle viewing all bosses
+    if (name == "all" && action == "view") {
+        // The message we will return
+        dpp::message msg{};
+
+        // Add every embed to the message
+        for (const adr::dungeon& d : adr::dungeons) {
+            msg.add_embed(d.get_embed());
+        }
+
+        // Reply and early return
+        event.reply(msg);
+        return;
+    }
 
     // Boss ID
     const adr::dungeon_id id{ adr::get_dungeon_id(name) };
