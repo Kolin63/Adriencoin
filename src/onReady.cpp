@@ -86,6 +86,9 @@ namespace adr {
         );
         commandList.push_back(use);
 
+        dpp::slashcommand lsitem{ "lsitem", "List all item names", bot.me.id };
+        commandList.push_back(lsitem);
+
         dpp::slashcommand admin{ "admin", "various admin tools in one command", bot.me.id };
         admin.default_member_permissions = dpp::p_administrator;
         admin.add_option(

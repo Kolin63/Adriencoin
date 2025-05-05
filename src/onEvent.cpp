@@ -45,6 +45,22 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     else if (commandName == "dungeon") {
         adr::dungeon::handle_slash_command(bot, event);
     }
+    else if (commandName == "lsitem") {
+        dpp::message msg{ "Due to restrictions in Discord's API, there can "
+        "only be 25 items in a slashcommand choice. Therefore, you will need "
+        "to manually type in the item names for commands like `/trade`\n\n" };
+
+        for (std::size_t i{}; i < adr::i_MAX; ++i) {
+            msg.content += get_emoji(static_cast<item_id>(i)) + ' '
+                + std::to_string(i) + ". "
+                + static_cast<std::string>(item_names[i]) + '\n';
+        }
+
+        msg.set_flags(dpp::m_ephemeral);
+
+        event.reply(msg);
+        return;
+    }
     else if (commandName == "use") {
         const std::string item{ std::get<std::string>(event.get_parameter("item")) };
         adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
