@@ -219,12 +219,11 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     // Make the String Stream that we will be using to put text in the embed
     std::stringstream ss{};
 
-    // Boss Name, Floor Number, and Cost
-    ss << name << " (Floor " << id + 1 << ")\n\n"
-        << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
-
     // If the player lost the fight
     if (!fight_results.has_value()) {
+        ss << lose_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
+            << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
+
         // Bonzo Mask can be used if:
         // * the player has a bonzo mask
         // * the player has failed the last dungeon they did
@@ -247,6 +246,9 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
         // Return to the caller to be sent to the player
         return dpp::message{}.add_embed(embed);
     }
+
+    ss << win_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
+        << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
     // If the player won the fight
 
