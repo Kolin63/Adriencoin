@@ -118,7 +118,7 @@ dpp::embed adr::dungeon::get_embed() const
     std::stringstream ss{};
 
     // Put in the Floor, Cost, and the header for Drops
-    ss << "Floor " << id + 1 << "\n"
+    ss << desc << "\n\nFloor " << id + 1 << "\n"
         << "Win Chance: " << static_cast<int>(win_chance) << "%\n\n"
         << "**Costs: **" << price << ' ' << adr::get_emoji(e_adriencoin) << '\n'
         << "**Drops:**\n";
@@ -175,6 +175,10 @@ dpp::message adr::dungeon::buy(const dpp::snowflake& uuid) const
     }
     if (id == d_necron && (player.inv(i_giant_sword) <= 0)) {
         return dpp::message{ "You need a Giant Sword!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (id == d_necron && (player.inv(i_spirit_sceptre) <= 0)) {
+        return dpp::message{ "You need a Spirit Sceptre!" }
         .set_flags(dpp::m_ephemeral);
     }
 
