@@ -20,9 +20,21 @@ namespace adr
         e_stockofstonks,
         e_paper,
 
+        e_bonzo_mask,
+        e_loving_scarf,
+        e_spirit_sceptre,
+        e_livid_dagger,
+        e_giant_sword,
+        e_wither_shield,
+        e_shadow_warp,
+        e_implosion,
+        e_hyperion,
+
         e_MAX
     };
 
+// This should be false if on the Test Bot, True if on the Release Bot
+#if false
     constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
         { "adr_carrot",	        1342341829894471811 },
         { "adr_gemstone",	    1342341843181899900 },
@@ -36,7 +48,43 @@ namespace adr
         { "adr_adriresource",	1342730457414111273 },
         { "adr_stockofstonks",	1353479698021224488 },
         { "adr_paper",	        1356787387463766046 },
+
+        { "adr_bonzo_mask",     1366630925148098611 },
+        { "adr_loving_scarf",   1368791550355574804 },
+        { "adr_spirit_scepter", 1368791532244832348 },
+        { "adr_livid_dagger",   1368791513294704781 },
+        { "adr_giant_sword",    1368791492788883566 },
+        { "adr_wither_shield",  1368791465047752796 },
+        { "adr_shadow_warp",    1368791443371458602 },
+        { "adr_implosion",      1368791422068723836 },
+        { "adr_hyperion",       1368791391441911838 },
     };
+#else
+    constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
+        { "adr_carrot",	        1366636287313842268 },
+        { "adr_gemstone",	    1366636272830906408 },
+        { "adr_wood",	        1366636255487721472 },
+        { "adr_fish",	        1366636235103146024 },
+        { "adr_rottenflesh",	1366636215323070474 },
+        { "adr_book",	        1366636193470615622 },
+        { "adr_potion",	        1366636162395013241 },
+        { "adr_adriencoin",	    1366636135077511178 },
+        { "adr_gaydriencoin",	1366636056723853383 },
+        { "adr_adriresource",	1366636032350752811 },
+        { "adr_stockofstonks",	1366635996602568735 },
+        { "adr_paper",	        1366635951446822973 },
+
+        { "adr_bonzo_mask",     1366635930185764955 },
+        { "adr_loving_scarf",   1368790626187083848 },
+        { "adr_spirit_scepter", 1368790613394198659 },
+        { "adr_livid_dagger",   1368790596956983386 },
+        { "adr_giant_sword",    1368790581563625592 },
+        { "adr_wither_shield",  1368790420259082331 },
+        { "adr_shadow_warp",    1368790400613089350 },
+        { "adr_implosion",      1368790386297802893 },
+        { "adr_hyperion",       1368790219305783366 },
+    };
+#endif
 
     //
     // get_emoji

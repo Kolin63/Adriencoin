@@ -1,6 +1,7 @@
 ﻿#include "dungeon.h"
 #include "emoji.h"
 #include "item.h"
+#include <dpp/message.h>
 #include <string>
 #include <algorithm>
 #include <dpp/dpp.h>
@@ -43,6 +44,111 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     }
     else if (commandName == "dungeon") {
         adr::dungeon::handle_slash_command(bot, event);
+    }
+    else if (commandName == "lsitem") {
+        dpp::message msg{ "Due to restrictions in Discord's API, there can "
+        "only be 25 items in a slashcommand choice. Therefore, you will need "
+        "to manually type in the item names for commands like `/trade`\n\n" };
+
+        for (std::size_t i{}; i < adr::i_MAX; ++i) {
+            msg.content += get_emoji(static_cast<item_id>(i)) + ' '
+                + std::to_string(i) + ". "
+                + static_cast<std::string>(item_names[i]) + '\n';
+        }
+
+        msg.set_flags(dpp::m_ephemeral);
+
+        event.reply(msg);
+        return;
+    }
+    else if (commandName == "use") {
+        const std::string item{ std::get<std::string>(event.get_parameter("item")) };
+        adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
+
+        if (item == "loving_scarf") {
+            if (player.inv(i_loving_scarf) <= 0) {
+                event.reply(dpp::message{ "You don't have any Loving Scarfs!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.inv(i_bonzo_mask) <= 0) {
+                event.reply(dpp::message{ "You don't have any Bonzo Masks to use that on!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.m_atr.bonzo_love.val) {
+                event.reply(dpp::message{ "You have already used that item! (You should consider trading it)" } 
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            player.changeInv(i_loving_scarf, -1);
+            player.m_atr.bonzo_love.val = true;
+            event.reply("Used " + get_emoji(e_loving_scarf) + " Loving Scarf on " + get_emoji(e_bonzo_mask) + " Bonzo Mask");
+        }
+        else if (item == "wither_shield") {
+            if (player.inv(i_wither_shield) <= 0) {
+                event.reply(dpp::message{ "You don't have a Wither Shield scroll!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.inv(i_hyperion) <= 0) {
+                event.reply(dpp::message{ "You don't have a Hyperion to use that on!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.m_atr.wither_shield.val) {
+                event.reply(dpp::message{ "You have already used that item! (You should consider trading it)" } 
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            player.changeInv(i_wither_shield, -1);
+            player.m_atr.wither_shield.val = true;
+            event.reply("Used " + get_emoji(e_wither_shield) + " Wither Shield on " + get_emoji(e_hyperion) + " Hyperion");
+        }
+        else if (item == "shadow_warp") {
+            if (player.inv(i_shadow_warp) <= 0) {
+                event.reply(dpp::message{ "You don't have a Shadow Warp scroll!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.inv(i_hyperion) <= 0) {
+                event.reply(dpp::message{ "You don't have a Hyperion to use that on!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.m_atr.shadow_warp.val) {
+                event.reply(dpp::message{ "You have already used that item! (You should consider trading it)" } 
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            player.changeInv(i_shadow_warp, -1);
+            player.m_atr.shadow_warp.val = true;
+            event.reply("Used " + get_emoji(e_shadow_warp) + " Shadow Warp on " + get_emoji(e_hyperion) + " Hyperion");
+        }
+        else if (item == "implosion") {
+            if (player.inv(i_implosion) <= 0) {
+                event.reply(dpp::message{ "You don't have an Implosion scroll!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.inv(i_hyperion) <= 0) {
+                event.reply(dpp::message{ "You don't have a Hyperion to use that on!" }
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            if (player.m_atr.implosion.val) {
+                event.reply(dpp::message{ "You have already used that item! (You should consider trading it)" } 
+                    .set_flags(dpp::m_ephemeral));
+                return;
+            }
+            player.changeInv(i_implosion, -1);
+            player.m_atr.implosion.val = true;
+            event.reply("Used " + get_emoji(e_implosion) + " Implosion on " + get_emoji(e_hyperion) + " Hyperion");
+        }
+        else {
+            event.reply(dpp::message{ "Sorry, you can't use that item" });
+            return;
+        }
     }
     else if (commandName == "stock") {
         const std::string action{ event.command.get_command_interaction().options[0].name };
@@ -246,6 +352,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (subcmd == "resetworktimer") {
             adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user"))) };
             player.setLastWorked(0);
+            player.setLastFought(0);
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "save") {
@@ -260,7 +367,9 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         else if (subcmd == "getindices") {
             std::string body{ "items:\n" };
             for (std::size_t i{}; i < adr::i_MAX; ++i) {
-                body += std::to_string(i) + ": " + std::string{ adr::item_names[i] } + '\n';
+                body += adr::get_emoji(static_cast<adr::item_id>(i)) + ' ' 
+                    + std::to_string(i) + ": " 
+                    + std::string{ adr::item_names[i] } + '\n';
             }
 
             body += "\njobs:\n";

@@ -20,11 +20,18 @@ namespace adr {
         std::time_t m_lastWorked{ 0 };
         static constexpr std::time_t workCooldownSeconds{ 60 * 60 * 6 }; // 6 hours
 
+        std::time_t m_lastFought{ 0 };
+        static constexpr std::time_t fightCooldownSeconds{ 60 * 60 * 1 }; // 1 hour
+
         // the player's inventory, where the index is the item ID and the value is the amount (int)
         inventory m_inv{};
 
     public:
         attributes m_atr{};
+
+        // the hardest dungeon the player has done
+        // an integer to not have a circular dependency
+        short m_high_dung{ -1 };
     private:
 
         adr::daily::Title m_title{ adr::daily::t_none };
@@ -51,6 +58,12 @@ namespace adr {
         void setLastWorked(const std::time_t t) { m_lastWorked = t; }
         std::time_t nextWork() const;
         std::string nextWorkTimestamp() const;
+
+        std::time_t lastFought() const { return m_lastFought; }
+        void updateLastFought();
+        void setLastFought(const std::time_t t) { m_lastFought = t; }
+        std::time_t nextFight() const;
+        std::string nextFightTimestamp() const;
 
         void setInv(const inventory& inv) { m_inv = inv; }
         void setInv(const adr::item& item) { m_inv[item.id] = item.amount; }

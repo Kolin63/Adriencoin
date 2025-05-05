@@ -35,6 +35,18 @@ namespace adr
         i_the_brewers,
         i_stonks_unlimited,
 
+        i_bonzo_mask,
+        i_loving_scarf,
+        i_spirit_sceptre,
+        i_livid_dagger,
+        i_giant_sword,
+        i_wither_shield,
+        i_shadow_warp,
+        i_implosion,
+        i_hyperion,
+
+        i_dungeon_potion,
+
         i_MAX
     };
 
@@ -67,6 +79,18 @@ namespace adr
         "berts_knowledge",
         "the_brewers",
         "stonks_unlimited",
+        
+        "bonzo_mask",
+        "loving_scarf",
+        "spirit_sceptre",
+        "livid_dagger",
+        "giant_sword",
+        "wither_shield",
+        "shadow_warp",
+        "implosion",
+        "hyperion",
+
+        "dungeon_potion",
     };
 
     // 
@@ -100,6 +124,18 @@ namespace adr
         e_paper,
         e_paper,
         e_paper,
+
+        e_bonzo_mask,
+        e_loving_scarf,
+        e_spirit_sceptre,
+        e_livid_dagger,
+        e_giant_sword,
+        e_wither_shield,
+        e_shadow_warp,
+        e_implosion,
+        e_hyperion,
+
+        e_potion,
 
         e_fish,
     };

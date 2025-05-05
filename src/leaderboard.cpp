@@ -30,7 +30,7 @@ dpp::embed adr::leaderboard::get_leaderboard_embed()
     embed.set_title("Leaderboard")
         .set_description(dpp::utility::timestamp(std::time(0), dpp::utility::tf_short_date) + "\n\n")
         .set_color(0xFFD700)
-        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/gaydriencoin.png");
+        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gaydriencoin.png");
 
     for (std::size_t i{}; i < vector.size(); ++i) {
         const adr::playerCacheElement& pce{ adr::cache::getElementFromCache(vector[i])};

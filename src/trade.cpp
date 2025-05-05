@@ -89,7 +89,7 @@ dpp::embed adr::TradeOffer::getEmbed()
             + '\n' + receiverUsername + " will give:\n"
             + adr::getNonZeroItems(m_receiverGives)
             + (m_seed != "" ? "\nSeed: " + m_seed : "\n"))
-        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/emerald.webp")
+        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_emerald.png")
         .set_color(0x74f793);
 
     return embed;

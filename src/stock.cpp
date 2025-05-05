@@ -140,7 +140,7 @@ dpp::message adr::Stock::getEmbed(std::string name)
         embed
             .set_title("Stocks")
             .set_description("Day " + std::to_string(adr::Stock::getDay()) + " / " + dpp::utility::timestamp(std::time(0), dpp::utility::tf_long_date) + '\n')
-            .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
+            .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_paper.png")
             .set_color(0xeeeeee);
 
         for (const adr::Stock& stock : adr::Stock::stocks) {
@@ -174,7 +174,7 @@ dpp::message adr::Stock::getEmbed(std::string name)
     dpp::embed embed{};
     embed
         .set_title(name + " (" + stock.getTicker() + ')')
-        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/paper.png")
+        .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_paper.png")
         .set_color(0xeeeeee)
         .set_description(emoji + " **Value: " + std::to_string(stock.getValue()) + "** (" + c + std::to_string(std::abs(diff)) + ")\n"
             + "Stabililty: " + std::to_string(stock.m_stability) + "%\n"
