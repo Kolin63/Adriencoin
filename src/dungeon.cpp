@@ -112,14 +112,14 @@ dpp::embed adr::dungeon::get_embed() const
     embed
         .set_title(name)
         .set_thumbnail(thumbnail_url)
-        .set_color(0xf54b42);
+        .set_color(0xf3b5b8);
 
     // Make a String Stream, which is easier than concatenating strings
     std::stringstream ss{};
 
     // Put in the Floor, Cost, and the header for Drops
     ss << "Floor " << id + 1 << "\n"
-        << "Win Chance: " << static_cast<int>(win_chance) << "\n\n"
+        << "Win Chance: " << static_cast<int>(win_chance) << "%\n\n"
         << "**Costs: **" << price << ' ' << adr::get_emoji(e_adriencoin) << '\n'
         << "**Drops:**\n";
 
