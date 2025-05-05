@@ -112,6 +112,7 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "setjob", "setjob" })
             .add_choice(dpp::command_option_choice{ "save", "save" })
             .add_choice(dpp::command_option_choice{ "clearcache", "clearcache" })
+            .add_choice(dpp::command_option_choice{ "reloadstocks", "reloadstocks" })
             .add_choice(dpp::command_option_choice{ "getindices", "getindices" })
             .add_choice(dpp::command_option_choice{ "dailies", "dailies" })
             .add_choice(dpp::command_option_choice{ "setstock", "setstock" })

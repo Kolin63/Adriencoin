@@ -369,6 +369,11 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             adr::cache::clear();
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
+        else if (subcmd == "reloadstocks") {
+            adr::Stock::parseJSON();
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+            return;
+        }
         else if (subcmd == "getindices") {
             std::string body{ "items:\n" };
             for (std::size_t i{}; i < adr::i_MAX; ++i) {
