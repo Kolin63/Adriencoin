@@ -28,7 +28,7 @@ dpp::embed adr::leaderboard::get_leaderboard_embed()
     // Make the embed
     dpp::embed embed{};
     embed.set_title("Leaderboard")
-        .set_description(dpp::utility::timestamp(std::time(0), dpp::utility::tf_short_date) + "\n\n")
+        .set_description(dpp::utility::timestamp(std::time(0), dpp::utility::tf_long_date) + "\n\n")
         .set_color(0xFFD700)
         .set_thumbnail("https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gaydriencoin.png");
 
