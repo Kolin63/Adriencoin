@@ -375,6 +375,15 @@ void adr::dungeon::handle_slash_command(
         std::get<std::string>(event.get_parameter("boss")) 
     };
 
+    // dungeon view is only for colin because its big
+    if (action == "view" && event.command.usr.id != 488335709883727882) {
+        event.reply(
+            dpp::mesage{ "stop doing that just look at #dungeons" }
+            .set_flags(dpp::m_ephemeral)
+        );
+        return;
+    }
+
     // Handle viewing all bosses
     if (name == "all" && action == "view") {
         // The message we will return
