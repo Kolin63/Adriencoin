@@ -378,7 +378,7 @@ void adr::dungeon::handle_slash_command(
     // dungeon view is only for colin because its big
     if (action == "view" && event.command.usr.id != 488335709883727882) {
         event.reply(
-            dpp::mesage{ "stop doing that just look at #dungeons" }
+            dpp::message{ "stop doing that just look at #dungeons" }
             .set_flags(dpp::m_ephemeral)
         );
         return;
