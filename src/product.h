@@ -24,11 +24,17 @@ namespace adr
         const std::string joke{};
         const std::string picURL{};
         const uint32_t color{};
-        const inventory cost{};
-        const ResultType resultType{ adr::Product::r_none };
-        const inventory result{};
-        const std::vector<std::string> customResult{};
-        const bool noTimes{};
+
+        struct sub 
+        {
+            const inventory cost{};
+            const ResultType resultType{ adr::Product::r_none };
+            const inventory result{};
+            const std::vector<std::string> customResult{};
+            const bool noTimes{};
+        };
+
+        const std::vector<sub> subproducts{};
 
         inline static std::vector<Product> products;
 
