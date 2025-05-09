@@ -1,5 +1,7 @@
+#include "daily.h"
 #include "item.h"
 #include <algorithm>
+#include <dpp/message.h>
 #include "shop.h"
 #include "product.h"
 #include "cache.h"
@@ -71,7 +73,7 @@ dpp::message adr::shop::buy(
     for (adr::Product product : adr::Product::products) {
         if (product.name != productName) continue;
         for (Product::sub sub : product.subproducts) {
-            if (sub.name != subprodName) continue;
+            if (sub.name != subprodName && subprodName != "") continue;
             std::cout << "product: " << productName << ' ' << resultName 
             << " sub: " << sub.name << '\n';
 
@@ -157,7 +159,21 @@ dpp::message adr::shop::buy(
                     return dpp::message{ "There was an error changing your job to that." };
                 }
                 if (productName == "titles") {
-                    player.setTitle(adr::daily::t_baron);
+                    daily::Title goaltitle;
+                    if (sub.name == "baron") goaltitle = daily::t_baron;
+                    else if (sub.name == "duke") goaltitle = daily::t_duke;
+                    else if (sub.name == "grand_duke") goaltitle = daily::t_grand_duke;
+                    else {
+                        return dpp::message{ "Something went wrong with reading the title" }
+                        .set_flags(dpp::m_ephemeral);
+                    }
+
+                    if (player.getTitle() >= goaltitle) {
+                        return dpp::message{ "You already have that title!" }
+                        .set_flags(dpp::m_ephemeral);
+                    }
+
+                    player.setTitle(goaltitle);
                     player.subtractInv(cost);
                     listItems(false, result);
                     return msg;

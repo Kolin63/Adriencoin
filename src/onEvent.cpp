@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <dpp/dpp.h>
+#include <variant>
 #include "onEvent.h"
 #include "onReady.h"
 #include "job.h"
@@ -30,7 +31,11 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
         std::string resultName{ getOptionalParam<std::string>("result", event).value_or("")};
-        std::string subprodName{ getOptionalParam<std::string>("subproduct", event).value_or("")};
+
+        std::string subprodName{};
+        try {
+            subprodName = event.command.get_command_interaction().options[1].name;
+        } catch (...) {}
 
         std::int64_t times{ getOptionalParam<int64_t>("times", event).value_or(1) };
 
