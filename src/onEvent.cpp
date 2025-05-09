@@ -37,7 +37,8 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 
         std::string subprodName{};
         try {
-            subprodName = event.command.get_command_interaction().options[1].name;
+            subprodName = event.command.get_command_interaction()
+                .options[0].options[0].name;
         } catch (...) {}
 
         std::int64_t times{ getOptionalParam<int64_t>("times", event).value_or(1) };
