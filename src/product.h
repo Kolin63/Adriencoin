@@ -27,6 +27,7 @@ namespace adr
 
         struct sub 
         {
+            const std::string name{};
             const inventory cost{};
             const ResultType resultType{ adr::Product::r_none };
             const inventory result{};

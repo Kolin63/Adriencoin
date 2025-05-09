@@ -18,26 +18,30 @@ dpp::message adr::shop::getMessage(const std::string name)
                 .set_thumbnail(product.picURL)
                 .set_color(product.color);
 
-            auto listItems = [&embed, &product](bool isCost, const inventory& inv) {
+            auto listItems = [&embed](bool isCost, const Product::sub& sub, const inventory& inv) {
                 embed.set_description(embed.description
-                    + "**" + (isCost ? "Cost" 
-                        : (product.resultType == adr::Product::r_one || product.resultType == adr::Product::r_customOne ? "Result (Choose One)" : "Result")) 
+                    + "> **" + (isCost ? "Cost" 
+                        : (sub.resultType == adr::Product::r_one || sub.resultType == adr::Product::r_customOne ? "Result (Choose One)" : "Result")) 
                     + ":**\n");
 
                 for (std::size_t j{}; j < inv.size(); ++j) {
                     embed.set_description(embed.description 
-                        + (inv[j] == 0 ? "" : "* " + std::to_string(inv[j]) + ' ' + adr::get_emoji(static_cast<adr::item_id>(j)) + '\n'));
+                        + (inv[j] == 0 ? "" : "> * " + std::to_string(inv[j]) + ' ' + adr::get_emoji(static_cast<adr::item_id>(j)) + '\n'));
                 }
 
                 if (!isCost) {
-                    for (const std::string& str : product.customResult) {
-                        embed.set_description(embed.description + "* " + str + '\n');
+                    for (const std::string& str : sub.customResult) {
+                        embed.set_description(embed.description + "> * " + str + '\n');
                     }
                 }
             };
 
-            listItems(true, product.cost);
-            listItems(false, product.result);
+            for (const Product::sub& sub : product.subproducts) {
+                embed.description += "## " + sub.name + ": \n";
+                listItems(true, sub, sub.cost);
+                listItems(false, sub, sub.result);
+                embed.description += '\n';
+            }
 
             if (name == "everything") msg.add_embed(embed);
             else return dpp::message{}.add_embed(embed);
@@ -48,7 +52,13 @@ dpp::message adr::shop::getMessage(const std::string name)
     return dpp::message{ "There was an error doing that" }.set_flags(dpp::m_ephemeral);
 }
 
-dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& productName, const std::string& resultName, int times)
+dpp::message adr::shop::buy(
+        const dpp::snowflake& uuid, 
+        const std::string& productName, 
+        const std::string& subprodName,
+        const std::string& resultName, 
+        int times
+        )
 {
     if (times > 100)
         return dpp::message{ "You can not buy something more than 100 times." }.set_flags(dpp::m_ephemeral);
@@ -59,20 +69,23 @@ dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& produ
         };
 
     for (adr::Product product : adr::Product::products) {
-        if (product.name == productName) {
-            std::cout << "product: " << productName << ' ' << resultName << '\n';
+        if (product.name != productName) continue;
+        for (Product::sub sub : product.subproducts) {
+            if (sub.name != subprodName) continue;
+            std::cout << "product: " << productName << ' ' << resultName 
+            << " sub: " << sub.name << '\n';
 
             adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
-            inventory cost{ muxInv(product.cost, times) };
-            inventory result{ muxInv(product.result, times) };
+            inventory cost{ muxInv(sub.cost, times) };
+            inventory result{ muxInv(sub.result, times) };
 
             if (!player.canBuy(cost)) 
                 return dpp::message{ "You can't afford that!" }.set_flags(dpp::m_ephemeral);
 
             dpp::message msg{ "**Transaction Complete!**\n\n" };
 
-            auto listItems = [&msg, &product](bool isCost, const inventory& inv, int customResultIndex = -1) {
+            auto listItems = [&msg, &sub](bool isCost, const inventory& inv, int customResultIndex = -1) {
                 msg.set_content(msg.content + "**" + (isCost ? "Cost" : "Result") + ":**\n");
 
                 for (std::size_t j{}; j < inv.size(); ++j) {
@@ -83,19 +96,19 @@ dpp::message adr::shop::buy(const dpp::snowflake& uuid, const std::string& produ
 
                 if (!isCost) {
                     if (customResultIndex == -1) {
-                        for (const std::string& str : product.customResult) {
+                        for (const std::string& str : sub.customResult) {
                             msg.set_content(msg.content + "* " + str + '\n');
                         }
                     }
                     else {
-                        msg.set_content(msg.content + "* " + product.customResult[customResultIndex] + '\n');
+                        msg.set_content(msg.content + "* " + sub.customResult[customResultIndex] + '\n');
                     }
                 }
             };
 
             listItems(true, cost);
             
-            switch (product.resultType) {
+            switch (sub.resultType) {
 
 /* all */   case adr::Product::r_all:
                 player.subtractInv(cost);

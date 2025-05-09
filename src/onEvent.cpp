@@ -30,6 +30,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
         std::string resultName{ getOptionalParam<std::string>("result", event).value_or("")};
+        std::string subprodName{ getOptionalParam<std::string>("subproduct", event).value_or("")};
 
         std::int64_t times{ getOptionalParam<int64_t>("times", event).value_or(1) };
 
@@ -39,7 +40,13 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
 
         //event.reply(adr::shop::buy(event.command.usr.id, std::get<std::string>(event.get_parameter("product")), resultName, std::min(static_cast<int>(times), 100)));
-        dpp::message tmp = adr::shop::buy(event.command.usr.id, event.command.get_command_interaction().options[0].name, resultName, std::min(static_cast<int>(times), 100));
+        dpp::message tmp = adr::shop::buy(
+                event.command.usr.id, 
+                event.command.get_command_interaction().options[0].name, 
+                subprodName,
+                resultName, 
+                std::min(static_cast<int>(times), 100
+                ));
         event.reply(tmp);
     }
     else if (commandName == "dungeon") {
