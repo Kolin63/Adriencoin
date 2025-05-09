@@ -30,7 +30,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
-        std::string resultName{ getOptionalParam<std::string>("result", event).value_or("")};
+        std::string resultName{};
+        try {
+            resultName = std::get<std::string>(event.get_parameter("result"));
+        } catch(std::bad_variant_access&) {}
 
         std::string subprodName{};
         try {
