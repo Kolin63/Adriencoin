@@ -91,8 +91,6 @@ void adr::Player::load()
 
     try {
         m_inv = data["inv"];
-
-        m_high_dung = data["highdung"];
     }
     catch (const json::out_of_range& e) {
         // If the JSON's inventory is outdated, we will need 
@@ -103,7 +101,12 @@ void adr::Player::load()
         for (std::size_t i{}; i < data["inv"].size(); ++i) {
             m_inv[i] = data["inv"][i];
         }
+    }
 
+    try {
+        m_high_dung = data["highdung"];
+    } 
+    catch (const json::out_of_range&) {
         m_high_dung = -1;
     }
 
