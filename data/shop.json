@@ -55,7 +55,7 @@
             "color": 5635993,
             "sub": [
                 {
-                    "name": "tier_uprade",
+                    "name": "tier_upgrade",
                     "cost": {
                         "book": 70,
                         "adriencoin": 100
