@@ -134,6 +134,15 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
 
                 subprodsubcmd.add_option(result);
             }
+                
+            if (sub.resultType != adr::Product::r_none && !sub.noTimes) {
+                subprodsubcmd.add_option(dpp::command_option{ 
+                        dpp::co_integer, 
+                        "times", 
+                        "the amount of times to buy this product", 
+                        false 
+                });
+            }
 
             subcmdgroup.add_option(subprodsubcmd);
         }
