@@ -36,6 +36,10 @@ namespace adr {
         view.add_option({ dpp::co_user, "player", "the player to view", true });
         commandList.push_back(view);
 
+        dpp::slashcommand baran{ "baran", "baran's command description", bot.me.id };
+        baran.add_option({ dpp::co_integer, "amount", "the amount of adriencoin", true });
+        commandList.push_back(baran);
+
         dpp::command_option tradeItemOption{ dpp::co_string, "item", "The item that is being traded", true };
         // for (const std::string_view i : adr::item_names) {
         //     std::string str{ i };

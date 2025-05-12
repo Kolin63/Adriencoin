@@ -160,6 +160,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(adr::Stock::getEmbed(stockName));
             return;
         }
+	else if (action == "baran") {
+		event.reply(dpp::message{ "haha you genuinglely thought this would give you adriencion" });
+		return;
+	}
         else if (action == "compact") {
             event.reply(adr::Stock::getEmbed("compact"));
             return;
