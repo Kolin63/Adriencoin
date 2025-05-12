@@ -21,15 +21,15 @@
             ]
         },
         {
-            "name": "adriresource_trade",
-            "display": "Adriresource Trade",
+            "name": "adriresource",
+            "display": "Adriresource",
             "desc": "",
             "joke": "If you get a resource for the first time, is it just a source?",
             "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_adriresource.png",
             "color": 14989557,
             "sub": [
                 {
-                    "name": "adriresource_trade",
+                    "name": "trade",
                     "cost": {
                         "adriresource": 1
                     },
@@ -90,7 +90,7 @@
             ]
         },
         {
-            "name": "resource_exchange",
+            "name": "resource",
             "display": "Resource Exchange",
             "desc": "",
             "joke": "If there is an Exchange, why is there no Ychange?",
@@ -98,7 +98,7 @@
             "color": 16733002,
             "sub": [
                 {
-                    "name": "resource_exchange",
+                    "name": "exchange",
                     "cost": {
                         "adriencoin": 10
                     },
@@ -182,7 +182,7 @@
             "color": 15971768,
             "sub": [
                 {
-                    "name": "dungeon_potions",
+                    "name": "potions",
                     "cost": {
                         "rottenflesh": 100,
                         "potion": 1
