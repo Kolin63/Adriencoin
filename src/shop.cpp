@@ -62,6 +62,11 @@ dpp::message adr::shop::buy(
         int times
         )
 {
+    std::cout << "adr::shop::buy called, " 
+        << productName << ' ' 
+        << subprodName << ' ' 
+        << resultName  << '\n';
+
     if (times > 100)
         return dpp::message{ "You can not buy something more than 100 times." }.set_flags(dpp::m_ephemeral);
 
