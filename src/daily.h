@@ -9,15 +9,16 @@ namespace adr
 {
     namespace daily
     {
-        enum Title {
+        enum Title : std::uint8_t {
             t_none,
             t_baron,
             t_duke,
+            t_grand_duke,
 
             t_MAX
         };
 
-        const std::array<std::string, t_MAX> titleNames{ "None", "Baron", "Duke" };
+        const std::array<std::string, t_MAX> titleNames{ "None", "Baron", "Duke", "Grand Duke" };
 
         void doDailyTasks(dpp::cluster& bot);
         void doTitleMoney();

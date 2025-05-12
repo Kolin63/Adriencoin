@@ -68,17 +68,33 @@ bool adr::Product::parseJson()
     // Puts the JSON data into the vector for future access
     for (const json& i : data["products"]) { 
         std::cout << i["name"] << '\n';
-        bool noTimes{ false };
-        try {
-            if (i.at("noTimes").is_boolean()) { 
-                noTimes = i.at("noTimes");
-            }
-        }
-        catch (const nlohmann::json::out_of_range&) {}
 
-        adr::Product::products.push_back({ i["name"], i["display"], i["desc"], i["joke"], i["picURL"], i["color"],
-            std::get<inventory>(jsonToInv(i["cost"])), getResultType(i["resultType"]), std::get<inventory>(jsonToInv(i["result"])), 
-            std::get<std::vector<std::string>>(jsonToInv(i["result"])), noTimes });
+        std::vector<sub> subs{};
+
+        // Get subproducts
+        for (const json& sub : i["sub"]) {
+            bool noTimes{ false };
+            try {
+                if (sub.at("noTimes").is_boolean()) { 
+                    noTimes = sub.at("noTimes");
+                }
+            }
+            catch (const nlohmann::json::out_of_range&) {}
+            
+            subs.push_back({ 
+                    sub["name"], 
+                    std::get<inventory>(jsonToInv(sub["cost"])), 
+                    getResultType(sub["resultType"]), 
+                    std::get<inventory>(jsonToInv(sub["result"])),
+                    std::get<std::vector<std::string>>(jsonToInv(sub["result"])), 
+                    noTimes
+            });
+        }
+
+        adr::Product::products.push_back({ 
+                i["name"], i["display"], i["desc"], i["joke"], i["picURL"], 
+                i["color"], subs
+        });
     }
 
     std::cout << "adr::Product::parseJson() finished\n";
@@ -94,29 +110,44 @@ void adr::Product::addSlashCommands(dpp::cluster& bot, std::vector<dpp::slashcom
 
     dpp::slashcommand buy{ "buy", "Buy something", bot.me.id };
     for (const adr::Product& product : adr::Product::products) {
-        dpp::command_option subcmd{ dpp::co_sub_command, product.name, product.joke };
+        dpp::command_option subcmdgroup{ dpp::co_sub_command_group, product.name, product.joke };
+        for (const sub& sub : product.subproducts) {
 
-        if (product.resultType != adr::Product::r_all && product.resultType != adr::Product::r_customAll && product.resultType != adr::Product::r_none) {
-            dpp::command_option result{ dpp::co_string, "result", "result", true };
+            dpp::command_option subprodsubcmd{ dpp::co_sub_command, sub.name, sub.name };
 
-            for (std::size_t i{}; i < product.result.size(); ++i) {
-                if (product.result[i] > 0) {
-                    std::string str{ adr::item_names[i] };
+            if (       sub.resultType != adr::Product::r_all 
+                    && sub.resultType != adr::Product::r_customAll 
+                    && sub.resultType != adr::Product::r_none) 
+            {
+                dpp::command_option result{ dpp::co_string, "result", "result", true };
+
+                for (std::size_t i{}; i < sub.result.size(); ++i) {
+                    if (sub.result[i] > 0) {
+                        std::string str{ adr::item_names[i] };
+                        result.add_choice(dpp::command_option_choice{ str, str });
+                    }
+                }
+
+                for (const std::string& str : sub.customResult) {
                     result.add_choice(dpp::command_option_choice{ str, str });
                 }
+
+                subprodsubcmd.add_option(result);
+            }
+                
+            if (sub.resultType != adr::Product::r_none && !sub.noTimes) {
+                subprodsubcmd.add_option(dpp::command_option{ 
+                        dpp::co_integer, 
+                        "times", 
+                        "the amount of times to buy this product", 
+                        false 
+                });
             }
 
-            for (const std::string& str : product.customResult) {
-                result.add_choice(dpp::command_option_choice{ str, str });
-            }
-
-            subcmd.add_option(result);
+            subcmdgroup.add_option(subprodsubcmd);
         }
 
-        if (product.resultType != adr::Product::r_none && !product.noTimes)
-            subcmd.add_option(dpp::command_option{ dpp::co_integer, "times", "the amount of times to buy this product", false });
-
-        buy.add_option(subcmd);
+        buy.add_option(subcmdgroup);
     }
 
     commandList.push_back(buy);
