@@ -142,21 +142,26 @@ dpp::message adr::shop::buy(
 
 /* cstm */  case adr::Product::r_customAll:
             case adr::Product::r_customOne: 
-                if (productName == "tier_upgrade") {
-                    player.setJob(static_cast<adr::Job::Id>(player.job() + adr::Job::tierOneJobsSize));
-                    player.subtractInv(cost);
-
-                    return dpp::message{ "Upgraded job to " + adr::Job::jobs[player.job()].name };
-                }
-                if (productName == "job_change") {
-                    for (const adr::Job& job : adr::Job::jobs)
-                        if (job.name == resultName) {
-                            player.setJob(job.id);
-                            player.subtractInv(cost);
-                            listItems(false, result, player.job());
-                            return msg;
+                if (productName == "jobs") {
+                    if (sub.name == "tier_upgrade") {
+                        if (player.job() >= Job::tierOneJobsSize) {
+                            return dpp::message("You are already tier 2!").set_flags(dpp::m_ephemeral);
                         }
-                    return dpp::message{ "There was an error changing your job to that." };
+                        player.setJob(static_cast<adr::Job::Id>(player.job() + adr::Job::tierOneJobsSize));
+                        player.subtractInv(cost);
+
+                        return dpp::message{ "Upgraded job to " + adr::Job::jobs[player.job()].name };
+                    }
+                    if (sub.name == "job_change") {
+                        for (const adr::Job& job : adr::Job::jobs)
+                            if (job.name == resultName) {
+                                player.setJob(job.id);
+                                player.subtractInv(cost);
+                                listItems(false, result, player.job());
+                                return msg;
+                            }
+                        return dpp::message{ "There was an error changing your job to that." };
+                    }
                 }
                 if (productName == "titles") {
                     daily::Title goaltitle;
