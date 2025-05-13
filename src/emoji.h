@@ -30,6 +30,8 @@ namespace adr
         e_implosion,
         e_hyperion,
 
+        e_kismet_feather,
+
         e_MAX
     };
 
@@ -58,6 +60,8 @@ namespace adr
         { "adr_shadow_warp",    1368791443371458602 },
         { "adr_implosion",      1368791422068723836 },
         { "adr_hyperion",       1368791391441911838 },
+
+        { "adr_kismet_feather", 1371656767611601008 },
     };
 #else
     constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
@@ -83,6 +87,8 @@ namespace adr
         { "adr_shadow_warp",    1368790400613089350 },
         { "adr_implosion",      1368790386297802893 },
         { "adr_hyperion",       1368790219305783366 },
+
+        { "adr_kismet_feather", 1371656542159503492 },
     };
 #endif
 

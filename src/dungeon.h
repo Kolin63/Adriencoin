@@ -113,7 +113,7 @@ namespace adr
         /// @param i Which item to try for
         /// @return True if succesful, false otherwise
         ///
-        bool try_drop(item_id i) const;
+        bool try_drop(item_id i, bool kismet_feather) const;
 
         ///
         /// fight()
@@ -124,7 +124,8 @@ namespace adr
         ///
         std::optional<inventory> fight(
             const dpp::snowflake& uuid,
-            bool dungeon_potion
+            bool dungeon_potion,
+            bool kismet_feather
         ) const;
 
     public:
@@ -185,7 +186,8 @@ namespace adr
         dpp::message buy(
                 const dpp::snowflake& uuid,
                 bool dungeon_potion,
-                bool bonzo_mask
+                bool bonzo_mask,
+                bool kismet_feather
         ) const;
 
         ///
@@ -268,6 +270,9 @@ namespace adr
                 { 0, 0 }, // i_shadow_warp,
                 { 0, 0 }, // i_implosion,
                 { 0, 0 }, // i_hyperion,
+
+                { 0, 0 }, // i_dungeon_potion,
+                { 0, 0 }, // i_kismet_feather,
             }}, 
             "https://media.tenor.com/NsJeBDRCh_MAAAAM/puffer-fish.gif"
         },
@@ -472,6 +477,14 @@ namespace adr
                 { 0, 0 }, // i_loving_scarf,
                 { 0, 0 }, // i_spirit_sceptre,
                 { 10, 1 }, // i_livid_dagger,
+                { 0, 0 }, // i_giant_sword,
+                { 0, 0 }, // i_wither_shield,
+                { 0, 0 }, // i_shadow_warp,
+                { 0, 0 }, // i_implosion,
+                { 0, 0 }, // i_hyperion,
+
+                { 0, 0 }, // i_dungeon_potion,
+                { 20, 1 }, // i_kismet_feather,
             }}, 
             "https://wiki.hypixel.net/images/3/34/SkyBlock_npcs_livid.png"
         },
@@ -517,6 +530,13 @@ namespace adr
                 { 0, 0 }, // i_spirit_sceptre,
                 { 0, 0 }, // i_livid_dagger,
                 { 10, 1 }, // i_giant_sword,
+                { 0, 0 }, // i_wither_shield,
+                { 0, 0 }, // i_shadow_warp,
+                { 0, 0 }, // i_implosion,
+                { 0, 0 }, // i_hyperion,
+
+                { 0, 0 }, // i_dungeon_potion,
+                { 25, 1 }, // i_kismet_feather,
             }}, 
             "https://wiki.hypixel.net/images/1/17/SkyBlock_npcs_sadan.png"
         },
@@ -570,6 +590,9 @@ namespace adr
                 { 10, 1 }, // i_shadow_warp,
                 { 10, 1 }, // i_implosion,
                 { 5, 1 }, // i_hyperion,
+
+                { 0, 0 }, // i_dungeon_potion,
+                { 30, 1 }, // i_kismet_feather,
             }}, 
             "https://wiki.hypixel.net/images/a/a4/Minecraft_entities_wither.png"
         },
