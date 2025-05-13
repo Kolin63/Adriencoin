@@ -46,6 +46,7 @@ namespace adr
         i_hyperion,
 
         i_dungeon_potion,
+        i_kismet_feather,
 
         i_MAX
     };
@@ -91,6 +92,7 @@ namespace adr
         "hyperion",
 
         "dungeon_potion",
+        "kismet_feather",
     };
 
     // 
@@ -136,6 +138,7 @@ namespace adr
         e_hyperion,
 
         e_potion,
+        e_kismet_feather,
 
         e_fish,
     };

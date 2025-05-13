@@ -50,20 +50,30 @@ bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
     return chance >= roll;
 }
 
-bool adr::dungeon::try_drop(adr::item_id i) const
+bool adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
 {
     // This is where we can apply modifiers from mayors, items, or anything
     // else
     // It is an int so we don't have to worry about overflow
-    const int chance{ item_chances[i].first };
+    const int chance{ 
+        item_chances[i].first 
+        + (kismet_feather * 5)
+    };
 
     // If the item never drops or always drops, we don't need
     // to waste time generating a random number
-    if (chance == 0 || chance >= 100) return chance;
+    if (chance == 0 
+            || chance >= 100
+            || item_chances[i].first == 0 
+            || item_chances[i].first >= 100
+        ) return chance;
     if (chance < 0) return 0;
 
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
+
+    std::cout << "try_drop() for item " << i 
+        << ", chance is " << chance << ", roll is " << roll << '\n';
 
     // If the drop chance is greater than or equal to the roll, 
     // then the item was dropped.
@@ -72,7 +82,8 @@ bool adr::dungeon::try_drop(adr::item_id i) const
 
 std::optional<inventory> adr::dungeon::fight(
         const dpp::snowflake& uuid,
-        bool dungeon_potion
+        bool dungeon_potion,
+        bool kismet_feather
 ) const
 {
     // The player that is fighting
@@ -91,7 +102,7 @@ std::optional<inventory> adr::dungeon::fight(
         const adr::item_id item{ static_cast<adr::item_id>(i) };
 
         // If we fail the drop, continue
-        if (!try_drop(item)) continue;
+        if (!try_drop(item, kismet_feather)) continue;
 
         // Otherwise, add it to the player inventory
         
@@ -163,7 +174,8 @@ int adr::dungeon::get_price() const
 dpp::message adr::dungeon::buy(
         const dpp::snowflake& uuid,
         bool dungeon_potion,
-        bool bonzo_mask
+        bool bonzo_mask,
+        bool kismet_feather
 ) const
 {
     // The player that is buying
@@ -180,6 +192,10 @@ dpp::message adr::dungeon::buy(
     }
     if (bonzo_mask && player.inv(i_bonzo_mask) <= 0) {
         return dpp::message{ "You don't have any bonzo masks!" }
+        .set_flags(dpp::m_ephemeral);
+    }
+    if (kismet_feather && player.inv(i_kismet_feather) <= 0) {
+        return dpp::message{ "You don't have any kismet feathers!" }
         .set_flags(dpp::m_ephemeral);
     }
 
@@ -234,7 +250,7 @@ dpp::message adr::dungeon::buy(
     player.updateLastFought();
 
     // Fight the boss
-    const std::optional<inventory> fight_results{ fight(uuid, dungeon_potion) };
+    const std::optional<inventory> fight_results{ fight(uuid, dungeon_potion, kismet_feather) };
 
     // Make the embed that we will be using for the message
     dpp::embed embed{};
@@ -258,8 +274,14 @@ dpp::message adr::dungeon::buy(
             && !bonzo_used
             && player.nextFight() > 0;
 
+        ss << "\n\n";
+
         if (player.m_atr.bonzo_can_use.val) {
-            ss << "\n\n" << get_emoji(e_bonzo_mask) << " Bonzo Mask Available";
+            ss << get_emoji(e_bonzo_mask) << " Bonzo Mask Available\n";
+        }
+
+        if (kismet_feather) {
+            ss << get_emoji(e_kismet_feather) << " Kismet Feather not used\n";
         }
 
         // Set embed Title, Color, Description
@@ -312,6 +334,15 @@ dpp::message adr::dungeon::buy(
             << inv[i] << '\n';
     }
 
+    ss << '\n';
+
+    // Handle kismet feather stuff
+    // Note: the actual chance increase is done in try_drop()
+    if (kismet_feather) {
+        player.changeInv(i_kismet_feather, -1);
+        ss << get_emoji(e_kismet_feather) << " Kismet Feather Used\n";
+    }
+
     // Set embed description
     embed.set_description(ss.str());
 
@@ -342,6 +373,7 @@ void adr::dungeon::add_slash_commands(
         .add_option(bosses)
         .add_option(dpp::command_option{ dpp::co_boolean, "dungeon_potion", "Use a Dungeon Potion", false })
         .add_option(dpp::command_option{ dpp::co_boolean, "bonzo_mask", "Use a Bonzo Mask", false })
+        .add_option(dpp::command_option{ dpp::co_boolean, "kismet_feather", "Use a Kismet Feather", false })
     );
 
     // add 'all' option to boss list for view command
@@ -421,13 +453,16 @@ void adr::dungeon::handle_slash_command(
     if (action == "fight") {
         bool dungeon_pot{ false };
         bool bonzo_mask{ false };
+        bool kismet_feather{ false };
 
         try { dungeon_pot = std::get<bool>(event.get_parameter("dungeon_potion")); }
         catch (const std::bad_variant_access&) {};
         try { bonzo_mask = std::get<bool>(event.get_parameter("bonzo_mask")); }
         catch (const std::bad_variant_access&) {};
+        try { kismet_feather = std::get<bool>(event.get_parameter("kismet_feather")); }
+        catch (const std::bad_variant_access&) {};
 
-        event.reply(dung.buy(event.command.usr.id, dungeon_pot, bonzo_mask));
+        event.reply(dung.buy(event.command.usr.id, dungeon_pot, bonzo_mask, kismet_feather));
         return;
     }
 }

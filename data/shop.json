@@ -176,7 +176,7 @@
         {
             "name": "dungeon_shop",
             "display": "Dungeon Shop",
-            "desc": "Dungeon Potions Increase Win Chance by 5%",
+            "desc": "Dungeon Potions Increase Win Chance by 5%\nKismet Feathers Increase Item Drop Chance by 5%. Kismet Feathers are only used if the boss is defeated.",
             "joke": "If there's a Dungeon, is there a Pee-geon?",
             "picURL": "https://wiki.hypixel.net/images/6/66/SkyBlock_items_dungeoneering.png",
             "color": 15971768,
@@ -190,6 +190,18 @@
                     "resultType": "all",
                     "result": {
                         "dungeon_potion": 1
+                    }
+                },
+                {
+                    "name": "kismet_feathers",
+                    "cost": {
+                        "carrot": 300,
+                        "gemstone": 175,
+                        "adriencoin": 5
+                    },
+                    "resultType": "all",
+                    "result": {
+                        "kismet_feather": 1
                     }
                 }
             ]
