@@ -329,9 +329,11 @@ dpp::message adr::dungeon::buy(
         // Shortcuts
         const item_id item{ static_cast<item_id>(i) };
 
+        const std::string_view bold{ inv[i] > 0 ? "**" : "*" };
+
         // Add item emoji, name, and amount
-        ss << get_emoji(item) << ' ' << adr::item_names[i] << ": " 
-            << inv[i] << '\n';
+        ss << bold << get_emoji(item) << ' ' << adr::item_names[i] << ": " 
+            << inv[i] << bold << '\n';
     }
 
     ss << '\n';
