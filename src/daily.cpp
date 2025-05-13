@@ -39,6 +39,9 @@ void adr::daily::doTitleMoney()
         case adr::daily::t_duke:
             player.changeInv(adr::i_adriencoin, 10);
             break;
+        case adr::daily::t_grand_duke:
+            player.changeInv(adr::i_adriencoin, 50);
+            break;
         default:
             break;
         }
