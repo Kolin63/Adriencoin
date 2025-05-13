@@ -92,21 +92,29 @@ void adr::Player::load()
     try {
         m_inv = data["inv"];
     }
-    catch (const json::out_of_range& e) {
+    catch (...) {
         // If the JSON's inventory is outdated, we will need 
         // to put it into the user's inventory one at a time
         // and leave the new items as zeros
-        std::cout << m_uuid << "'s save possibly outdated. attempting to fix. error: " << e.what() << '\n';
+        std::cout << m_uuid << "'s save possibly outdated. attempting to fix." << '\n';
         m_inv = {};
         for (std::size_t i{}; i < data["inv"].size(); ++i) {
-            m_inv[i] = data["inv"][i];
+            try {
+                m_inv[i] = data["inv"][i];
+            }
+            catch (...) {
+                std::cout << m_uuid << " inventory item " << i << " is being"
+                    << " updated\n";
+                m_inv[i] = 0;
+            }
         }
+        std::cout << "Succesfully updated inventory of " << m_uuid << '\n';
     }
 
     try {
         m_high_dung = data["highdung"];
     } 
-    catch (const json::out_of_range&) {
+    catch (...) {
         m_high_dung = -1;
     }
 
