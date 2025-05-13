@@ -67,7 +67,7 @@ namespace adr
         // atrib<bool> example{ false, "example", e_stockofstonks };
 
         // True if the loving scarf has been used
-        atrib<bool> bonzo_love{ false, "bonzo_love", e_bonzo_mask };
+        atrib<bool> bonzo_love{ false, "bonzo_love", e_loving_scarf };
 
         // True if:
         // * the player has a bonzo mask
