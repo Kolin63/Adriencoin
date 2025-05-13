@@ -28,7 +28,7 @@ dpp::message adr::shop::getMessage(const std::string name)
 
                 for (std::size_t j{}; j < inv.size(); ++j) {
                     embed.set_description(embed.description 
-                        + (inv[j] == 0 ? "" : "> * " + std::to_string(inv[j]) + ' ' + adr::get_emoji(static_cast<adr::item_id>(j)) + '\n'));
+                        + (inv[j] == 0 ? "" : "> * " + adr::get_emoji(static_cast<adr::item_id>(j)) + ' ' + std::string{ item_names[j] } + ": " + std::to_string(inv[j]) + '\n'));
                 }
 
                 if (!isCost) {
@@ -97,8 +97,10 @@ dpp::message adr::shop::buy(
 
                 for (std::size_t j{}; j < inv.size(); ++j) {
                     if (inv[j] != 0) 
-                        msg.set_content(msg.content + "* " + std::to_string(inv[j]) + ' ' 
-                            + adr::get_emoji(static_cast<adr::item_id>(j)) + '\n');
+                        msg.set_content(msg.content + "* " 
+                                + adr::get_emoji(static_cast<adr::item_id>(j)) 
+                                + ' ' + std::string{ item_names[j] } + ": " 
+                                + std::to_string(inv[j]) + '\n');
                 }
 
                 if (!isCost) {
