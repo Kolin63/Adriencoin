@@ -1,17 +1,34 @@
 {
+    "attributes": {
+        "bonzo_can_use": false,
+        "bonzo_love": true,
+        "implosion": false,
+        "shadow_warp": false,
+        "wither_shield": false
+    },
+    "highdung": 3,
     "inv": [
-        280,
+        8320,
         0,
         0,
         0,
         0,
         0,
         0,
-        4,
+        300,
         0,
-        5,
+        210,
         10,
+        5,
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
         1,
         0,
         0,
@@ -19,10 +36,11 @@
         0,
         0,
         0,
-        0
+        0,
+        1
     ],
-    "job": 0,
-    "lastWorked": 1745259425,
+    "job": 7,
+    "lastWorked": 1747073221,
     "title": 1,
     "uuid": 1252281077515554848
 }
