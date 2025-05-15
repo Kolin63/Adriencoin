@@ -385,6 +385,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 }
             }
 
+            if (player.m_godmode == adr::Player::g_all) {
+                player.m_high_dung = 100;
+            }
+
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
 #else
             event.reply(dpp::message{ "Debug Wasn't Defined" }
