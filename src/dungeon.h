@@ -98,31 +98,39 @@ namespace adr
         ///
         const std::string_view thumbnail_url;
 
+        using win_info = std::tuple<bool, int, int>;
+
         /// 
         /// try_win()
         /// @brief Attempt to win a boss fight
         /// @param p The player that is attempting. It is used for checking 
         /// their inventory.
-        /// @return True if succesful, false otherwise
+        /// @return A tuple containing if it was a win, what the player
+        /// rolled, and what the player would've had to roll
         /// 
-        bool try_win(adr::Player& p, bool dungeon_potion) const;
+        win_info try_win(adr::Player& p, bool dungeon_potion) const;
+
+        using drop_info = std::tuple<bool, int, int>;
 
         ///
         /// try_drop()
         /// @brief Attempt to get a drop from a boss fight
         /// @param i Which item to try for
-        /// @return True if succesful, false otherwise
+        /// @return A tuple containing if it was dropped, what the player 
+        /// rolled, and what the player would've had to roll
         ///
-        bool try_drop(item_id i, bool kismet_feather) const;
+        drop_info try_drop(item_id i, bool kismet_feather) const;
+
+        using fight_info = std::tuple<std::array<drop_info, i_MAX>, inventory, win_info>;
 
         ///
         /// fight()
         /// @brief Handles boss fight RNG and item distribution
         /// @param uuid The player that is fighting
-        /// @return std::optional<Inventory> that will be null if the
-        /// fight was unsuccesful, and contain the item drops otherwise
+        /// @return A tuple containing win_info, an array of drop_info,
+        /// and an inventory containing the item drops
         ///
-        std::optional<inventory> fight(
+        fight_info fight(
             const dpp::snowflake& uuid,
             bool dungeon_potion,
             bool kismet_feather

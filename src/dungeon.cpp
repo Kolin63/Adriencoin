@@ -8,11 +8,10 @@
 #include <dpp/appcommand.h>
 #include <dpp/exception.h>
 #include <dpp/message.h>
-#include <optional>
 #include <sstream>
 #include <variant>
 
-bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
+adr::dungeon::win_info adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
 {
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
@@ -47,17 +46,21 @@ bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
 
     // If the win chance is greater than or equal to the roll, 
     // then the fight was won. 
-    return chance >= roll;
+    return { 
+        chance >= roll,
+        roll,
+        chance,
+    };
 }
 
-bool adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
+adr::dungeon::drop_info adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
 {
     // This is where we can apply modifiers from mayors, items, or anything
     // else
     // It is an int so we don't have to worry about overflow
     const int chance{ 
         item_chances[i].first 
-        + (kismet_feather * 5)
+            + (kismet_feather * 5)
     };
 
     // If the item never drops or always drops, we don't need
@@ -66,8 +69,18 @@ bool adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
             || chance >= 100
             || item_chances[i].first == 0 
             || item_chances[i].first >= 100
-        ) return chance;
-    if (chance < 0) return 0;
+       ) 
+        return {
+            chance,
+            chance,
+            chance
+        };
+
+    if (chance < 0) return {
+        false,
+        0,
+        0
+    };
 
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
@@ -77,10 +90,14 @@ bool adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
 
     // If the drop chance is greater than or equal to the roll, 
     // then the item was dropped.
-    return chance >= roll;
+    return { 
+        chance >= roll,
+        roll,
+        chance
+    };
 }
 
-std::optional<inventory> adr::dungeon::fight(
+adr::dungeon::fight_info adr::dungeon::fight(
         const dpp::snowflake& uuid,
         bool dungeon_potion,
         bool kismet_feather
@@ -90,10 +107,16 @@ std::optional<inventory> adr::dungeon::fight(
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
     // If the boss fight was lost, return null
-    if (!try_win(player, dungeon_potion)) return std::nullopt;
+    const win_info win_info{ try_win(player, dungeon_potion) };
+    if (!std::get<bool>(win_info)) return {
+        {}, {}, win_info
+    };
 
     // The temporary Inventory we will be adding to
     inventory inv{};
+
+    // The temporary drop info list
+    std::array<drop_info, i_MAX> drop_infos{};
 
     // Otherwise, we can roll for item drops
     for (std::size_t i{}; i < adr::i_MAX; ++i) 
@@ -101,8 +124,12 @@ std::optional<inventory> adr::dungeon::fight(
         // The item we are rolling for
         const adr::item_id item{ static_cast<adr::item_id>(i) };
 
+        const drop_info drop_info{ try_drop(item, kismet_feather) };
+
+        drop_infos[i] = drop_info;
+
         // If we fail the drop, continue
-        if (!try_drop(item, kismet_feather)) continue;
+        if (!std::get<bool>(drop_info)) continue;
 
         // Otherwise, add it to the player inventory
         
@@ -118,7 +145,11 @@ std::optional<inventory> adr::dungeon::fight(
 
     // Return the temporary inventory so that the caller can tell the
     // player what items they got
-    return inv;
+    return {
+        drop_infos,
+        inv,
+        win_info
+    };
 }
 
 dpp::embed adr::dungeon::get_embed() const
@@ -250,7 +281,7 @@ dpp::message adr::dungeon::buy(
     player.updateLastFought();
 
     // Fight the boss
-    const std::optional<inventory> fight_results{ fight(uuid, dungeon_potion, kismet_feather) };
+    const fight_info fight_results{ fight(uuid, dungeon_potion, kismet_feather) };
 
     // Make the embed that we will be using for the message
     dpp::embed embed{};
@@ -260,7 +291,7 @@ dpp::message adr::dungeon::buy(
     std::stringstream ss{};
 
     // If the player lost the fight
-    if (!fight_results.has_value()) {
+    if (!std::get<bool>(std::get<win_info>(fight_results))) {
         ss << lose_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
             << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
@@ -299,7 +330,7 @@ dpp::message adr::dungeon::buy(
     // If the player won the fight
 
     // Put the item drops into an inventory
-    const inventory& inv{ fight_results.value() };
+    const inventory& inv{ std::get<inventory>(fight_results) };
 
     // Update highest dungeon
     player.m_high_dung = id;
