@@ -33,10 +33,10 @@
             ],
             "name": "jerrys_carrots",
             "outstanding": 0,
-            "potentialStability": 0,
+            "potentialStability": 50,
             "stability": 50,
             "ticker": "CRT",
-            "timesWorked": 0,
+            "timesWorked": 4,
             "unissued": 50,
             "value": 62
         },
@@ -70,12 +70,12 @@
                 31
             ],
             "name": "divans_gems",
-            "outstanding": 27,
-            "potentialStability": 0,
+            "outstanding": 19,
+            "potentialStability": 50,
             "stability": 50,
             "ticker": "GEM",
-            "timesWorked": 0,
-            "unissued": 23,
+            "timesWorked": 4,
+            "unissued": 31,
             "value": 24
         },
         {
@@ -108,12 +108,12 @@
                 52
             ],
             "name": "jacks_lumber",
-            "outstanding": 7,
+            "outstanding": 0,
             "potentialStability": 0,
             "stability": 0,
             "ticker": "LMB",
             "timesWorked": 0,
-            "unissued": 43,
+            "unissued": 50,
             "value": 21
         },
         {
@@ -146,12 +146,12 @@
                 50
             ],
             "name": "geralds_fish",
-            "outstanding": 2,
-            "potentialStability": 0,
+            "outstanding": 3,
+            "potentialStability": 10,
             "stability": 0,
             "ticker": "FSH",
-            "timesWorked": 0,
-            "unissued": 48,
+            "timesWorked": 1,
+            "unissued": 47,
             "value": 26
         },
         {
@@ -185,10 +185,10 @@
             ],
             "name": "aatroxs_slaying",
             "outstanding": 0,
-            "potentialStability": 0,
+            "potentialStability": 30,
             "stability": 5,
             "ticker": "SLY",
-            "timesWorked": 0,
+            "timesWorked": 2,
             "unissued": 50,
             "value": 42
         },
@@ -223,10 +223,10 @@
             ],
             "name": "berts_knowledge",
             "outstanding": 1,
-            "potentialStability": 0,
+            "potentialStability": 45,
             "stability": 50,
             "ticker": "KNW",
-            "timesWorked": 0,
+            "timesWorked": 3,
             "unissued": 49,
             "value": 52
         },
@@ -261,10 +261,10 @@
             ],
             "name": "the_brewers",
             "outstanding": 0,
-            "potentialStability": 0,
+            "potentialStability": 30,
             "stability": 50,
             "ticker": "BRW",
-            "timesWorked": 0,
+            "timesWorked": 2,
             "unissued": 50,
             "value": 54
         },
