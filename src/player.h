@@ -9,6 +9,7 @@
 #include "inventory.h"
 #include "daily.h"
 #include "attributes.h"
+#include "statistics.h"
 
 namespace adr {
 
@@ -39,6 +40,8 @@ namespace adr {
 
     public:
         attributes m_atr{};
+
+        Statistics m_stat{};
 
         // the hardest dungeon the player has done
         // an integer to not have a circular dependency
