@@ -50,6 +50,7 @@ void adr::Player::save() const
     data["highdung"] = m_high_dung;
 
     m_atr.save_json(data);
+    m_stat.saveJSON(data);
 
     std::ofstream fs(filename);
     fs << std::setw(4) << data << std::endl;
@@ -121,6 +122,7 @@ void adr::Player::load()
     m_title = data.value("title", adr::daily::t_none);
 
     m_atr.load_json(data);
+    m_stat.loadJSON(data);
 
     fs.close();
 }
@@ -160,6 +162,7 @@ const dpp::embed adr::Player::viewEmbed() const
     desc += adr::getNonZeroItems(m_inv);
 
     desc += "\n**Attributes:**\n" + m_atr.list();
+    desc += "\n**Statistics:**\n" + m_stat.list();
 
     embed.set_description(desc);
 

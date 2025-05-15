@@ -335,7 +335,8 @@ dpp::message adr::dungeon::buy(
     const inventory& inv{ std::get<inventory>(fight_results) };
 
     // Update highest dungeon
-    player.m_high_dung = id;
+    if (id > player.m_high_dung)
+      player.m_high_dung = id;
 
     // Set title and color
     embed.set_title("Dungeon Won!")
@@ -383,6 +384,18 @@ dpp::message adr::dungeon::buy(
 
     // Set embed description
     embed.set_description(ss.str());
+
+    // stats
+    switch (id) {
+        case d_bonzo: ++player.m_stat.bonzo.value; break;
+        case d_scarf: ++player.m_stat.scarf.value; break;
+        case d_the_professor: ++player.m_stat.theProfessor.value; break;
+        case d_thorn: ++player.m_stat.thorn.value; break;
+        case d_livid: ++player.m_stat.livid.value; break;
+        case d_sadan: ++player.m_stat.sadan.value; break;
+        case d_necron: ++player.m_stat.necron.value; break;
+        default: break;
+    }
 
     // Return to the caller to be sent to the player 
     return dpp::message{}.add_embed(embed);

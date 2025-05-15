@@ -43,6 +43,8 @@ add_executable(${PROJECT_NAME}
     src/dungeon.h
     src/attributes.cpp
     src/attributes.h
+    src/statistics.cpp
+    src/statistics.h
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).

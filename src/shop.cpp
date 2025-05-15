@@ -123,6 +123,7 @@ dpp::message adr::shop::buy(
                 player.subtractInv(cost);
                 player.changeInv(result);
                 listItems(false, result);
+                ++player.m_stat.timesInStore.value;
                 return msg;
             
 /* one */   case adr::Product::r_one:
@@ -140,6 +141,7 @@ dpp::message adr::shop::buy(
                 finalResult[resultIndex] = result[resultIndex];
 
                 listItems(false, finalResult);
+                ++player.m_stat.timesInStore.value;
                 return msg;
             }
 
@@ -157,6 +159,7 @@ dpp::message adr::shop::buy(
                         player.setJob(static_cast<adr::Job::Id>(player.job() + adr::Job::tierOneJobsSize));
                         player.subtractInv(cost);
 
+                        ++player.m_stat.timesInStore.value;
                         return dpp::message{ "Upgraded job to " + adr::Job::jobs[player.job()].name };
                     }
                     if (sub.name == "job_change") {
@@ -165,6 +168,7 @@ dpp::message adr::shop::buy(
                                 player.setJob(job.id);
                                 player.subtractInv(cost);
                                 listItems(false, result, player.job());
+                                ++player.m_stat.timesInStore.value;
                                 return msg;
                             }
                         return dpp::message{ "There was an error changing your job to that." };
@@ -193,6 +197,7 @@ dpp::message adr::shop::buy(
                     player.setTitle(goaltitle);
                     player.subtractInv(cost);
                     listItems(false, result);
+                    ++player.m_stat.timesInStore.value;
                     return msg;
                 }
             }
