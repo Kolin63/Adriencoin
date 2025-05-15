@@ -180,8 +180,13 @@ dpp::message adr::shop::buy(
                         .set_flags(dpp::m_ephemeral);
                     }
 
-                    if (player.getTitle() >= goaltitle) {
+                    if (player.getTitle() >= goaltitle) [[unlikely]] {
                         return dpp::message{ "You already have that title!" }
+                        .set_flags(dpp::m_ephemeral);
+                    }
+
+                    if (player.getTitle() < goaltitle - 1) [[unlikely]] {
+                        return dpp::message{ "You must buy the previous title!" }
                         .set_flags(dpp::m_ephemeral);
                     }
 
