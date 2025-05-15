@@ -451,7 +451,7 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
     }
-    else {
+    else if (commandName == "work") {
         adr::doJob(event);
     }
 }
@@ -484,40 +484,27 @@ void adr::onButtonClick(const dpp::button_click_t& event)
 
 void adr::doJob(const dpp::slashcommand_t& event)
 {
-    const std::string& commandName{ event.command.get_command_name() };
+  adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
+  const Job& job{ Job::jobs[player.job()] };
 
-    // turns true if the player can do a job, and stays false otherwise
-    // if it stays false, then the bot will tell them that they couldn't do anything
-    bool didAJob{ false };
+  if (player.nextWork() >= 0) {
+    event.reply(dpp::message{ "You can work next " + player.nextWorkTimestamp() }.set_flags(dpp::m_ephemeral));
+    return;
+  }
 
-    adr::Player& player{ adr::cache::getPlayerFromCache(event.command.usr.id) };
+  if (player.job() == adr::Job::MAX) {
+    event.reply("You don't have a job!");
+  }
 
-    if (player.nextWork() >= 0) {
-        event.reply(dpp::message{ "You can work next " + player.nextWorkTimestamp() }.set_flags(dpp::m_ephemeral));
-        return;
-    }
+  player[job.item.id] += job.item.amount;
+  player[adr::i_adriencoin] += job.adriencoin;
+  player.updateLastWorked();
 
-    for (const adr::Job& i : adr::Job::jobs) if (player.job() == i.id && commandName == i.action) {
-        didAJob = true;
-        player[i.item.id] += i.item.amount;
-        player[adr::i_adriencoin] += i.adriencoin;
-        player.updateLastWorked();
+  adr::Stock::jobWorked(job.id);
 
-        adr::Stock::jobWorked(i.id);
+  // stats
+  ++player.m_stat.timesWorked.value;
 
-        // stats
-        ++player.m_stat.timesWorked.value;
-
-        event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + get_emoji(i.item.id)
-            + " and +" + std::to_string(i.adriencoin) + ' ' + get_emoji(e_adriencoin));
-    }
-
-    if (!didAJob) {
-        if (player.job() == adr::Job::MAX) {
-            event.reply("You don't have a job!");
-        }
-        else {
-            event.reply("That is not your job! Your job is " + adr::Job::jobs[player.job()].name);
-        }
-    }
+  event.reply(job.action + ": +" + std::to_string(job.item.amount) + ' ' + get_emoji(job.item.id)
+      + " and +" + std::to_string(job.adriencoin) + ' ' + get_emoji(e_adriencoin));
 }

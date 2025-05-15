@@ -4,7 +4,6 @@
 #include <dpp/dpp.h>
 #include "onReady.h"
 #include "job.h"
-#include "item.h"
 #include "product.h"
 #include "stock.h"
 #include "dungeon.h"
@@ -12,21 +11,13 @@
 namespace adr {
     void addSlashCommands(dpp::cluster& bot)
     {
-        constexpr std::size_t commandsAmount{ adr::Job::tierOneJobsSize + 5 };
-
         std::cout << "making commands!\n";
 
         std::vector<dpp::slashcommand> commandList{};
-        commandList.reserve(commandsAmount);
-        commandList.resize(0);
         std::cout << "commandList capacity: " << commandList.capacity() << " size: " << commandList.size() << '\n';
 
-        for (std::size_t i{}; i < adr::Job::tierOneJobsSize; ++i)
-        {
-            dpp::slashcommand slashcommand{ adr::Job::jobs[i].action, (adr::Job::jobs[i].action + ' ' + std::string{ adr::item_names[adr::Job::jobs[i].item.id] }), bot.me.id};
-            std::cout << adr::Job::jobs[i].name << ' ' << adr::Job::jobs[i].action << '\n';
-            commandList.push_back(slashcommand);
-        }
+        dpp::slashcommand work{ "work", "work and make money!", bot.me.id };
+        commandList.push_back(work);
 
         adr::Product::addSlashCommands(bot, commandList);
         
