@@ -7,6 +7,11 @@
 
 int main()
 {
+#ifdef DEBUG 
+    std::cout << std::string(80, '=') 
+        << "\nDEBUG MODE ENABLED\n" 
+        << std::string(80, '=') << '\n';
+#endif
     bot.on_log(dpp::utility::cout_logger());
 
     bot.on_slashcommand([](const dpp::slashcommand_t& event)

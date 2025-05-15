@@ -2,6 +2,7 @@
 #include "emoji.h"
 #include "item.h"
 #include <dpp/message.h>
+#include <dpp/snowflake.h>
 #include <string>
 #include <algorithm>
 #include <dpp/dpp.h>
@@ -369,6 +370,31 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
             adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user")))
             .changeInv(get_item_id(std::get<std::string>(event.get_parameter("string"))), static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "godmode") {
+#ifdef DEBUG
+            adr::Player& player{ adr::cache::getPlayerFromCache(getOptionalParam<dpp::snowflake>("user", event).value_or(event.command.usr.id)) };
+
+            const std::int64_t amt{ getOptionalParam<std::int64_t>("amount", event).value_or(3) };
+
+            player.m_godmode = static_cast<adr::Player::godmode>(amt);
+
+            if (player.m_godmode == adr::Player::g_items || player.m_godmode == adr::Player::g_all) {
+                for (std::size_t i{}; i < i_MAX; ++i) {
+                    player.changeInv(static_cast<item_id>(i), 99999);
+                }
+            }
+
+            if (player.m_godmode == adr::Player::g_all) {
+                player.m_high_dung = 100;
+            }
+
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+#else
+            event.reply(dpp::message{ "Debug Wasn't Defined" }
+                    .set_flags(dpp::m_ephemeral));
+            return;
+#endif
         }
         else if (subcmd == "resetworktimer") {
             adr::Player& player{ adr::cache::getPlayerFromCache(std::get<dpp::snowflake>(event.get_parameter("user"))) };

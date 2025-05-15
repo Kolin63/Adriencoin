@@ -35,8 +35,8 @@ namespace adr
         e_MAX
     };
 
-// This should be false if on the Test Bot, True if on the Release Bot
-#if false
+// DEBUG should be defined on the Test Bot, and not on the Release Bot
+#ifndef DEBUG
     constexpr static std::pair<std::string_view, dpp::snowflake> emojis[] {
         { "adr_carrot",	        1342341829894471811 },
         { "adr_gemstone",	    1342341843181899900 },

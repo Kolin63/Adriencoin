@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.22)
 project(discord-bot VERSION 1.0 DESCRIPTION "A discord bot")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+option(DEBUG "ON for Debug, OFF for Release" OFF)
+message(STATUS "The DEBUG status is ${DEBUG}. Configure it with `cmake -DDEBUG=<ON|OFF> ..` when in build/")
  
 # Create an executable
 add_executable(${PROJECT_NAME}
@@ -64,3 +67,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # Set Flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wpedantic")
 
+if (DEBUG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
+endif()

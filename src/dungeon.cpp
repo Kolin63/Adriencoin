@@ -6,13 +6,13 @@
 #include "player.h"
 #include "cache.h"
 #include <dpp/appcommand.h>
+#include <dpp/emoji.h>
 #include <dpp/exception.h>
 #include <dpp/message.h>
-#include <optional>
 #include <sstream>
 #include <variant>
 
-bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
+adr::dungeon::win_info adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
 {
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
@@ -26,6 +26,8 @@ bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
     // or anything else
     // It is an int so we don't have to worry about overflow
     const int chance{
+        100 - (
+
         win_chance 
         + (p.inv(i_spirit_sceptre) > 0) * 5
         + (p.inv(i_giant_sword) > 0)    * 5
@@ -34,6 +36,8 @@ bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
         + (p.m_atr.shadow_warp.val)     * 5
         + (p.m_atr.implosion.val)       * 5
         + (use_dpot)                    * 5
+
+        )
     };
 
     // If the player used a dungeon pot, decrement it by one
@@ -45,29 +49,28 @@ bool adr::dungeon::try_win(adr::Player& p, bool dungeon_potion) const
         << ", base chance is " << static_cast<short>(win_chance) 
         << ", rolled a " << roll << ", status is " << (chance >= roll) << '\n';
 
-    // If the win chance is greater than or equal to the roll, 
+    // If the roll is greater than or equal to the chance (armor class), 
     // then the fight was won. 
-    return chance >= roll;
+    return { 
+        roll >= chance,
+        roll,
+        chance,
+    };
 }
 
-bool adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
+adr::dungeon::drop_info adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
 {
     // This is where we can apply modifiers from mayors, items, or anything
     // else
     // It is an int so we don't have to worry about overflow
     const int chance{ 
+        100 - (
+
         item_chances[i].first 
         + (kismet_feather * 5)
-    };
 
-    // If the item never drops or always drops, we don't need
-    // to waste time generating a random number
-    if (chance == 0 
-            || chance >= 100
-            || item_chances[i].first == 0 
-            || item_chances[i].first >= 100
-        ) return chance;
-    if (chance < 0) return 0;
+        )
+    };
 
     // Get a random number between 0 and 100, inclusive
     const int roll{ Random::get<int>(0, 100) };
@@ -75,12 +78,16 @@ bool adr::dungeon::try_drop(adr::item_id i, bool kismet_feather) const
     std::cout << "try_drop() for item " << i 
         << ", chance is " << chance << ", roll is " << roll << '\n';
 
-    // If the drop chance is greater than or equal to the roll, 
+    // If the roll is greater than or equal to the chance (armor class), 
     // then the item was dropped.
-    return chance >= roll;
+    return { 
+        roll >= chance,
+        roll,
+        chance
+    };
 }
 
-std::optional<inventory> adr::dungeon::fight(
+adr::dungeon::fight_info adr::dungeon::fight(
         const dpp::snowflake& uuid,
         bool dungeon_potion,
         bool kismet_feather
@@ -90,10 +97,16 @@ std::optional<inventory> adr::dungeon::fight(
     adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
 
     // If the boss fight was lost, return null
-    if (!try_win(player, dungeon_potion)) return std::nullopt;
+    const win_info win_info{ try_win(player, dungeon_potion) };
+    if (!std::get<bool>(win_info)) return {
+        {}, {}, win_info
+    };
 
     // The temporary Inventory we will be adding to
     inventory inv{};
+
+    // The temporary drop info list
+    std::array<drop_info, i_MAX> drop_infos{};
 
     // Otherwise, we can roll for item drops
     for (std::size_t i{}; i < adr::i_MAX; ++i) 
@@ -101,8 +114,12 @@ std::optional<inventory> adr::dungeon::fight(
         // The item we are rolling for
         const adr::item_id item{ static_cast<adr::item_id>(i) };
 
+        const drop_info drop_info{ try_drop(item, kismet_feather) };
+
+        drop_infos[i] = drop_info;
+
         // If we fail the drop, continue
-        if (!try_drop(item, kismet_feather)) continue;
+        if (!std::get<bool>(drop_info)) continue;
 
         // Otherwise, add it to the player inventory
         
@@ -118,7 +135,11 @@ std::optional<inventory> adr::dungeon::fight(
 
     // Return the temporary inventory so that the caller can tell the
     // player what items they got
-    return inv;
+    return {
+        drop_infos,
+        inv,
+        win_info
+    };
 }
 
 dpp::embed adr::dungeon::get_embed() const
@@ -250,7 +271,9 @@ dpp::message adr::dungeon::buy(
     player.updateLastFought();
 
     // Fight the boss
-    const std::optional<inventory> fight_results{ fight(uuid, dungeon_potion, kismet_feather) };
+    const fight_info fight_results{ fight(uuid, dungeon_potion, kismet_feather) };
+    const win_info& win_info{ std::get<adr::dungeon::win_info>(fight_results) };
+    const std::array<drop_info, i_MAX>& drop_infos{ std::get<std::array<drop_info, i_MAX>>(fight_results) };
 
     // Make the embed that we will be using for the message
     dpp::embed embed{};
@@ -260,9 +283,14 @@ dpp::message adr::dungeon::buy(
     std::stringstream ss{};
 
     // If the player lost the fight
-    if (!fight_results.has_value()) {
-        ss << lose_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
-            << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
+    if (!std::get<bool>(win_info)) {
+        ss << lose_msg << "\n\n" 
+        << dpp::emoji{ "x" }.get_mention() << ' '
+        << name << " (Floor " << id + 1 << ")\n"
+        << dpp::emoji{ "game_die" }.get_mention()
+        << " You rolled a " << std::get<1>(win_info)
+        << ", but needed a " << std::get<2>(win_info) << "\n\n"
+        << "**Costed:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
         // Bonzo Mask can be used if:
         // * the player has a bonzo mask
@@ -293,13 +321,18 @@ dpp::message adr::dungeon::buy(
         return dpp::message{}.add_embed(embed);
     }
 
-    ss << win_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
-        << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
-
     // If the player won the fight
 
+    ss << win_msg << "\n\n" 
+        << dpp::emoji{ "white_check_mark" }.get_mention() << ' '
+        << name << " (Floor " << id + 1 << ")\n"
+        << dpp::emoji{ "game_die" }.get_mention()
+        << " You rolled a " << std::get<1>(win_info)
+        << ", and needed a " << std::get<2>(win_info) << "!\n\n"
+        << "**Costed:** " << price << ' ' << get_emoji(adr::e_adriencoin);
+
     // Put the item drops into an inventory
-    const inventory& inv{ fight_results.value() };
+    const inventory& inv{ std::get<inventory>(fight_results) };
 
     // Update highest dungeon
     player.m_high_dung = id;
@@ -333,7 +366,10 @@ dpp::message adr::dungeon::buy(
 
         // Add item emoji, name, and amount
         ss << bold << get_emoji(item) << ' ' << adr::item_names[i] << ": " 
-            << inv[i] << bold << '\n';
+            << inv[i] << bold 
+            << " Rolled: " << std::get<1>(drop_infos[i])
+            << " Needed: " << std::get<2>(drop_infos[i])
+            << '\n';
     }
 
     ss << '\n';
