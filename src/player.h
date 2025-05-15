@@ -23,6 +23,17 @@ namespace adr {
         std::time_t m_lastFought{ 0 };
         static constexpr std::time_t fightCooldownSeconds{ 60 * 60 * 1 }; // 1 hour
 
+#ifdef DEBUG
+    public: 
+        enum godmode : std::uint8_t {
+            g_none,
+            g_items,
+            g_no_cooldown,
+            g_all,
+        } m_godmode;
+    private:
+#endif
+
         // the player's inventory, where the index is the item ID and the value is the amount (int)
         inventory m_inv{};
 

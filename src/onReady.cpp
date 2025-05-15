@@ -117,6 +117,7 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "dailies", "dailies" })
             .add_choice(dpp::command_option_choice{ "setstock", "setstock" })
             .add_choice(dpp::command_option_choice{ "percentstock", "percentstock" })
+            .add_choice(dpp::command_option_choice{ "godmode", "godmode" })
             .add_choice(dpp::command_option_choice{ "resetworktimer", "resetworktimer" }));
         owner.add_option(dpp::command_option{ dpp::co_user, "user", "the user to affect", false });
         owner.add_option(dpp::command_option{ dpp::co_integer, "index", "job / item index", false });
