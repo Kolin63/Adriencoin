@@ -186,6 +186,12 @@ void adr::Player::updateLastWorked()
 
 std::time_t adr::Player::nextWork() const 
 { 
+    // On Debug Mode, if the player has godmode, no cooldown
+#ifdef DEBUG 
+    if (m_godmode == Player::g_all || m_godmode == Player::g_no_cooldown) 
+        return -500;
+#endif
+
     // relative time, not since epoch
     return m_lastWorked - std::time(nullptr) + workCooldownSeconds; 
 } 
@@ -206,6 +212,12 @@ void adr::Player::updateLastFought()
 
 std::time_t adr::Player::nextFight() const 
 { 
+    // On Debug Mode, if the player has godmode, no cooldown
+#ifdef DEBUG 
+    if (m_godmode == Player::g_all || m_godmode == Player::g_no_cooldown) 
+        return -500;
+#endif
+
     // relative time, not since epoch
     return m_lastFought - std::time(nullptr) + fightCooldownSeconds; 
 } 
