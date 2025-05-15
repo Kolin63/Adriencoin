@@ -26,6 +26,8 @@ adr::dungeon::win_info adr::dungeon::try_win(adr::Player& p, bool dungeon_potion
     // or anything else
     // It is an int so we don't have to worry about overflow
     const int chance{
+        100 - (
+
         win_chance 
         + (p.inv(i_spirit_sceptre) > 0) * 5
         + (p.inv(i_giant_sword) > 0)    * 5
@@ -34,6 +36,8 @@ adr::dungeon::win_info adr::dungeon::try_win(adr::Player& p, bool dungeon_potion
         + (p.m_atr.shadow_warp.val)     * 5
         + (p.m_atr.implosion.val)       * 5
         + (use_dpot)                    * 5
+
+        )
     };
 
     // If the player used a dungeon pot, decrement it by one
@@ -45,10 +49,10 @@ adr::dungeon::win_info adr::dungeon::try_win(adr::Player& p, bool dungeon_potion
         << ", base chance is " << static_cast<short>(win_chance) 
         << ", rolled a " << roll << ", status is " << (chance >= roll) << '\n';
 
-    // If the win chance is greater than or equal to the roll, 
+    // If the roll is greater than or equal to the chance (armor class), 
     // then the fight was won. 
     return { 
-        chance >= roll,
+        roll >= chance,
         roll,
         chance,
     };
@@ -60,27 +64,12 @@ adr::dungeon::drop_info adr::dungeon::try_drop(adr::item_id i, bool kismet_feath
     // else
     // It is an int so we don't have to worry about overflow
     const int chance{ 
+        100 - (
+
         item_chances[i].first 
-            + (kismet_feather * 5)
-    };
+        + (kismet_feather * 5)
 
-    // If the item never drops or always drops, we don't need
-    // to waste time generating a random number
-    if (chance == 0 
-            || chance >= 100
-            || item_chances[i].first == 0 
-            || item_chances[i].first >= 100
-       ) 
-        return {
-            chance,
-            chance,
-            chance
-        };
-
-    if (chance < 0) return {
-        false,
-        0,
-        0
+        )
     };
 
     // Get a random number between 0 and 100, inclusive
@@ -89,10 +78,10 @@ adr::dungeon::drop_info adr::dungeon::try_drop(adr::item_id i, bool kismet_feath
     std::cout << "try_drop() for item " << i 
         << ", chance is " << chance << ", roll is " << roll << '\n';
 
-    // If the drop chance is greater than or equal to the roll, 
+    // If the roll is greater than or equal to the chance (armor class), 
     // then the item was dropped.
     return { 
-        chance >= roll,
+        roll >= chance,
         roll,
         chance
     };
