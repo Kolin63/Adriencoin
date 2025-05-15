@@ -335,7 +335,8 @@ dpp::message adr::dungeon::buy(
     const inventory& inv{ std::get<inventory>(fight_results) };
 
     // Update highest dungeon
-    player.m_high_dung = id;
+    if (id > player.m_high_dung)
+      player.m_high_dung = id;
 
     // Set title and color
     embed.set_title("Dungeon Won!")
