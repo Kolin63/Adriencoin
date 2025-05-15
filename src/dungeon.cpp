@@ -295,7 +295,9 @@ dpp::message adr::dungeon::buy(
 
     // If the player lost the fight
     if (!std::get<bool>(win_info)) {
-        ss << lose_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n"
+        ss << lose_msg << "\n\n" 
+        << dpp::emoji{ "x" }.get_mention() << ' '
+        << name << " (Floor " << id + 1 << ")\n"
         << dpp::emoji{ "game_die" }.get_mention()
         << " You rolled a " << std::get<1>(win_info)
         << ", but needed a " << std::get<2>(win_info) << "\n\n"
@@ -332,7 +334,9 @@ dpp::message adr::dungeon::buy(
 
     // If the player won the fight
 
-    ss << win_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n"
+    ss << win_msg << "\n\n" 
+        << dpp::emoji{ "white_check_mark" }.get_mention() << ' '
+        << name << " (Floor " << id + 1 << ")\n"
         << dpp::emoji{ "game_die" }.get_mention()
         << " You rolled a " << std::get<1>(win_info)
         << ", and needed a " << std::get<2>(win_info) << "!\n\n"
