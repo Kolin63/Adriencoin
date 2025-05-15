@@ -6,6 +6,7 @@
 #include "player.h"
 #include "cache.h"
 #include <dpp/appcommand.h>
+#include <dpp/emoji.h>
 #include <dpp/exception.h>
 #include <dpp/message.h>
 #include <sstream>
@@ -282,6 +283,8 @@ dpp::message adr::dungeon::buy(
 
     // Fight the boss
     const fight_info fight_results{ fight(uuid, dungeon_potion, kismet_feather) };
+    const win_info& win_info{ std::get<adr::dungeon::win_info>(fight_results) };
+    const std::array<drop_info, i_MAX>& drop_infos{ std::get<std::array<drop_info, i_MAX>>(fight_results) };
 
     // Make the embed that we will be using for the message
     dpp::embed embed{};
@@ -291,9 +294,12 @@ dpp::message adr::dungeon::buy(
     std::stringstream ss{};
 
     // If the player lost the fight
-    if (!std::get<bool>(std::get<win_info>(fight_results))) {
-        ss << lose_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
-            << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
+    if (!std::get<bool>(win_info)) {
+        ss << lose_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n"
+        << dpp::emoji{ "game_die" }.get_mention()
+        << " You rolled a " << std::get<1>(win_info)
+        << ", but needed a " << std::get<2>(win_info) << "\n\n"
+        << "**Costed:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
         // Bonzo Mask can be used if:
         // * the player has a bonzo mask
@@ -324,10 +330,13 @@ dpp::message adr::dungeon::buy(
         return dpp::message{}.add_embed(embed);
     }
 
-    ss << win_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n\n"
-        << "**Costs:** " << price << ' ' << get_emoji(adr::e_adriencoin);
-
     // If the player won the fight
+
+    ss << win_msg << "\n\n" << name << " (Floor " << id + 1 << ")\n"
+        << dpp::emoji{ "game_die" }.get_mention()
+        << " You rolled a " << std::get<1>(win_info)
+        << ", and needed a " << std::get<2>(win_info) << "!\n\n"
+        << "**Costed:** " << price << ' ' << get_emoji(adr::e_adriencoin);
 
     // Put the item drops into an inventory
     const inventory& inv{ std::get<inventory>(fight_results) };
@@ -364,7 +373,10 @@ dpp::message adr::dungeon::buy(
 
         // Add item emoji, name, and amount
         ss << bold << get_emoji(item) << ' ' << adr::item_names[i] << ": " 
-            << inv[i] << bold << '\n';
+            << inv[i] << bold 
+            << " Rolled: " << std::get<1>(drop_infos[i])
+            << " Needed: " << std::get<2>(drop_infos[i])
+            << '\n';
     }
 
     ss << '\n';
