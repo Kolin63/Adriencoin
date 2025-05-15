@@ -44,6 +44,15 @@ void adr::Statistics::saveJSON(nlohmann::json& data) const
 
     // Save attributes here
     // save(data, example);
+    save(data, timesWorked);
+    save(data, timesInStore);
+    save(data, bonzo);
+    save(data, scarf);
+    save(data, theProfessor);
+    save(data, thorn);
+    save(data, livid);
+    save(data, sadan);
+    save(data, necron);
 
     std::cout << "adr::Statistics::saveJSON() finished!\n";
 }
@@ -54,6 +63,15 @@ void adr::Statistics::loadJSON(const nlohmann::json& data)
 
     // Load attributes here
     // try_load(data, example);
+    try_load(data, timesWorked);
+    try_load(data, timesInStore);
+    try_load(data, bonzo);
+    try_load(data, scarf);
+    try_load(data, theProfessor);
+    try_load(data, thorn);
+    try_load(data, livid);
+    try_load(data, sadan);
+    try_load(data, necron);
 
     std::cout << "adr::Statistics::loadJSON() finished!\n";
 }
@@ -68,6 +86,15 @@ std::string adr::Statistics::list() const
 
     // List attributes here
     // condlist(ss, example);
+    condlist(ss, timesWorked);
+    condlist(ss, timesInStore);
+    condlist(ss, bonzo);
+    condlist(ss, scarf);
+    condlist(ss, theProfessor);
+    condlist(ss, thorn);
+    condlist(ss, livid);
+    condlist(ss, sadan);
+    condlist(ss, necron);
 
     return ss.str();
 }

@@ -505,6 +505,9 @@ void adr::doJob(const dpp::slashcommand_t& event)
 
         adr::Stock::jobWorked(i.id);
 
+        // stats
+        ++player.m_stat.timesWorked.value;
+
         event.reply(i.action + ": +" + std::to_string(i.item.amount) + ' ' + get_emoji(i.item.id)
             + " and +" + std::to_string(i.adriencoin) + ' ' + get_emoji(e_adriencoin));
     }
