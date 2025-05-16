@@ -66,7 +66,7 @@ namespace adr {
         static bool exists(const dpp::snowflake& uuid);
 
         adr::Job::Id job() const { return m_job; }
-        void setJob(adr::Job::Id job) { m_job = job; }
+        void setJob(adr::Job::Id job);
 
         std::time_t lastWorked() const { return m_lastWorked; }
         void updateLastWorked();

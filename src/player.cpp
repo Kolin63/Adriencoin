@@ -281,5 +281,11 @@ void adr::Player::setRole(RoleID role, bool status)
         roleIDs[role]);
   }
 
-  std::cout << m_uuid << " role " << role << " = " << status << '\n';
+  std::cout << m_uuid << " role " << static_cast<int>(role) << " = " << status << '\n';
+}
+
+void adr::Player::setJob(adr::Job::Id job) {
+  m_job = job;
+  if (m_job != Job::MAX) // to prevent overflow
+    setRole(static_cast<RoleID>(job), true);
 }
