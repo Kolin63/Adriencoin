@@ -21,7 +21,7 @@ namespace adr
     }
 
 #ifndef DEBUG 
-  constexpr dpp::snowflake guildID{};
+  constexpr dpp::snowflake guildID{ 1345867383063187557 };
 #else
   constexpr dpp::snowflake guildID{ 1341183768152772679 };
 #endif
