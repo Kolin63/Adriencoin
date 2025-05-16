@@ -201,8 +201,11 @@ std::time_t adr::Player::nextWork() const
         return -500;
 #endif
 
+    constexpr int ambassadorEffect{ 60 * 60 * 3 }; // 3 hours
+
     // relative time, not since epoch
-    return m_lastWorked - std::time(nullptr) + workCooldownSeconds; 
+    return m_lastWorked - std::time(nullptr) + workCooldownSeconds
+      - ((m_fameRank == f_ambassador) * ambassadorEffect); 
 } 
 
 std::string adr::Player::nextWorkTimestamp() const
