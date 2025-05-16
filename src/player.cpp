@@ -50,6 +50,7 @@ void adr::Player::save() const
     data["lastWorked"] = m_lastWorked;
     data["inv"] = m_inv;
     data["title"] = m_title;
+    data["fame"] = m_fameRank;
     data["highdung"] = m_high_dung;
 
     m_atr.save_json(data);
@@ -123,6 +124,7 @@ void adr::Player::load()
     }
 
     m_title = data.value("title", adr::daily::t_none);
+    m_fameRank = data.value("fame", f_none);
 
     m_atr.load_json(data);
     m_stat.loadJSON(data);
@@ -157,6 +159,7 @@ const dpp::embed adr::Player::viewEmbed() const
         '*' + std::to_string(m_uuid) + "*\n\n" 
         + "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
         + (getTitle() == adr::daily::t_none ? "" : "\nTitle: " + adr::daily::titleNames[m_title])
+        + (m_fameRank == f_none ? "" : "\nFame Rank: " + std::string{ fameRankNames[m_fameRank] })
         + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
         + "\nCan Work Next " + nextWorkTimestamp()
         + "\n\n**Inventory:**\n"
@@ -198,8 +201,11 @@ std::time_t adr::Player::nextWork() const
         return -500;
 #endif
 
+    constexpr int ambassadorEffect{ 60 * 60 * 3 }; // 3 hours
+
     // relative time, not since epoch
-    return m_lastWorked - std::time(nullptr) + workCooldownSeconds; 
+    return m_lastWorked - std::time(nullptr) + workCooldownSeconds
+      - ((m_fameRank == f_ambassador) * ambassadorEffect); 
 } 
 
 std::string adr::Player::nextWorkTimestamp() const
