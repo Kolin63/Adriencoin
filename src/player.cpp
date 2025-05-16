@@ -1,9 +1,12 @@
 #include <dpp/nlohmann/json.hpp>
+#include <dpp/cluster.h>
 #include <filesystem>
 #include "player.h"
 #include "item.h"
 #include "job.h"
 #include "cache.h"
+#include "util.h"
+#include "botToken.h"
 
 adr::Player::Player(const dpp::snowflake& uuid) 
     : m_uuid{ uuid }
@@ -261,4 +264,28 @@ int& adr::Player::operator[](int index)
 const int& adr::Player::operator[](int index) const
 {
     return m_inv[index];
+}
+
+void adr::Player::setRole(RoleID role, bool status)
+{
+  if (status) [[likely]] {
+    bot.guild_member_add_role(
+        guildID,
+        m_uuid,
+        roleIDs[role]);
+  }
+  else {
+    bot.guild_member_delete_role(
+        guildID, 
+        m_uuid, 
+        roleIDs[role]);
+  }
+
+  std::cout << m_uuid << " role " << static_cast<int>(role) << " = " << status << '\n';
+}
+
+void adr::Player::setJob(adr::Job::Id job) {
+  m_job = job;
+  if (m_job != Job::MAX) // to prevent overflow
+    setRole(static_cast<RoleID>(job), true);
 }

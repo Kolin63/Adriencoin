@@ -45,6 +45,7 @@ add_executable(${PROJECT_NAME}
     src/attributes.h
     src/statistics.cpp
     src/statistics.h
+    src/role.h
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).

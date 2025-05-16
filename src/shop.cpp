@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <dpp/message.h>
 #include "shop.h"
+#include "player.h"
 #include "product.h"
 #include "cache.h"
 
@@ -198,6 +199,20 @@ dpp::message adr::shop::buy(
                     player.subtractInv(cost);
                     listItems(false, result);
                     ++player.m_stat.timesInStore.value;
+                    
+                    switch (goaltitle) {
+                    case daily::t_baron:
+                      player.setRole(r_baron, true);
+                      break;
+                    case daily::t_duke:
+                      player.setRole(r_duke, true);
+                      break;
+                    case daily::t_grand_duke:
+                      player.setRole(r_grandDuke, true);
+                      break;
+                    default: break;
+                    }
+
                     return msg;
                 }
             }

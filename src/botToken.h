@@ -1,6 +1,7 @@
 #ifndef BOTTOKEN_H
 #define BOTTOKEN_H
 
+#include <dpp/intents.h>
 #include <string_view>
 #include <fstream>
 #include <filesystem>
@@ -32,8 +33,11 @@ inline std::string getBotToken()
 }
 
 inline dpp::cluster bot { getBotToken()
-                        , dpp::i_default_intents 
-                        | dpp::i_guild_members 
+  , dpp::i_default_intents 
+    | dpp::i_guild_members 
+    | dpp::i_auto_moderation_configuration
+    | dpp::i_auto_moderation_execution
+    | dpp::i_guilds
 };
 
 #endif
