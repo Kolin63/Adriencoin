@@ -3,6 +3,29 @@
 
 namespace adr
 {
+  // i didnt want to make a seperate header file for this so its here
+  enum FameRank
+  {
+    f_none,
+
+    f_citizen,
+    f_contributor,
+    f_patron,
+    f_attache,
+    f_ambassador,
+
+    f_MAX
+  };
+
+  const std::array<std::string_view, f_MAX> fameRankNames{
+    "none",
+    "citizen",
+    "contributor",
+    "patron",
+    "attache",
+    "ambassador",
+  };
+
   enum RoleID
   {
     r_farmer,
@@ -24,6 +47,12 @@ namespace adr
     r_baron,
     r_duke,
     r_grandDuke,
+
+    r_citizen,
+    r_contributor,
+    r_patron,
+    r_attache,
+    r_ambassador,
 
     r_MAX
   };
@@ -50,6 +79,12 @@ namespace adr
     1360027149062508615, // r_baron 
     1372728902530633728, // r_duke 
     1372728958767861881, // r_grandDuke
+
+    1373045003278090270, // r_citizen
+    1373045047527870625, // r_contributor
+    1373045086916579420, // r_patron
+    1373045119229366423, // r_attache
+    1373045149290074163, // r_ambassador
   };
 #else
   // These are the UUIDs for the roles, not to be confused with the 
@@ -75,6 +110,12 @@ namespace adr
     1372704052596576368, // r_baron
     1372704084582465566, // r_duke 
     1372704101611081779, // r_grandDuke
+
+    1373042062542504066, // r_citizen
+    1373042102656700596, // r_contributor
+    1373042241844674630, // r_patron
+    1373042281183056034, // r_attache
+    1373042319523184661, // r_ambassador
   };
 #endif
 }

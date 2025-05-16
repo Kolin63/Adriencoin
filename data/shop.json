@@ -1,210 +1,305 @@
 {
-    "products": [
+  "products": [
+    {
+      "name": "gay_to_coin",
+      "display": "Gaydrien Coin Exchange",
+      "desc": "Gaydrien coins can be traded for 1000 adrien coins.\n1000 Adriencoin CANNOT be traded in for 1 Gaydrien coin",
+      "joke": "If there's Gaydrien, is there Bidrien?",
+      "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gaydriencoin.png",
+      "color": 16766497,
+      "sub": [
         {
-            "name": "gay_to_coin",
-            "display": "Gaydrien Coin Exchange",
-            "desc": "Gaydrien coins can be traded for 1000 adrien coins.\n1000 Adriencoin CANNOT be traded in for 1 Gaydrien coin",
-            "joke": "If there's Gaydrien, is there Bidrien?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gaydriencoin.png",
-            "color": 16766497,
-            "sub": [
-                {
-                    "name": "gay_to_coin",
-                    "cost": {
-                        "gaydriencoin": 1
-                    },
-                    "resultType": "all",
-                    "result": {
-                        "adriencoin": 1000
-                    }
-                }
-            ]
-        },
-        {
-            "name": "adriresource",
-            "display": "Adriresource",
-            "desc": "",
-            "joke": "If you get a resource for the first time, is it just a source?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_adriresource.png",
-            "color": 14989557,
-            "sub": [
-                {
-                    "name": "trade",
-                    "cost": {
-                        "adriresource": 1
-                    },
-                    "resultType": "one",
-                    "result": {
-                        "carrot": 20,
-                        "gemstone": 5,
-                        "wood": 30,
-                        "fish": 30,
-                        "rottenflesh": 60,
-                        "book": 2,
-                        "potion": 1
-                    }
-                }
-            ]
-        },
-        {
-            "name": "jobs",
-            "display": "Jobs",
-            "desc": "Tier Upgrades only available when the buyer has no active loan",
-            "joke": "If there's a jaw-b, is there a chin-b?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg",
-            "color": 5635993,
-            "sub": [
-                {
-                    "name": "tier_upgrade",
-                    "cost": {
-                        "book": 70,
-                        "adriencoin": 100
-                    },
-                    "resultType": "customAll",
-                    "result": {
-                        "custom": [
-                            "tier upgrade"
-                        ]
-                    },
-                    "noTimes": true
-                },
-                {
-                    "name": "job_change",
-                    "cost": {
-                        "adriencoin": 100
-                    },
-                    "resultType": "customOne",
-                    "result": {
-                        "custom": [
-                            "farmer",
-                            "miner",
-                            "lumberjack",
-                            "fisherman",
-                            "warrior",
-                            "enchanter",
-                            "brewer"
-                        ]
-                    },
-                    "noTimes": true
-                }
-            ]
-        },
-        {
-            "name": "resource",
-            "display": "Resource Exchange",
-            "desc": "",
-            "joke": "If there is an Exchange, why is there no Ychange?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gemstone.png",
-            "color": 16733002,
-            "sub": [
-                {
-                    "name": "exchange",
-                    "cost": {
-                        "adriencoin": 10
-                    },
-                    "resultType": "one",
-                    "result": {
-                        "carrot": 100,
-                        "gemstone": 25,
-                        "wood": 150,
-                        "fish": 150,
-                        "rottenflesh": 300,
-                        "book": 10,
-                        "potion": 5
-                    }
-                }
-            ]
-        },
-        {
-            "name": "titles",
-            "display": "Titles",
-            "desc": "Baron - Gives 5 Adriencoin daily\nDuke - Gives 10 Adriencoin daily\nGrand Duke - Gives 50 Adriencoin daily",
-            "joke": "If there's a Title, is there a Knot-le?",
-            "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/flags-wide.jpg",
-            "color": 7093162,
-            "sub": [
-                {
-                    "name": "baron",
-                    "cost": {
-                        "gemstone": 50,
-                        "carrot": 200,
-                        "wood": 300
-                    },
-                    "resultType": "customAll",
-                    "result": {
-                        "custom": [
-                            "baron"
-                        ]
-                    },
-                    "noTimes": true
-                },
-                {
-                    "name": "duke",
-                    "cost": {
-                        "rottenflesh": 10000,
-                        "fish": 3000
-                    },
-                    "resultType": "customAll",
-                    "result": {
-                        "custom": [
-                            "duke"
-                        ]
-                    },
-                    "noTimes": true
-                },
-                {
-                    "name": "grand_duke",
-                    "cost": {
-                        "carrot": 2000,
-                        "gemstone": 500,
-                        "wood": 3000,
-                        "fish": 3000,
-                        "rottenflesh": 10000,
-                        "book": 200,
-                        "potion": 100
-                    },
-                    "resultType": "customAll",
-                    "result": {
-                        "custom": [
-                            "grand_duke"
-                        ]
-                    },
-                    "noTimes": true
-                }
-            ]
-        },
-        {
-            "name": "dungeon_shop",
-            "display": "Dungeon Shop",
-            "desc": "Dungeon Potions Increase Win Chance by 5%\nKismet Feathers Increase Item Drop Chance by 5%. Kismet Feathers are only used if the boss is defeated.",
-            "joke": "If there's a Dungeon, is there a Pee-geon?",
-            "picURL": "https://wiki.hypixel.net/images/6/66/SkyBlock_items_dungeoneering.png",
-            "color": 15971768,
-            "sub": [
-                {
-                    "name": "potions",
-                    "cost": {
-                        "rottenflesh": 100,
-                        "potion": 1
-                    },
-                    "resultType": "all",
-                    "result": {
-                        "dungeon_potion": 1
-                    }
-                },
-                {
-                    "name": "kismet_feathers",
-                    "cost": {
-                        "carrot": 300,
-                        "gemstone": 175,
-                        "adriencoin": 5
-                    },
-                    "resultType": "all",
-                    "result": {
-                        "kismet_feather": 1
-                    }
-                }
-            ]
+          "name": "gay_to_coin",
+          "cost": {
+            "gaydriencoin": 1
+          },
+          "resultType": "all",
+          "result": {
+            "adriencoin": 1000
+          }
         }
-    ]
+      ]
+    },
+    {
+      "name": "adriresource",
+      "display": "Adriresource",
+      "desc": "",
+      "joke": "If you get a resource for the first time, is it just a source?",
+      "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_adriresource.png",
+      "color": 14989557,
+      "sub": [
+        {
+          "name": "trade",
+          "cost": {
+            "adriresource": 1
+          },
+          "resultType": "one",
+          "result": {
+            "carrot": 20,
+            "gemstone": 5,
+            "wood": 30,
+            "fish": 30,
+            "rottenflesh": 60,
+            "book": 2,
+            "potion": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "jobs",
+      "display": "Jobs",
+      "desc": "Tier Upgrades only available when the buyer has no active loan",
+      "joke": "If there's a jaw-b, is there a chin-b?",
+      "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/jmart.jpg",
+      "color": 5635993,
+      "sub": [
+        {
+          "name": "tier_upgrade",
+          "cost": {
+            "book": 70,
+            "adriencoin": 100
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "tier upgrade"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "job_change",
+          "cost": {
+            "adriencoin": 100
+          },
+          "resultType": "customOne",
+          "result": {
+            "custom": [
+              "farmer",
+              "miner",
+              "lumberjack",
+              "fisherman",
+              "warrior",
+              "enchanter",
+              "brewer"
+            ]
+          },
+          "noTimes": true
+        }
+      ]
+    },
+    {
+      "name": "resource",
+      "display": "Resource Exchange",
+      "desc": "",
+      "joke": "If there is an Exchange, why is there no Ychange?",
+      "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/item/adr_gemstone.png",
+      "color": 16733002,
+      "sub": [
+        {
+          "name": "exchange",
+          "cost": {
+            "adriencoin": 10
+          },
+          "resultType": "one",
+          "result": {
+            "carrot": 100,
+            "gemstone": 25,
+            "wood": 150,
+            "fish": 150,
+            "rottenflesh": 300,
+            "book": 10,
+            "potion": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "titles",
+      "display": "Titles",
+      "desc": "Baron - Gives 5 Adriencoin daily\nDuke - Gives 10 Adriencoin daily\nGrand Duke - Gives 50 Adriencoin daily",
+      "joke": "If there's a Title, is there a Knot-le?",
+      "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/flags-wide.jpg",
+      "color": 7093162,
+      "sub": [
+        {
+          "name": "baron",
+          "cost": {
+            "gemstone": 50,
+            "carrot": 200,
+            "wood": 300
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "baron"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "duke",
+          "cost": {
+            "rottenflesh": 10000,
+            "fish": 3000
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "duke"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "grand_duke",
+          "cost": {
+            "carrot": 2000,
+            "gemstone": 500,
+            "wood": 3000,
+            "fish": 3000,
+            "rottenflesh": 10000,
+            "book": 200,
+            "potion": 100
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "grand_duke"
+            ]
+          },
+          "noTimes": true
+        }
+      ]
+    },
+    {
+      "name": "fame_ranks",
+      "display": "Fame Ranks",
+      "desc": "Citizen: No benefits, just a prerequisite to the other Ranks\nContributor: +1 Giveaway Entry\nPatron: Your own channel, private or public. (We reserve the right to check private channels for giveaway spam)\nAttache: +1 Giveaway Entry (in addition to Patron)\nAmbassador: -3 hours from work cooldown\n",
+      "joke": "If there's a Fame Rank, is there a Fame File?",
+      "picURL": "",
+      "color": 0,
+      "sub": [
+        {
+          "name": "citizen",
+          "cost": {
+            "adriencoin": 10,
+            "gemstone": 100,
+            "book": 40
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "citizen"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "contributor",
+          "cost": {
+            "adriencoin": 50,
+            "gemstone": 200,
+            "book": 60,
+            "potion": 20
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "contributor"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "patron",
+          "cost": {
+            "adriencoin": 100,
+            "gemstone": 250,
+            "book": 100,
+            "wood": 2000,
+            "fish": 2000
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "patron"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "attache",
+          "cost": {
+            "adriencoin": 150,
+            "gemstone": 500,
+            "book": 300,
+            "potion": 50,
+            "carrot": 1000
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "attache"
+            ]
+          },
+          "noTimes": true
+        },
+        {
+          "name": "ambassador",
+          "cost": {
+            "adriencoin": 1000,
+            "carrot": 4000,
+            "gemstone": 1000,
+            "wood": 6000,
+            "fish": 6000,
+            "rottenflesh": 12000,
+            "book": 400,
+            "potion": 200
+          },
+          "resultType": "customAll",
+          "result": {
+            "custom": [
+              "ambassador"
+            ]
+          },
+          "noTimes": true
+        }
+      ]
+    },
+    {
+      "name": "dungeon_shop",
+      "display": "Dungeon Shop",
+      "desc": "Dungeon Potions Increase Win Chance by 5%\nKismet Feathers Increase Item Drop Chance by 5%. Kismet Feathers are only used if the boss is defeated.",
+      "joke": "If there's a Dungeon, is there a Pee-geon?",
+      "picURL": "https://wiki.hypixel.net/images/6/66/SkyBlock_items_dungeoneering.png",
+      "color": 15971768,
+      "sub": [
+        {
+          "name": "potions",
+          "cost": {
+            "rottenflesh": 100,
+            "potion": 1
+          },
+          "resultType": "all",
+          "result": {
+            "dungeon_potion": 1
+          }
+        },
+        {
+          "name": "kismet_feathers",
+          "cost": {
+            "carrot": 300,
+            "gemstone": 175,
+            "adriencoin": 5
+          },
+          "resultType": "all",
+          "result": {
+            "kismet_feather": 1
+          }
+        }
+      ]
+    }
+  ]
 }

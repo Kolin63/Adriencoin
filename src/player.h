@@ -44,6 +44,8 @@ namespace adr {
 
         Statistics m_stat{};
 
+        FameRank m_fameRank{};
+
         // the hardest dungeon the player has done
         // an integer to not have a circular dependency
         short m_high_dung{ -1 };
