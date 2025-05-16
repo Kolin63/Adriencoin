@@ -176,7 +176,7 @@
     {
       "name": "fame_ranks",
       "display": "Fame Ranks",
-      "desc": "* Citizen: No benefits, just a prerequisite to the other Ranks\n* Contributor: +1 Giveaway Entry\n* Patron: Your own channel, private or public. (We reserve the right to check private channels for giveaway spam)\n* Attache: +1 Giveaway Entry (in addition to Patron)\n* Ambassador: -3 hours from work cooldown\n* ",
+      "desc": "* Citizen: No benefits, just a prerequisite to the other Ranks\n* Contributor: +1 Giveaway Entry\n* Patron: Your own channel, private or public. (We reserve the right to check private channels for giveaway spam)\n* Attache: +1 Giveaway Entry (in addition to Patron)\n* Ambassador: -3 hours from work cooldown",
       "joke": "If there's a Fame Rank, is there a Fame File?",
       "picURL": "https://raw.githubusercontent.com/Kolin63/Adriencoin/refs/heads/main/art/cinematic-wide.jpg",
       "color": 16768545,
