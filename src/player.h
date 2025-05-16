@@ -10,6 +10,7 @@
 #include "daily.h"
 #include "attributes.h"
 #include "statistics.h"
+#include "role.h"
 
 namespace adr {
 
@@ -95,6 +96,8 @@ namespace adr {
 
         int& operator[](int index);
         const int& operator[](int index) const;
+
+        void setRole(RoleID role, bool status);
     };
 }
 
