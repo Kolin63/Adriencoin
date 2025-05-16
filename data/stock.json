@@ -1,9 +1,10 @@
 {
     "channel": 1363701696684888096,
-    "day": 26,
+    "day": 27,
     "stocks": [
         {
             "history": [
+                76,
                 62,
                 69,
                 69,
@@ -33,15 +34,16 @@
             ],
             "name": "jerrys_carrots",
             "outstanding": 0,
-            "potentialStability": 50,
+            "potentialStability": 45,
             "stability": 50,
             "ticker": "CRT",
-            "timesWorked": 4,
+            "timesWorked": 3,
             "unissued": 50,
-            "value": 62
+            "value": 76
         },
         {
             "history": [
+                22,
                 24,
                 22,
                 18,
@@ -70,16 +72,17 @@
                 31
             ],
             "name": "divans_gems",
-            "outstanding": 19,
-            "potentialStability": 50,
+            "outstanding": 23,
+            "potentialStability": 45,
             "stability": 50,
             "ticker": "GEM",
-            "timesWorked": 4,
-            "unissued": 31,
-            "value": 24
+            "timesWorked": 3,
+            "unissued": 27,
+            "value": 22
         },
         {
             "history": [
+                16,
                 21,
                 19,
                 23,
@@ -108,16 +111,17 @@
                 52
             ],
             "name": "jacks_lumber",
-            "outstanding": 0,
+            "outstanding": 8,
             "potentialStability": 0,
             "stability": 0,
             "ticker": "LMB",
             "timesWorked": 0,
-            "unissued": 50,
-            "value": 21
+            "unissued": 42,
+            "value": 16
         },
         {
             "history": [
+                31,
                 26,
                 26,
                 34,
@@ -146,16 +150,17 @@
                 50
             ],
             "name": "geralds_fish",
-            "outstanding": 3,
-            "potentialStability": 10,
+            "outstanding": 0,
+            "potentialStability": 0,
             "stability": 0,
             "ticker": "FSH",
-            "timesWorked": 1,
-            "unissued": 47,
-            "value": 26
+            "timesWorked": 0,
+            "unissued": 50,
+            "value": 31
         },
         {
             "history": [
+                39,
                 42,
                 38,
                 41,
@@ -186,14 +191,15 @@
             "name": "aatroxs_slaying",
             "outstanding": 0,
             "potentialStability": 30,
-            "stability": 5,
+            "stability": 50,
             "ticker": "SLY",
             "timesWorked": 2,
             "unissued": 50,
-            "value": 42
+            "value": 39
         },
         {
             "history": [
+                46,
                 52,
                 52,
                 51,
@@ -223,15 +229,16 @@
             ],
             "name": "berts_knowledge",
             "outstanding": 1,
-            "potentialStability": 45,
+            "potentialStability": 30,
             "stability": 50,
             "ticker": "KNW",
-            "timesWorked": 3,
+            "timesWorked": 2,
             "unissued": 49,
-            "value": 52
+            "value": 46
         },
         {
             "history": [
+                53,
                 54,
                 44,
                 42,
@@ -261,15 +268,16 @@
             ],
             "name": "the_brewers",
             "outstanding": 0,
-            "potentialStability": 30,
+            "potentialStability": 50,
             "stability": 50,
             "ticker": "BRW",
-            "timesWorked": 2,
+            "timesWorked": 4,
             "unissued": 50,
-            "value": 54
+            "value": 53
         },
         {
             "history": [
+                76,
                 88,
                 82,
                 72,
@@ -304,7 +312,7 @@
             "ticker": "STK",
             "timesWorked": 0,
             "unissued": 0,
-            "value": 88
+            "value": 76
         }
     ]
 }

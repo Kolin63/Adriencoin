@@ -1,23 +1,23 @@
 {
     "attributes": {
-        "bonzo_can_use": false,
+        "bonzo_can_use": true,
         "bonzo_love": true,
         "implosion": false,
         "shadow_warp": false,
         "wither_shield": false
     },
-    "highdung": 2,
+    "highdung": 3,
     "inv": [
-        11080,
+        11680,
         0,
         0,
         0,
         20,
         80,
         100,
-        176,
+        11,
         0,
-        109,
+        129,
         0,
         5,
         0,
@@ -37,11 +37,22 @@
         0,
         0,
         0,
-        16,
+        11,
         0
     ],
     "job": 7,
-    "lastWorked": 1747338391,
+    "lastWorked": 1747424426,
+    "stats": {
+        "bonzo": 0,
+        "livid": 0,
+        "necron": 0,
+        "sadan": 0,
+        "scarf": 0,
+        "theProfessor": 0,
+        "thorn": 1,
+        "timesInStore": 0,
+        "timesWorked": 3
+    },
     "title": 1,
     "uuid": 488335709883727882
 }

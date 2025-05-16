@@ -9,19 +9,19 @@
     "highdung": 2,
     "inv": [
         1700,
-        1245,
+        1395,
         300,
         1,
         100,
         0,
         0,
-        19,
+        37,
         0,
         0,
         0,
         6,
         0,
-        6,
+        7,
         0,
         0,
         0,
@@ -41,7 +41,18 @@
         0
     ],
     "job": 8,
-    "lastWorked": 1747337206,
+    "lastWorked": 1747418042,
+    "stats": {
+        "bonzo": 0,
+        "livid": 0,
+        "necron": 0,
+        "sadan": 0,
+        "scarf": 0,
+        "theProfessor": 0,
+        "thorn": 0,
+        "timesInStore": 0,
+        "timesWorked": 3
+    },
     "title": 2,
     "uuid": 997967659809386636
 }

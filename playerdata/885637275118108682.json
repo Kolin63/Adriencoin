@@ -14,14 +14,14 @@
         0,
         0,
         0,
-        426,
-        15,
+        456,
+        29,
         0,
         0,
         4,
         5,
         0,
-        0,
+        3,
         0,
         0,
         0,
@@ -41,7 +41,18 @@
         0
     ],
     "job": 13,
-    "lastWorked": 1747338367,
+    "lastWorked": 1747418189,
+    "stats": {
+        "bonzo": 0,
+        "livid": 0,
+        "necron": 0,
+        "sadan": 0,
+        "scarf": 0,
+        "theProfessor": 0,
+        "thorn": 0,
+        "timesInStore": 0,
+        "timesWorked": 3
+    },
     "title": 3,
     "uuid": 885637275118108682
 }
