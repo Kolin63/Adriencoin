@@ -64,7 +64,7 @@ void doTitleMoney()
       default:
         break;
     }
-    std::cout << " is now " << player.inv(adr::i_adriencoin);
+    std::cout << " is now " << player.inv(adr::i_adriencoin) << '\n';
   }
 }
 
