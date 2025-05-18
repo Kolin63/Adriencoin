@@ -8,6 +8,7 @@
 void doWeeklyTasks(dpp::cluster&);
 void doTitleMoney();
 void doStocks();
+void doBankInterest();
 
 void adr::daily::doDailyTasks(dpp::cluster& bot)
 {
@@ -38,6 +39,8 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
 void adr::daily::doWeeklyTasks(dpp::cluster& bot)
 {
   std::cout << "doWeeklyTasks() called\n";
+
+  doBankInterest();
 }
 
 void doTitleMoney()
@@ -75,6 +78,22 @@ void doStocks()
   adr::Stock::newDay();
 
   adr::Stock::saveJSON();
+}
+
+void doBankInterest()
+{
+  std::cout << "doBankInterest() called\n";
+
+  std::vector<dpp::snowflake> players{ adr::cache::cacheAll() };
+
+  for (dpp::snowflake& uuid : players) {
+    adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
+
+    if (player.m_bank.isActive()) [[unlikely]] {
+      std::cout << "Bank interest for " << uuid << '\n';
+      player.m_bank.doInterest();
+    }
+  }
 }
 
 uint64_t adr::daily::getTimeToMidnight()

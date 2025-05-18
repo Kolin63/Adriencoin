@@ -203,3 +203,7 @@ void adr::Bank::handleSlashCommand(
       return;
     }
 }
+
+void adr::Bank::doInterest() {
+  m_inv[i_adriencoin] += static_cast<int>(m_inv[i_adriencoin] * 0.1);
+}
