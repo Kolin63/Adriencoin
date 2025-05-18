@@ -5,82 +5,99 @@
 #include "cache.h"
 #include "stock.h"
 
+void doWeeklyTasks(dpp::cluster&);
+void doTitleMoney();
+void doStocks();
+
 void adr::daily::doDailyTasks(dpp::cluster& bot)
 {
-    std::cout << "doDailyTasks() called\n";
+  std::cout << "doDailyTasks() called\n";
 
-    doTitleMoney();
-    doStocks();
+  doTitleMoney();
+  doStocks();
 
-    bot.direct_message_create(dpp::snowflake{ 488335709883727882 }, dpp::message{ "Daily Tasks Complete" }, [](const dpp::confirmation_callback_t& callback) {
-        if (callback.is_error()) {
-            std::cerr << "do daily tasks dm error: " << callback.get_error().human_readable << '\n';
-        }
-        else {
-            std::cout << "do daily tasks dm sent\n";
-        }
-        });
+  bot.direct_message_create(dpp::snowflake{ 488335709883727882 }, dpp::message{ "Daily Tasks Complete" }, [](const dpp::confirmation_callback_t& callback) {
+      if (callback.is_error()) {
+      std::cerr << "do daily tasks dm error: " << callback.get_error().human_readable << '\n';
+      }
+      else {
+      std::cout << "do daily tasks dm sent\n";
+      }
+      });
 
-    std::cout << "Daily Clear Cache!\n";
-    cache::clear();
+  // figure out if we should do weekly tasks
+  std::time_t time_t{ std::time(0) };
+  std::tm* tm{ std::localtime(&time_t) };
+
+  if (tm->tm_wday == 1) doWeeklyTasks(bot);
+
+  std::cout << "Daily Clear Cache!\n";
+  cache::clear();
 }
 
-void adr::daily::doTitleMoney()
+void adr::daily::doWeeklyTasks(dpp::cluster& bot)
 {
-    std::cout << "doTitleMoney() called\n";
+  std::cout << "doWeeklyTasks() called\n";
+}
 
-    std::vector<dpp::snowflake> players{ adr::cache::cacheAll() };
+void doTitleMoney()
+{
+  std::cout << "doTitleMoney() called\n";
 
-    for (const dpp::snowflake& uuid : players) {
-        adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
+  std::vector<dpp::snowflake> players{ adr::cache::cacheAll() };
 
-        switch (player.getTitle()) 
-        {
-        case adr::daily::t_baron:
-            player.changeInv(adr::i_adriencoin, 5);
-            break;
-        case adr::daily::t_duke:
-            player.changeInv(adr::i_adriencoin, 10);
-            break;
-        case adr::daily::t_grand_duke:
-            player.changeInv(adr::i_adriencoin, 50);
-            break;
-        default:
-            break;
-        }
+  for (const dpp::snowflake& uuid : players) {
+    adr::Player& player{ adr::cache::getPlayerFromCache(uuid) };
+
+    std::cout << uuid << " title money, coin was " << player.inv(adr::i_adriencoin);
+    switch (player.getTitle()) 
+    {
+      case adr::daily::t_baron:
+        player.changeInv(adr::i_adriencoin, 5);
+        break;
+      case adr::daily::t_duke:
+        player.changeInv(adr::i_adriencoin, 10);
+        break;
+      case adr::daily::t_grand_duke:
+        player.changeInv(adr::i_adriencoin, 50);
+        break;
+      default:
+        break;
     }
+    std::cout << " is now " << player.inv(adr::i_adriencoin);
+  }
 }
 
-void adr::daily::doStocks()
+void doStocks()
 {
-    std::cout << "doStocks() called\n";
+  std::cout << "doStocks() called\n";
 
-    adr::Stock::newDay();
+  adr::Stock::newDay();
 
-    adr::Stock::saveJSON();
+  adr::Stock::saveJSON();
 }
 
 uint64_t adr::daily::getTimeToMidnight()
 {
-    // How much padding it should give in seconds
-    constexpr std::uint64_t paddingSeconds{ 60 * 5 };
+  // How much padding it should give in seconds
+  constexpr std::uint64_t paddingSeconds{ 60 * 5 };
 
-    // Difference between UTC and preferred time zone in seconds
-    // Example: UTC is 4 hours ahead of EST, so the value should be positive 4 hours
-    constexpr std::int64_t utcDiffSeconds{ 60 * 60 * 4 };
+  // Difference between UTC and preferred time zone in seconds
+  // Example: UTC is 4 hours ahead of EST, so the value should be positive 4 hours
+  constexpr std::int64_t utcDiffSeconds{ 60 * 60 * 4 };
 
-    // Get current time
-    const std::time_t now = std::time(nullptr);
+  // Get current time
+  const std::time_t now = std::time(nullptr);
 
-    // 60 seconds * 60 minutes * 24 hours = 86400
-    constexpr std::uint64_t secInDay{ 60 * 60 * 24 };
+  // 60 seconds * 60 minutes * 24 hours = 86400
+  constexpr std::uint64_t secInDay{ 60 * 60 * 24 };
 
-    // Seconds that have passed today
-    const std::uint64_t todaySeconds{ now % secInDay };
+  // Seconds that have passed today
+  const std::uint64_t todaySeconds{ now % secInDay };
 
-    // Time to Midnight in Seconds
-    const std::uint64_t timeToMidnight{ secInDay - todaySeconds - paddingSeconds + utcDiffSeconds };
+  // Time to Midnight in Seconds
+  const std::uint64_t timeToMidnight{ secInDay - todaySeconds - paddingSeconds + utcDiffSeconds };
 
-    std::cout << "time until midnight EST: " << timeToMidnight << '\n';
-    return timeToMidnight;
+  std::cout << "time until midnight EST: " << timeToMidnight << '\n';
+  return timeToMidnight;
 }
