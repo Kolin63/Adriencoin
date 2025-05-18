@@ -9,8 +9,6 @@ void doWeeklyTasks(dpp::cluster&);
 void doTitleMoney();
 void doStocks();
 void doBankInterest();
-void doTitleMoney();
-void doStocks();
 
 void adr::daily::doDailyTasks(dpp::cluster& bot)
 {
