@@ -1,3 +1,7 @@
+#ifndef ADR_BANK
+#define ADR_BANK
+
+#include <dpp/appcommand.h>
 #include <dpp/nlohmann/json.hpp>
 #include "inventory.h"
 #include <string>
@@ -9,24 +13,33 @@ namespace adr
   protected:
     inventory m_inv;
 
+    bool m_isActive{ false };
+
+    // cost in adriencoin to activate your bank account
+    constexpr static int costAdriencoin{ 50 };
+
   public:
     // json should be a reference to the entire player object, not just
     // the bank object
-    void saveJSON(nlohmann::json& json);
+    void saveJSON(nlohmann::json& json) const;
 
     // json should be a reference to the entire player object, not just
     // the bank object
     void loadJSON(const nlohmann::json& json);
 
-    // for when the player puts items from their inventory into the 
-    // banks inventory
-    bool deposit(item_id item, uint32_t amt, inventory& playerInv);
+    // returns an embed with a list of all non zero items in the bank
+    dpp::embed getEmbed() const;
 
-    // for when the player gets items from the banks inventory and puts them 
-    // in their inventory
-    bool withdraw(item_id item, uint32_t amt, inventory& playerInv);
+    bool isActive() const { return m_isActive; }
 
-    // returns a list of all non zero items in the bank
-    std::string list();
+    static void addSlashCommands(
+        dpp::cluster& bot,
+        std::vector<dpp::slashcommand>& commandList);
+
+    void handleSlashCommand(
+        dpp::cluster& bot,
+        const dpp::slashcommand_t& event);
   };
 }
+
+#endif
