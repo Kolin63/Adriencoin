@@ -11,6 +11,7 @@
 #include "attributes.h"
 #include "statistics.h"
 #include "role.h"
+#include "bank.h"
 
 namespace adr {
 
@@ -45,6 +46,8 @@ namespace adr {
         Statistics m_stat{};
 
         FameRank m_fameRank{};
+
+        Bank m_bank{};
 
         // the hardest dungeon the player has done
         // an integer to not have a circular dependency

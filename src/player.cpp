@@ -55,6 +55,7 @@ void adr::Player::save() const
 
     m_atr.save_json(data);
     m_stat.saveJSON(data);
+    m_bank.saveJSON(data);
 
     std::ofstream fs(filename);
     fs << std::setw(4) << data << std::endl;
@@ -128,6 +129,7 @@ void adr::Player::load()
 
     m_atr.load_json(data);
     m_stat.loadJSON(data);
+    m_bank.loadJSON(data);
 
     fs.close();
 }
@@ -160,6 +162,7 @@ const dpp::embed adr::Player::viewEmbed() const
         + "**Job:** " + ((m_job == adr::Job::MAX) ? "none" : adr::Job::jobs[m_job].name)
         + (getTitle() == adr::daily::t_none ? "" : "\nTitle: " + adr::daily::titleNames[m_title])
         + (m_fameRank == f_none ? "" : "\nFame Rank: " + std::string{ fameRankNames[m_fameRank] })
+        + (m_bank.isActive() ? "\nBank: Active" : "")
         + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
         + "\nCan Work Next " + nextWorkTimestamp()
         + "\n\n**Inventory:**\n"
