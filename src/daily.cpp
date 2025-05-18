@@ -20,6 +20,9 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
             std::cout << "do daily tasks dm sent\n";
         }
         });
+
+    std::cout << "Daily Clear Cache!\n";
+    cache::clear();
 }
 
 void adr::daily::doTitleMoney()
