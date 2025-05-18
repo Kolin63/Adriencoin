@@ -106,6 +106,7 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "reloadstocks", "reloadstocks" })
             .add_choice(dpp::command_option_choice{ "getindices", "getindices" })
             .add_choice(dpp::command_option_choice{ "dailies", "dailies" })
+            .add_choice(dpp::command_option_choice{ "weeklies", "weeklies" })
             .add_choice(dpp::command_option_choice{ "setstock", "setstock" })
             .add_choice(dpp::command_option_choice{ "percentstock", "percentstock" })
             .add_choice(dpp::command_option_choice{ "godmode", "godmode" })

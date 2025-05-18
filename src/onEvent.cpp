@@ -1,4 +1,5 @@
-﻿#include "dungeon.h"
+﻿#include "daily.h"
+#include "dungeon.h"
 #include "emoji.h"
 #include "item.h"
 #include <dpp/message.h>
@@ -438,6 +439,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "dailies") {
             adr::daily::doDailyTasks(bot);
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "weeklies") {
+            adr::daily::doWeeklyTasks(bot);
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "setstock") {
