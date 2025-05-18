@@ -5,6 +5,9 @@
 #include "cache.h"
 #include "stock.h"
 
+void doTitleMoney();
+void doStocks();
+
 void adr::daily::doDailyTasks(dpp::cluster& bot)
 {
     std::cout << "doDailyTasks() called\n";
@@ -25,7 +28,7 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
     cache::clear();
 }
 
-void adr::daily::doTitleMoney()
+void doTitleMoney()
 {
     std::cout << "doTitleMoney() called\n";
 
@@ -51,7 +54,7 @@ void adr::daily::doTitleMoney()
     }
 }
 
-void adr::daily::doStocks()
+void doStocks()
 {
     std::cout << "doStocks() called\n";
 
