@@ -13,6 +13,8 @@ void adr::Bank::saveJSON(nlohmann::json& json) const {
 
   json["bank"]["inv"] = m_inv;
   json["bank"]["isActive"] = m_isActive;
+
+  std::cout << "adr::Bank::saveJSON() finished\n";
 }
 
 void adr::Bank::loadJSON(const nlohmann::json& json)

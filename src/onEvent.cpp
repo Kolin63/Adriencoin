@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 #include "daily.h"
 #include "bank.h"
+=======
+﻿#include "bank.h"
+>>>>>>> dab3aaf (Implement Bank Features)
 #include "dungeon.h"
 #include "emoji.h"
 #include "item.h"
