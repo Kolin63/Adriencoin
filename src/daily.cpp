@@ -5,6 +5,7 @@
 #include "cache.h"
 #include "stock.h"
 
+void doWeeklyTasks(dpp::cluster&);
 void doTitleMoney();
 void doStocks();
 
@@ -24,8 +25,19 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
       }
       });
 
+  // figure out if we should do weekly tasks
+  std::time_t time_t{ std::time(0) };
+  std::tm* tm{ std::localtime(&time_t) };
+
+  if (tm->tm_wday == 1) doWeeklyTasks(bot);
+
   std::cout << "Daily Clear Cache!\n";
   cache::clear();
+}
+
+void adr::daily::doWeeklyTasks(dpp::cluster& bot)
+{
+  std::cout << "doWeeklyTasks() called\n";
 }
 
 void doTitleMoney()
