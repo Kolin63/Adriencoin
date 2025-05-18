@@ -38,6 +38,15 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
 void adr::daily::doWeeklyTasks(dpp::cluster& bot)
 {
   std::cout << "doWeeklyTasks() called\n";
+
+  bot.direct_message_create(dpp::snowflake{ 488335709883727882 }, dpp::message{ "Weekly Tasks Complete" }, [](const dpp::confirmation_callback_t& callback) {
+      if (callback.is_error()) {
+      std::cerr << "do daily tasks dm error: " << callback.get_error().human_readable << '\n';
+      }
+      else {
+      std::cout << "do daily tasks dm sent\n";
+      }
+      });
 }
 
 void doTitleMoney()
