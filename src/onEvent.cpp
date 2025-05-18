@@ -1,14 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 #include "daily.h"
 #include "bank.h"
-=======
-﻿#include "bank.h"
->>>>>>> dab3aaf (Implement Bank Features)
-=======
-#include "daily.h"
-#include "bank.h"
->>>>>>> refs/remotes/origin/65-banking
 #include "dungeon.h"
 #include "emoji.h"
 #include "item.h"
