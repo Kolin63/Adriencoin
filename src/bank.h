@@ -39,6 +39,8 @@ namespace adr
     void handleSlashCommand(
         dpp::cluster& bot,
         const dpp::slashcommand_t& event);
+
+    void doInterest();
   };
 }
 
