@@ -11,12 +11,14 @@
 adr::Player::Player(const dpp::snowflake& uuid) 
     : m_uuid{ uuid }
 {
+    std::cout << "Player constructor called for " << uuid << '\n';
     if (exists()) {
+      std::cout << uuid << " savedata does exist. Loading!\n";
         load();
     }
     else {
-        save();
         std::cout << uuid << " savedata does not exist. Creating new one.\n";
+        save();
     }
 }
 
@@ -56,6 +58,7 @@ void adr::Player::save() const
     m_atr.save_json(data);
     m_stat.saveJSON(data);
     m_bank.saveJSON(data);
+    m_coop.saveJSON(data);
 
     std::ofstream fs(filename);
     fs << std::setw(4) << data << std::endl;
@@ -130,6 +133,7 @@ void adr::Player::load()
     m_atr.load_json(data);
     m_stat.loadJSON(data);
     m_bank.loadJSON(data);
+    m_coop.loadJSON(data, m_uuid);
 
     fs.close();
 }
@@ -163,6 +167,7 @@ const dpp::embed adr::Player::viewEmbed() const
         + (getTitle() == adr::daily::t_none ? "" : "\nTitle: " + adr::daily::titleNames[m_title])
         + (m_fameRank == f_none ? "" : "\nFame Rank: " + std::string{ fameRankNames[m_fameRank] })
         + (m_bank.isActive() ? "\nBank: Active" : "")
+        + (m_coop.isActive() ? ("\nCo-Op: " + std::string{ (m_coop.m_ownerUUID == m_uuid ? "Owning" : "Participating") }) : "")
         + "\nLast Worked: " + dpp::utility::timestamp(m_lastWorked, dpp::utility::tf_short_datetime)
         + "\nCan Work Next " + nextWorkTimestamp()
         + "\n\n**Inventory:**\n"

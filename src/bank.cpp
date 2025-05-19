@@ -116,92 +116,97 @@ void adr::Bank::handleSlashCommand(
     dpp::cluster& bot,
     const dpp::slashcommand_t& event)
 {
-    // The subcommand action
-    // Ex `/bank view`, the action is 'view'
-    const std::string_view action{ 
-        event.command.get_command_interaction().options[0].name 
-    };
+  // The subcommand action
+  // Ex `/bank view`, the action is 'view'
+  const std::string_view action{ 
+    event.command.get_command_interaction().options[0].name 
+  };
 
-    adr::Player& player{ 
-      cache::getPlayerFromCache(event.command.usr.id) 
-    };
+  adr::Player& player{ 
+    cache::getPlayerFromCache(event.command.usr.id) 
+  };
 
-    if (action == "activate") {
-      if (player.inv(i_adriencoin) < costAdriencoin) [[unlikely]] {
-        event.reply(dpp::message{ "You can't afford that! (" + get_emoji(e_adriencoin) + " 50 Adriencoin)" } .set_flags(dpp::m_ephemeral));
-        return;
-      }
-      player.changeInv(i_adriencoin, -1 * costAdriencoin);
-      m_isActive = true;
-      event.reply(dpp::message{ "Activated your bank!" });
+  if (action == "activate") {
+    if (player.inv(i_adriencoin) < costAdriencoin) [[unlikely]] {
+      event.reply(dpp::message{ "You can't afford that! (" + get_emoji(e_adriencoin) + ' ' + std::to_string(costAdriencoin) + " Adriencoin)" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
+    if (m_isActive) [[unlikely]] {
+      event.reply(dpp::message{ "Your bank is already active!" }.set_flags(dpp::m_ephemeral));
       return;
     }
 
-    if (!m_isActive) {
-      event.reply(dpp::message{ "Your bank is not active (/bank activate)" }.set_flags(dpp::m_ephemeral));
+    player.changeInv(i_adriencoin, -1 * costAdriencoin);
+    m_isActive = true;
+    event.reply(dpp::message{ "Activated your bank!" });
+    return;
+  }
+
+  if (!m_isActive) {
+    event.reply(dpp::message{ "Your bank is not active (/bank activate)" }.set_flags(dpp::m_ephemeral));
+    return;
+  }
+
+  if (action == "deposit") {
+    const item_id item{ get_item_id(std::get<std::string>(event.get_parameter("item"))) };
+    const std::int64_t amt{ std::get<std::int64_t>(event.get_parameter("amount")) };
+
+    if (amt > std::numeric_limits<int>::max()) [[unlikely]] {
+      event.reply(dpp::message{ "Are you trying to overflow the integer limit to bug the bot?" }.set_flags(dpp::m_ephemeral));
       return;
     }
 
-    if (action == "deposit") {
-      const item_id item{ get_item_id(std::get<std::string>(event.get_parameter("item"))) };
-      const std::int64_t amt{ std::get<std::int64_t>(event.get_parameter("amount")) };
+    const int iamt{ static_cast<int>(amt) };
 
-      if (amt > std::numeric_limits<int>::max()) [[unlikely]] {
-        event.reply(dpp::message{ "Are you trying to overflow the integer limit to bug the bot?" }.set_flags(dpp::m_ephemeral));
-        return;
-      }
-
-      const int iamt{ static_cast<int>(amt) };
-
-      if (player.inv(item) < iamt) [[unlikely]] {
-        event.reply(dpp::message{ "You don't have enough of that item!" }.set_flags(dpp::m_ephemeral));
-        return;
-      }
-
-      if (iamt <= 0) [[unlikely]] {
-        event.reply(dpp::message{ "The amount must be greater than 0" }.set_flags(dpp::m_ephemeral));
-        return;
-      }
-
-      player.changeInv(item, -1 * iamt);
-      m_inv[item] += iamt;
-
-      event.reply(dpp::message{ "Succesfully deposited " + get_emoji(item) + ' ' + std::to_string(iamt) + ' ' + std::string{ item_names[item] } }.set_flags(dpp::m_ephemeral));
+    if (player.inv(item) < iamt) [[unlikely]] {
+      event.reply(dpp::message{ "You don't have enough of that item!" }.set_flags(dpp::m_ephemeral));
       return;
     }
 
-    if (action == "withdraw") {
-      const item_id item{ get_item_id(std::get<std::string>(event.get_parameter("item"))) };
-      const std::int64_t amt{ std::get<std::int64_t>(event.get_parameter("amount")) };
-
-      if (amt > std::numeric_limits<int>::max()) [[unlikely]] {
-        event.reply(dpp::message{ "Are you trying to overflow the integer limit to bug the bot?" }.set_flags(dpp::m_ephemeral));
-        return;
-      }
-
-      const int iamt{ static_cast<int>(amt) };
-
-      if (m_inv[item] < iamt) [[unlikely]] {
-        event.reply(dpp::message{ "The bank doesn't have enough of that item!" }.set_flags(dpp::m_ephemeral));
-        return;
-      }
-
-      if (iamt <= 0) [[unlikely]] {
-        event.reply(dpp::message{ "The amount must be greater than 0" }.set_flags(dpp::m_ephemeral));
-        return;
-      }
-
-      m_inv[item] -= iamt;
-      player.changeInv(item, iamt);
-
-      event.reply(dpp::message{ "Succesfully withdrew " + get_emoji(item) + ' ' + std::to_string(iamt) + ' ' + std::string{ item_names[item] } }.set_flags(dpp::m_ephemeral));
+    if (iamt <= 0) [[unlikely]] {
+      event.reply(dpp::message{ "The amount must be greater than 0" }.set_flags(dpp::m_ephemeral));
       return;
     }
 
-    if (action == "view") {
-      event.reply(dpp::message{ getEmbed() }.set_flags(dpp::m_ephemeral));
+    player.changeInv(item, -1 * iamt);
+    m_inv[item] += iamt;
+
+    event.reply(dpp::message{ "Succesfully deposited " + get_emoji(item) + ' ' + std::to_string(iamt) + ' ' + std::string{ item_names[item] } }.set_flags(dpp::m_ephemeral));
+    return;
+  }
+
+  if (action == "withdraw") {
+    const item_id item{ get_item_id(std::get<std::string>(event.get_parameter("item"))) };
+    const std::int64_t amt{ std::get<std::int64_t>(event.get_parameter("amount")) };
+
+    if (amt > std::numeric_limits<int>::max()) [[unlikely]] {
+      event.reply(dpp::message{ "Are you trying to overflow the integer limit to bug the bot?" }.set_flags(dpp::m_ephemeral));
       return;
     }
+
+    const int iamt{ static_cast<int>(amt) };
+
+    if (m_inv[item] < iamt) [[unlikely]] {
+      event.reply(dpp::message{ "The bank doesn't have enough of that item!" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
+
+    if (iamt <= 0) [[unlikely]] {
+      event.reply(dpp::message{ "The amount must be greater than 0" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
+
+    m_inv[item] -= iamt;
+    player.changeInv(item, iamt);
+
+    event.reply(dpp::message{ "Succesfully withdrew " + get_emoji(item) + ' ' + std::to_string(iamt) + ' ' + std::string{ item_names[item] } }.set_flags(dpp::m_ephemeral));
+    return;
+  }
+
+  if (action == "view") {
+    event.reply(dpp::message{ getEmbed() }.set_flags(dpp::m_ephemeral));
+    return;
+  }
 }
 
 void adr::Bank::doInterest() {

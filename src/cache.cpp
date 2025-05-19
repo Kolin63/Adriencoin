@@ -10,6 +10,13 @@ void adr::cache::cacheUsernameAndAvatar(adr::playerCacheElement& elem)
 {
     std::cout << "Caching Username and Avatar for Player " << elem.player.uuid() << '\n';
 
+    if (elem.player.uuid() == 0) {
+      std::cout << "skipping uuid 0\n";
+      elem.username = "ayan desai";
+      elem.avatarURL = "https://gvanrossum.github.io/images/guido-headshot-2019.jpg";
+      return;
+    }
+
     std::function<void(const dpp::confirmation_callback_t&)> func{ [&elem](const dpp::confirmation_callback_t& callback) {
         if (callback.is_error()) {
             std::cout << "Error getting username and avatar url\n";

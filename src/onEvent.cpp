@@ -68,6 +68,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
       adr::cache::getPlayerFromCache(event.command.usr.id)
         .m_bank.handleSlashCommand(bot, event);
     }
+    else if (commandName == "coop") {
+      adr::cache::getPlayerFromCache(event.command.usr.id)
+        .m_coop.handleSlashCommand(bot, event);
+    }
     else if (commandName == "lsitem") {
         dpp::message msg{ "Due to restrictions in Discord's API, there can "
         "only be 25 items in a slashcommand choice. Therefore, you will need "
