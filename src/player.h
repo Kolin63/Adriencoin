@@ -4,6 +4,7 @@
 #include <dpp/dpp.h>
 #include <array>
 #include <ctime>
+#include "coop.h"
 #include "item.h"
 #include "job.h"
 #include "inventory.h"
@@ -11,6 +12,7 @@
 #include "attributes.h"
 #include "statistics.h"
 #include "role.h"
+#include "bank.h"
 
 namespace adr {
 
@@ -45,6 +47,10 @@ namespace adr {
         Statistics m_stat{};
 
         FameRank m_fameRank{};
+
+        Bank m_bank{};
+        
+        Coop m_coop{};
 
         // the hardest dungeon the player has done
         // an integer to not have a circular dependency

@@ -1,4 +1,5 @@
-﻿#include "daily.h"
+#include "daily.h"
+#include "bank.h"
 #include "dungeon.h"
 #include "emoji.h"
 #include "item.h"
@@ -62,6 +63,14 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     }
     else if (commandName == "dungeon") {
         adr::dungeon::handle_slash_command(bot, event);
+    }
+    else if (commandName == "bank") {
+      adr::cache::getPlayerFromCache(event.command.usr.id)
+        .m_bank.handleSlashCommand(bot, event);
+    }
+    else if (commandName == "coop") {
+      adr::cache::getPlayerFromCache(event.command.usr.id)
+        .m_coop.handleSlashCommand(bot, event);
     }
     else if (commandName == "lsitem") {
         dpp::message msg{ "Due to restrictions in Discord's API, there can "

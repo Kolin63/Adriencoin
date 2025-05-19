@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <dpp/dpp.h>
 #include "onReady.h"
+#include "bank.h"
+#include "coop.h"
 #include "job.h"
 #include "product.h"
 #include "stock.h"
@@ -66,6 +68,8 @@ namespace adr {
         commandList.push_back(trade);
 
         adr::dungeon::add_slash_commands(bot, commandList);
+        adr::Bank::addSlashCommands(bot, commandList);
+        adr::Coop::addSlashCommands(bot, commandList);
 
         dpp::slashcommand use{ "use", "Use an Item", bot.me.id };
         use.add_option(
