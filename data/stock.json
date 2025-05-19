@@ -1,9 +1,11 @@
 {
     "channel": 1363701696684888096,
-    "day": 27,
+    "day": 29,
     "stocks": [
         {
             "history": [
+                102,
+                82,
                 76,
                 62,
                 69,
@@ -34,15 +36,17 @@
             ],
             "name": "jerrys_carrots",
             "outstanding": 0,
-            "potentialStability": 45,
-            "stability": 50,
+            "potentialStability": 50,
+            "stability": 30,
             "ticker": "CRT",
-            "timesWorked": 3,
+            "timesWorked": 4,
             "unissued": 50,
-            "value": 76
+            "value": 102
         },
         {
             "history": [
+                32,
+                27,
                 22,
                 24,
                 22,
@@ -72,16 +76,18 @@
                 31
             ],
             "name": "divans_gems",
-            "outstanding": 23,
-            "potentialStability": 45,
+            "outstanding": 20,
+            "potentialStability": 30,
             "stability": 50,
             "ticker": "GEM",
-            "timesWorked": 3,
-            "unissued": 27,
-            "value": 22
+            "timesWorked": 2,
+            "unissued": 30,
+            "value": 32
         },
         {
             "history": [
+                15,
+                19,
                 16,
                 21,
                 19,
@@ -111,16 +117,18 @@
                 52
             ],
             "name": "jacks_lumber",
-            "outstanding": 8,
+            "outstanding": 0,
             "potentialStability": 0,
             "stability": 0,
             "ticker": "LMB",
             "timesWorked": 0,
-            "unissued": 42,
-            "value": 16
+            "unissued": 50,
+            "value": 15
         },
         {
             "history": [
+                31,
+                35,
                 31,
                 26,
                 26,
@@ -161,6 +169,8 @@
         {
             "history": [
                 39,
+                35,
+                39,
                 42,
                 38,
                 41,
@@ -190,15 +200,17 @@
             ],
             "name": "aatroxs_slaying",
             "outstanding": 0,
-            "potentialStability": 30,
-            "stability": 50,
+            "potentialStability": 50,
+            "stability": 30,
             "ticker": "SLY",
-            "timesWorked": 2,
+            "timesWorked": 4,
             "unissued": 50,
             "value": 39
         },
         {
             "history": [
+                61,
+                54,
                 46,
                 52,
                 52,
@@ -229,15 +241,17 @@
             ],
             "name": "berts_knowledge",
             "outstanding": 1,
-            "potentialStability": 30,
+            "potentialStability": 50,
             "stability": 50,
             "ticker": "KNW",
-            "timesWorked": 2,
+            "timesWorked": 4,
             "unissued": 49,
-            "value": 46
+            "value": 61
         },
         {
             "history": [
+                44,
+                46,
                 53,
                 54,
                 44,
@@ -268,15 +282,17 @@
             ],
             "name": "the_brewers",
             "outstanding": 0,
-            "potentialStability": 50,
+            "potentialStability": 40,
             "stability": 50,
             "ticker": "BRW",
-            "timesWorked": 4,
+            "timesWorked": 3,
             "unissued": 50,
-            "value": 53
+            "value": 44
         },
         {
             "history": [
+                84,
+                94,
                 76,
                 88,
                 82,
@@ -312,7 +328,7 @@
             "ticker": "STK",
             "timesWorked": 0,
             "unissued": 0,
-            "value": 76
+            "value": 84
         }
     ]
 }

@@ -6,16 +6,17 @@
         "shadow_warp": false,
         "wither_shield": false
     },
+    "fame": 2,
     "highdung": 2,
     "inv": [
         1700,
-        1395,
+        1520,
         300,
         1,
         100,
         0,
         0,
-        37,
+        77,
         0,
         0,
         0,
@@ -41,7 +42,7 @@
         0
     ],
     "job": 8,
-    "lastWorked": 1747418042,
+    "lastWorked": 1747602258,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -50,8 +51,8 @@
         "scarf": 0,
         "theProfessor": 0,
         "thorn": 0,
-        "timesInStore": 0,
-        "timesWorked": 3
+        "timesInStore": 2,
+        "timesWorked": 9
     },
     "title": 2,
     "uuid": 997967659809386636
