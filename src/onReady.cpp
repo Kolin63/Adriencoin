@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <dpp/dpp.h>
 #include "onReady.h"
+#include "bank.h"
+#include "coop.h"
 #include "job.h"
 #include "product.h"
 #include "stock.h"
@@ -66,6 +68,8 @@ namespace adr {
         commandList.push_back(trade);
 
         adr::dungeon::add_slash_commands(bot, commandList);
+        adr::Bank::addSlashCommands(bot, commandList);
+        adr::Coop::addSlashCommands(bot, commandList);
 
         dpp::slashcommand use{ "use", "Use an Item", bot.me.id };
         use.add_option(
@@ -106,6 +110,7 @@ namespace adr {
             .add_choice(dpp::command_option_choice{ "reloadstocks", "reloadstocks" })
             .add_choice(dpp::command_option_choice{ "getindices", "getindices" })
             .add_choice(dpp::command_option_choice{ "dailies", "dailies" })
+            .add_choice(dpp::command_option_choice{ "weeklies", "weeklies" })
             .add_choice(dpp::command_option_choice{ "setstock", "setstock" })
             .add_choice(dpp::command_option_choice{ "percentstock", "percentstock" })
             .add_choice(dpp::command_option_choice{ "godmode", "godmode" })

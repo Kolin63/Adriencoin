@@ -1,4 +1,6 @@
-﻿#include "dungeon.h"
+#include "daily.h"
+#include "bank.h"
+#include "dungeon.h"
 #include "emoji.h"
 #include "item.h"
 #include <dpp/message.h>
@@ -61,6 +63,14 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
     }
     else if (commandName == "dungeon") {
         adr::dungeon::handle_slash_command(bot, event);
+    }
+    else if (commandName == "bank") {
+      adr::cache::getPlayerFromCache(event.command.usr.id)
+        .m_bank.handleSlashCommand(bot, event);
+    }
+    else if (commandName == "coop") {
+      adr::cache::getPlayerFromCache(event.command.usr.id)
+        .m_coop.handleSlashCommand(bot, event);
     }
     else if (commandName == "lsitem") {
         dpp::message msg{ "Due to restrictions in Discord's API, there can "
@@ -438,6 +448,10 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
         }
         else if (subcmd == "dailies") {
             adr::daily::doDailyTasks(bot);
+            event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "weeklies") {
+            adr::daily::doWeeklyTasks(bot);
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
         else if (subcmd == "setstock") {
