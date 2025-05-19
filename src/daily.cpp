@@ -104,6 +104,11 @@ void doBankInterest()
       std::cout << "Bank interest for " << uuid << '\n';
       player.m_bank.doInterest();
     }
+
+    if (player.m_coop.m_ownerUUID == player.uuid()) [[unlikely]] {
+      std::cout << "Coop interest for owner " << uuid << '\n';
+      player.m_coop.doInterest();
+    }
   }
 }
 
