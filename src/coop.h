@@ -29,6 +29,10 @@ namespace adr
     // these are for the coop bank, not the individual player
     std::vector<std::uint64_t> m_outgoingInvites{};
 
+    // Turns true on the first time the player tries to delete it 
+    // Turns false if the player cancels the deletion
+    bool m_deletionMark{ false };
+
     // json should be a reference to the entire player object, not just
     // the bank object
     void saveJSON(nlohmann::json& json) const;

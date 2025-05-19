@@ -12,6 +12,7 @@ void adr::Coop::updateLocal() {
   m_isActive = remote.m_isActive;
   m_inv = remote.m_inv;
   m_players = remote.m_players;
+  m_ownerUUID = remote.m_ownerUUID;
 }
 
 adr::Coop& adr::Coop::getRemote() const {
@@ -81,16 +82,16 @@ void adr::Coop::addSlashCommands(
     std::vector<dpp::slashcommand>& commandList)
 {
   // Main command
-  dpp::slashcommand bank{ "coop", "Access your Co-Op Bank", bot.me.id };
+  dpp::slashcommand coop{ "coop", "Access your Co-Op Bank", bot.me.id };
 
   // Activate:
-  bank.add_option(dpp::command_option{ 
+  coop.add_option(dpp::command_option{ 
       dpp::co_sub_command, 
       "activate", 
       "Activate your co-op bank (see price in #bank)" });
 
   // Deposit:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "deposit",
       "Desposit Items" }
@@ -109,7 +110,7 @@ void adr::Coop::addSlashCommands(
       );
 
   // Withdraw:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "withdraw",
       "Withdraw Items" }
@@ -128,13 +129,13 @@ void adr::Coop::addSlashCommands(
       );
 
   // View:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "view",
       "View the contents of your bank" });
 
   // Invite:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "invite",
       "Add a player to your Co-Op bank" }
@@ -146,7 +147,7 @@ void adr::Coop::addSlashCommands(
       );
 
   // Accept:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "accept",
       "Accept and join a Co-Op bank to you were invited to" }
@@ -158,7 +159,7 @@ void adr::Coop::addSlashCommands(
       );
 
   // Remove:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "remove",
       "Remove a player from your Co-Op bank" }
@@ -170,7 +171,7 @@ void adr::Coop::addSlashCommands(
       );
 
   // Transfer:
-  bank.add_option(dpp::command_option{
+  coop.add_option(dpp::command_option{
       dpp::co_sub_command,
       "transfer",
       "Transfer ownership to another player" }
@@ -181,7 +182,22 @@ void adr::Coop::addSlashCommands(
         true })
       );
 
-  commandList.push_back(bank);
+  // Delete:
+  coop.add_option(dpp::command_option{
+      dpp::co_sub_command_group,
+      "delete",
+      "WARNING: DANGEROUS. NO REFUNDS. Delete a Co-Op Bank" }
+      .add_option(dpp::command_option{
+        dpp::co_sub_command,
+        "delete",
+        "WARNING: DANGEROUS. NO REFUNDS. Delete a Co-Op Bank. Cancel with /coop delete cancel" })
+      .add_option(dpp::command_option{
+        dpp::co_sub_command,
+        "cancel",
+        "Cancel the deletion of your Co-Op Bank" })
+      );
+
+  commandList.push_back(coop);
 }
 
 void adr::Coop::handleSlashCommand(
@@ -349,11 +365,19 @@ void adr::Coop::handleSlashCommand(
     }
 
     dpp::snowflake rmUUID{ std::get<dpp::snowflake>(event.get_parameter("player")) };
+    if (rmUUID == remote.m_ownerUUID) [[unlikely]] {
+      event.reply(dpp::message{ "You can't remove the owner" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
+
+    Player& rmPlayer{ cache::getPlayerFromCache(rmUUID) };
     std::vector<std::uint64_t>& list{ player.m_coop.getRemote().m_players };
     
     for (std::size_t i{}; i < list.size(); ++i) {
       if (list[i] != rmUUID) [[likely]] continue;
       list.erase(list.begin() + i);
+      rmPlayer.m_coop.m_ownerUUID = 0;
+      rmPlayer.m_coop.updateLocal();
       updateLocal();
       event.reply(dpp::message{ "Succesfully removed that player" }.set_flags(dpp::m_ephemeral));
       return;
@@ -373,13 +397,60 @@ void adr::Coop::handleSlashCommand(
 
     for (std::size_t i{}; i < list.size(); ++i) {
       if (list[i] != transUUID) [[likely]] continue;
+      std::cout << remote.m_ownerUUID << " is transferring co-op to " << transUUID << "... ";
       remote.m_ownerUUID = transUUID;
       transPlayer.m_coop.updateLocal();
-      updateLocal();
       event.reply(dpp::message{ "Succesfully transferred ownership to that player" }.set_flags(dpp::m_ephemeral));
+      std::cout << "co-op uuid is now " << remote.m_ownerUUID << '\n';
       return;
     }
     event.reply(dpp::message{ "That player is not in your Co-Op" }.set_flags(dpp::m_ephemeral));
+  }
+
+  if (action == "delete") {
+    if (player.uuid() != remote.m_ownerUUID) [[likely]] {
+      event.reply(dpp::message{ "Only owners can perform that action" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
+
+    for (const int& i : remote.m_inv) {
+      if (i > 0) [[unlikely]] {
+        event.reply(dpp::message{ "There must be no items in your bank to delete it" }.set_flags(dpp::m_ephemeral));
+        return;
+      }
+    }
+
+    if (remote.m_players.size() > 1) [[likely]] {
+      event.reply(dpp::message{ "You must be the only player to delete the bank" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
+
+    const std::string_view sub{ 
+      event.command.get_command_interaction().options[0].options[0].name 
+    };
+     
+    if (sub == "delete") [[likely]] {
+      if (!remote.m_deletionMark) [[likely]] {
+        remote.m_deletionMark = true;
+        event.reply(dpp::message{ "Are you SURE you want to delete your Co-Op bank? You won't get your money back and you will have to pay again to own another one" }.set_flags(dpp::m_ephemeral));
+        return;
+      }
+      else [[unlikely]] {
+        remote.m_ownerUUID = 0;
+        remote.m_players = {};
+        remote.m_outgoingInvites = {};
+        remote.m_deletionMark = false;
+        remote.m_isActive = false;
+        remote.m_inv = {};
+        event.reply(dpp::message{ "Succesfully deleted Co-Op bank" });
+        return;
+      }
+    }
+    else [[unlikely]] {
+      remote.m_deletionMark = false;
+      event.reply(dpp::message{ "Cancelled deletion for Co-Op Bank" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
   }
 }
 
