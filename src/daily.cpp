@@ -50,8 +50,6 @@ void adr::daily::doWeeklyTasks(dpp::cluster& bot)
       });
 
   doBankInterest();
-  std::cout << "Daily Clear Cache!\n";
-  cache::clear();
 }
 
 void doTitleMoney()
