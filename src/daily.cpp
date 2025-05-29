@@ -32,8 +32,11 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
 
   if (tm->tm_wday == 1) doWeeklyTasks(bot);
 
-  std::cout << "Daily Clear Cache!\n";
-  cache::clear();
+  // we don't do this anymore because it causes a segfault, since api
+  // requests don't become finished until after the cache clear and try 
+  // to access elements that no longer exist
+  // std::cout << "Daily Clear Cache!\n";
+  // cache::clear();
 }
 
 void adr::daily::doWeeklyTasks(dpp::cluster& bot)
