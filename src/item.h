@@ -47,6 +47,7 @@ namespace adr
 
         i_dungeon_potion,
         i_kismet_feather,
+        i_dungeon_pass,
 
         i_MAX
     };
@@ -93,6 +94,7 @@ namespace adr
 
         "dungeon_potion",
         "kismet_feather",
+        "dungeon_pass",
     };
 
     // 
@@ -139,6 +141,7 @@ namespace adr
 
         e_potion,
         e_kismet_feather,
+        e_paper,
 
         e_fish,
     };
