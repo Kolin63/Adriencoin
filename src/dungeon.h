@@ -195,7 +195,8 @@ namespace adr
                 const dpp::snowflake& uuid,
                 bool dungeon_potion,
                 bool bonzo_mask,
-                bool kismet_feather
+                bool kismet_feather,
+                bool dungeon_pass
         ) const;
 
         ///
