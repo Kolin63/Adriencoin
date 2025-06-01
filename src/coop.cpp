@@ -37,9 +37,6 @@ void adr::Coop::loadJSON(const nlohmann::json& json, const dpp::snowflake& playe
 
   try {
     m_inv = json.at("coop").at("inv");
-    m_isActive = json.at("coop").at("isActive");
-    m_ownerUUID = json.at("coop").at("owner");
-    m_players = json.at("coop").at("players").get<std::vector<std::uint64_t>>();
   }
   catch (nlohmann::json::out_of_range&) {
     for (std::size_t i{}; i < i_MAX; ++i) {
@@ -50,10 +47,14 @@ void adr::Coop::loadJSON(const nlohmann::json& json, const dpp::snowflake& playe
         m_inv[i] = 0;
       }
     }
-    m_isActive = false;
-    m_ownerUUID = 0;
-    m_players = {};
   }
+
+  try { m_isActive = json.at("coop").at("isActive"); }
+  catch(nlohmann::json::out_of_range&) { m_isActive = false; }
+  try { m_ownerUUID = json.at("coop").at("owner"); }
+  catch(nlohmann::json::out_of_range&) { m_ownerUUID = 0; }
+  try { m_players = json.at("coop").at("players").get<std::vector<std::uint64_t>>(); }
+  catch(nlohmann::json::out_of_range&) { m_players = {}; }
 
   std::cout << "adr::Coop::loadJSON() finished\n";
 }

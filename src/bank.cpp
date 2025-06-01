@@ -23,7 +23,6 @@ void adr::Bank::loadJSON(const nlohmann::json& json)
 
   try {
     m_inv = json.at("bank").at("inv");
-    m_isActive = json.at("bank").at("isActive");
   }
   catch (nlohmann::json::out_of_range&) {
     for (std::size_t i{}; i < i_MAX; ++i) {
@@ -34,8 +33,10 @@ void adr::Bank::loadJSON(const nlohmann::json& json)
         m_inv[i] = 0;
       }
     }
-    m_isActive = false;
   }
+
+  try { m_isActive = json.at("bank").at("isActive"); }
+  catch(nlohmann::json::out_of_range&) { m_isActive = false; }
 
   std::cout << "adr::Bank::loadJSON() finished\n";
 }
