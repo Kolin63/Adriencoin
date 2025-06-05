@@ -30,7 +30,7 @@ void adr::daily::doDailyTasks(dpp::cluster& bot)
   std::time_t time_t{ std::time(0) };
   std::tm* tm{ std::localtime(&time_t) };
 
-  if (tm->tm_wday == 1) doWeeklyTasks(bot);
+  if (tm->tm_wday == 0) doWeeklyTasks(bot);
 
   // we don't do this anymore because it causes a segfault, since api
   // requests don't become finished until after the cache clear and try 
