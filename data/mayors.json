@@ -1,0 +1,116 @@
+{
+  "specialMayorCounter": 0,
+
+  "mayors": [
+		{
+			"name": "Aatrox",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+				{ "rottenfleshPerWork": 300 },
+        { "dailyDungeonPass": 1 },
+        { "dungeonPriceMultiplier": 50 }
+			]
+		},
+		{
+			"name": "Cole",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "gemstonePerWork": 25 }
+			]
+		},
+		{
+			"name": "Diana",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "bankInterestOnElection": true }
+			]
+		},
+		{
+			"name": "Diaz",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "resourceExchangePrice": 7 },
+        { "stockStabilityCap": 80 },
+        { "titleMoneyMultiplier": 150 }
+			]
+		},
+		{
+			"name": "Finnegan",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "carrotPerWork": 100 }
+			]
+		},
+		{
+			"name": "Foxy",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "workPresents": true },
+        { "dailyGiveaway": true }
+			]
+		},
+		{
+			"name": "Marina",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "fishPerWork": 150 },
+        { "animeGirls": true }
+			]
+		},
+		{
+			"name": "Paul",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "dungeonAdriresourceIncrease": 10 },
+        { "dungeonWinChanceIncrease": 10 },
+        { "dungeonDropChanceIncrease": 10 }
+			]
+		},
+		{
+			"name": "Jerry",
+			"image": "url",
+			"desc": "desc",
+      "isSpecial": true,
+			"feats": [
+        { "activateOtherPerks": true },
+        { "workCooldownChangeMinutes": -90 },
+        { "workPresents": true }
+			]
+		},
+		{
+			"name": "Derpy",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "allShopAdriencoinMultiplier": 200 },
+        { "workYieldMultiplier": 2 },
+        { "dungeonWinChanceIncrease": -15 }
+			]
+		},
+		{
+			"name": "Scorpius",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "bribe": 250 },
+        { "darkerAuctions": true }
+			]
+		},
+		{
+			"name": "Adrien",
+			"image": "url",
+			"desc": "desc",
+			"feats": [
+        { "insurance": true }
+			]
+		}
+  ]
+}
