@@ -132,9 +132,11 @@ namespace adr
     constexpr static std::uint64_t pingID{ 1379976749072257104 };
 #endif
 
-    const MayorData& getCurrent() { return mayors[currentMayor]; }
+    const MayorData& getCurrent() const { return mayors[currentMayor]; }
 
-    const MayorData::Feats& getFeats() { return mayorData.feats; }
+    const MayorData::Feats& getFeats() const { return mayorData.feats; }
+
+    void loadJSON();
 
   };
 }

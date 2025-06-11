@@ -89,6 +89,7 @@
 			"name": "Derpy",
 			"image": "url",
 			"desc": "desc",
+      "isSpecial": true,
 			"feats": [
         { "allShopAdriencoinMultiplier": 200 },
         { "workYieldMultiplier": 2 },
@@ -99,6 +100,7 @@
 			"name": "Scorpius",
 			"image": "url",
 			"desc": "desc",
+      "isSpecial": true,
 			"feats": [
         { "bribe": 250 },
         { "darkerAuctions": true }
@@ -108,6 +110,7 @@
 			"name": "Adrien",
 			"image": "url",
 			"desc": "desc",
+      "isSpecial": true,
 			"feats": [
         { "insurance": true }
 			]
