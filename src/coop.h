@@ -53,6 +53,9 @@ namespace adr
         const dpp::slashcommand_t& event);
 
     void doInterest();
+
+    // will return true if any player in the coop is banned
+    bool isBanned();
   };
 }
 

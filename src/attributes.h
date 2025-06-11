@@ -79,6 +79,8 @@ namespace adr
         atrib<bool> wither_shield{ false, "wither_shield", e_wither_shield };
         atrib<bool> shadow_warp{ false, "shadow_warp", e_shadow_warp };
         atrib<bool> implosion{ false, "implosion", e_implosion };
+
+        atrib<bool> banned{ false, "banned", e_gaydriencoin };
     };
 }
 

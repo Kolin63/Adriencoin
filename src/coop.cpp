@@ -75,6 +75,10 @@ dpp::embed adr::Coop::getEmbed() const {
 
   embed.description += "\nContents:\n" + getNonZeroItems(remote.m_inv);
 
+  if (remote.isBanned()) [[unlikely]] {
+    embed.description += "\n:warning: Warning: A player in this coop is banned";
+  }
+
   return embed;
 }
 
@@ -217,6 +221,17 @@ void adr::Coop::handleSlashCommand(
     cache::getPlayerFromCache(event.command.usr.id) 
   };
 
+  if (player.m_coop.isBanned()
+      && action != "view"
+      && action != "activate"
+      && action != "delete"
+      && action != "remove"
+    )
+  {
+    event.reply(dpp::message{ "somebody in your coop is banned" }.set_flags(dpp::m_ephemeral));
+    return;
+  }
+
   if (action == "activate") {
     if (player.inv(i_adriencoin) < costAdriencoin) [[unlikely]] {
       event.reply(dpp::message{ "You can't afford that! (" + get_emoji(e_adriencoin) + ' ' + std::to_string(costAdriencoin) + " Adriencoin)" }.set_flags(dpp::m_ephemeral));
@@ -340,6 +355,10 @@ void adr::Coop::handleSlashCommand(
       event.reply(dpp::message{ "Your bank is already active!" }.set_flags(dpp::m_ephemeral));
       return;
     }
+    if (player.m_atr.banned.val) [[unlikely]] {
+      event.reply(dpp::message{ "youre banned!" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
 
     dpp::snowflake inviterUUID{ std::get<dpp::snowflake>(event.get_parameter("player")) };
     Player& inviterPlayer{ cache::getPlayerFromCache(inviterUUID) };
@@ -395,6 +414,11 @@ void adr::Coop::handleSlashCommand(
     dpp::snowflake transUUID{ std::get<dpp::snowflake>(event.get_parameter("player")) };
     Player& transPlayer{ cache::getPlayerFromCache(transUUID) };
     std::vector<std::uint64_t>& list{ player.m_coop.getRemote().m_players };
+
+    if (transPlayer.m_atr.banned.val) {
+      event.reply(dpp::message{ "that player is banned" }.set_flags(dpp::m_ephemeral));
+      return;
+    }
 
     for (std::size_t i{}; i < list.size(); ++i) {
       if (list[i] != transUUID) [[likely]] continue;
@@ -458,4 +482,14 @@ void adr::Coop::handleSlashCommand(
 void adr::Coop::doInterest() {
   Coop& remote{ getRemote() };
   remote.m_inv[i_adriencoin] += static_cast<int>(remote.m_inv[i_adriencoin] * 0.1);
+}
+
+bool adr::Coop::isBanned() 
+{
+  Coop& remote{ getRemote() };
+  for (std::uint64_t uuid : remote.m_players) {
+    if (cache::getPlayerFromCache(uuid).m_atr.banned.val) [[unlikely]]
+      return true;
+  }
+  return false;
 }
