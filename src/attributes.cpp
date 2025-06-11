@@ -90,6 +90,7 @@ void adr::attributes::save_json(nlohmann::json& data) const
     save(data, wither_shield);
     save(data, shadow_warp);
     save(data, implosion);
+    save(data, banned);
 
     std::cout << "adr::attributes::save_json() finished!\n";
 }
@@ -105,6 +106,7 @@ void adr::attributes::load_json(const nlohmann::json& data)
     try_load(data, wither_shield);
     try_load(data, shadow_warp);
     try_load(data, implosion);
+    try_load(data, banned);
 
     std::cout << "adr::attributes::load_json() finished!\n";
 }
@@ -124,6 +126,7 @@ std::string adr::attributes::list() const
     condlist(ss, wither_shield);
     condlist(ss, shadow_warp);
     condlist(ss, implosion);
+    condlist(ss, banned);
 
     return ss.str();
 }

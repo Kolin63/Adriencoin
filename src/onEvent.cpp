@@ -31,6 +31,12 @@ std::optional<T> getOptionalParam(const std::string& name, const dpp::slashcomma
 
 void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
 {
+  if (cache::getPlayerFromCache(event.command.usr.id).m_atr.banned.val
+      && event.command.get_command_name() != "owner") [[unlikely]] {
+    event.reply(dpp::message{ "sorry you are banned" });
+    return;
+  }
+
     const std::string& commandName{ event.command.get_command_name() };
     if (commandName == "buy") {
         std::string resultName{};
@@ -463,6 +469,13 @@ void adr::onSlashcommand(dpp::cluster& bot, const dpp::slashcommand_t& event)
                 adr::Stock::getStock(static_cast<adr::Stock::Id>(std::get<std::int64_t>(event.get_parameter("index"))))
                         .changeValue(static_cast<int>(std::get<std::int64_t>(event.get_parameter("amount"))));
             event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
+        }
+        else if (subcmd == "ban") {
+          Player& p{ cache::getPlayerFromCache(getOptionalParam<dpp::snowflake>("user", event).value_or(0)) };
+          const bool b{ static_cast<bool>(getOptionalParam<std::int64_t>("amount", event).value_or(1)) };
+
+          p.m_atr.banned.val = b;
+          event.reply(dpp::message("done").set_flags(dpp::m_ephemeral));
         }
     }
     else if (commandName == "work") {
