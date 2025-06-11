@@ -38,12 +38,14 @@
             0,
             0,
             0,
+            0,
             0
         ],
         "isActive": false
     },
     "coop": {
         "inv": [
+            0,
             0,
             0,
             0,
@@ -84,15 +86,16 @@
     "highdung": -1,
     "inv": [
         0,
-        255,
+        305,
         0,
         0,
         0,
         0,
         0,
-        20,
+        30,
         0,
         100,
+        0,
         0,
         0,
         0,
@@ -116,7 +119,7 @@
         0
     ],
     "job": 8,
-    "lastWorked": 1748179672,
+    "lastWorked": 1748953261,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -126,7 +129,7 @@
         "theProfessor": 0,
         "thorn": 0,
         "timesInStore": 0,
-        "timesWorked": 4
+        "timesWorked": 5
     },
     "title": 0,
     "uuid": 1005610643942015026

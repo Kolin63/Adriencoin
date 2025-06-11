@@ -38,12 +38,14 @@
             0,
             0,
             0,
+            0,
             0
         ],
         "isActive": false
     },
     "coop": {
         "inv": [
+            0,
             0,
             0,
             0,
@@ -88,9 +90,10 @@
         0,
         0,
         0,
+        10,
+        49,
+        9,
         0,
-        35,
-        5,
         0,
         0,
         0,
@@ -116,7 +119,7 @@
         0
     ],
     "job": 6,
-    "lastWorked": 1748793330,
+    "lastWorked": 1749605045,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -125,8 +128,8 @@
         "scarf": 0,
         "theProfessor": 0,
         "thorn": 0,
-        "timesInStore": 0,
-        "timesWorked": 4
+        "timesInStore": 1,
+        "timesWorked": 18
     },
     "title": 0,
     "uuid": 1339763152652472323

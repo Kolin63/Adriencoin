@@ -4,7 +4,8 @@
         "bonzo_love": false,
         "implosion": false,
         "shadow_warp": false,
-        "wither_shield": false
+        "wither_shield": false,
+        "banned": true
     },
     "bank": {
         "inv": [
@@ -15,7 +16,7 @@
             0,
             0,
             0,
-            0,
+            44000000,
             0,
             0,
             0,
@@ -41,7 +42,7 @@
             0,
             0
         ],
-        "isActive": false
+        "isActive": true
     },
     "coop": {
         "inv": [
@@ -82,25 +83,17 @@
         "owner": 0,
         "players": []
     },
-    "fame": 0,
+    "fame": 5,
     "highdung": -1,
     "inv": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        500000,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        12800,
+        2225,
+        33700,
+        16000,
+        58000,
+        900,
+        130,
+        264279,
         0,
         0,
         0,
@@ -116,10 +109,18 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
         0
     ],
-    "job": 14,
-    "lastWorked": 0,
+    "job": 1,
+    "lastWorked": 1749606271,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -128,9 +129,9 @@
         "scarf": 0,
         "theProfessor": 0,
         "thorn": 0,
-        "timesInStore": 0,
-        "timesWorked": 0
+        "timesInStore": 25,
+        "timesWorked": 1
     },
-    "title": 0,
-    "uuid": 530082442967646230
+    "title": 3,
+    "uuid": 1244625534214737923
 }

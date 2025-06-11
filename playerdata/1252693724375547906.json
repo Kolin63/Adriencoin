@@ -38,12 +38,14 @@
             0,
             0,
             0,
+            0,
             0
         ],
         "isActive": false
     },
     "coop": {
         "inv": [
+            0,
             0,
             0,
             0,
@@ -81,21 +83,18 @@
         "players": []
     },
     "fame": 2,
-    "highdung": 1,
+    "highdung": 2,
     "inv": [
         100,
         0,
         0,
         50,
-        6600,
+        10800,
         0,
         0,
-        305,
+        280,
         0,
-        0,
-        0,
-        0,
-        0,
+        15,
         0,
         0,
         0,
@@ -112,21 +111,25 @@
         0,
         0,
         0,
-        8,
+        0,
+        0,
+        0,
+        7,
+        0,
         0
     ],
     "job": 11,
-    "lastWorked": 1748795061,
+    "lastWorked": 1749593066,
     "stats": {
         "bonzo": 0,
         "livid": 0,
         "necron": 0,
         "sadan": 0,
         "scarf": 0,
-        "theProfessor": 0,
+        "theProfessor": 1,
         "thorn": 0,
         "timesInStore": 25,
-        "timesWorked": 43
+        "timesWorked": 62
     },
     "title": 3,
     "uuid": 1252693724375547906

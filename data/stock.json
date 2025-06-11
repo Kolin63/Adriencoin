@@ -1,9 +1,19 @@
 {
     "channel": 1363701696684888096,
-    "day": 43,
+    "day": 53,
     "stocks": [
         {
             "history": [
+                260,
+                286,
+                318,
+                279,
+                291,
+                237,
+                190,
+                201,
+                169,
+                166,
                 141,
                 113,
                 98,
@@ -55,10 +65,20 @@
             "ticker": "CRT",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 141
+            "value": 260
         },
         {
             "history": [
+                46,
+                60,
+                60,
+                59,
+                56,
+                56,
+                47,
+                39,
+                38,
+                32,
                 27,
                 22,
                 18,
@@ -106,14 +126,24 @@
             "name": "divans_gems",
             "outstanding": 50,
             "potentialStability": 0,
-            "stability": 30,
+            "stability": 0,
             "ticker": "GEM",
             "timesWorked": 0,
             "unissued": 0,
-            "value": 27
+            "value": 46
         },
         {
             "history": [
+                10,
+                9,
+                9,
+                8,
+                9,
+                10,
+                10,
+                9,
+                10,
+                10,
                 13,
                 14,
                 19,
@@ -165,10 +195,20 @@
             "ticker": "LMB",
             "timesWorked": 0,
             "unissued": 43,
-            "value": 13
+            "value": 10
         },
         {
             "history": [
+                42,
+                37,
+                31,
+                34,
+                38,
+                43,
+                45,
+                37,
+                34,
+                40,
                 34,
                 39,
                 41,
@@ -220,10 +260,20 @@
             "ticker": "FSH",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 34
+            "value": 42
         },
         {
             "history": [
+                42,
+                44,
+                53,
+                53,
+                48,
+                49,
+                49,
+                56,
+                49,
+                40,
                 52,
                 50,
                 45,
@@ -271,14 +321,24 @@
             "name": "aatroxs_slaying",
             "outstanding": 0,
             "potentialStability": 0,
-            "stability": 10,
+            "stability": 0,
             "ticker": "SLY",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 52
+            "value": 42
         },
         {
             "history": [
+                130,
+                143,
+                151,
+                163,
+                163,
+                162,
+                187,
+                174,
+                174,
+                144,
                 130,
                 106,
                 90,
@@ -334,6 +394,16 @@
         },
         {
             "history": [
+                94,
+                77,
+                64,
+                56,
+                45,
+                44,
+                50,
+                41,
+                44,
+                41,
                 42,
                 40,
                 41,
@@ -385,10 +455,20 @@
             "ticker": "BRW",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 42
+            "value": 94
         },
         {
             "history": [
+                49,
+                60,
+                60,
+                57,
+                60,
+                50,
+                64,
+                66,
+                72,
+                65,
                 84,
                 78,
                 75,
@@ -440,7 +520,7 @@
             "ticker": "STK",
             "timesWorked": 0,
             "unissued": 0,
-            "value": 84
+            "value": 49
         }
     ]
 }
