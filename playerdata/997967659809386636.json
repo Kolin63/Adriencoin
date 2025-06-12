@@ -1,5 +1,6 @@
 {
     "attributes": {
+        "banned": false,
         "bonzo_can_use": false,
         "bonzo_love": true,
         "implosion": false,
@@ -91,13 +92,13 @@
     "highdung": 2,
     "inv": [
         0,
-        950,
+        1100,
         0,
         1,
         0,
         0,
         0,
-        60,
+        140,
         0,
         0,
         0,
@@ -124,7 +125,7 @@
         0
     ],
     "job": 8,
-    "lastWorked": 1749592627,
+    "lastWorked": 1749728564,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -134,7 +135,7 @@
         "theProfessor": 0,
         "thorn": 0,
         "timesInStore": 3,
-        "timesWorked": 67
+        "timesWorked": 70
     },
     "title": 3,
     "uuid": 997967659809386636

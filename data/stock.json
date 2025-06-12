@@ -1,9 +1,10 @@
 {
     "channel": 1363701696684888096,
-    "day": 53,
+    "day": 54,
     "stocks": [
         {
             "history": [
+                280,
                 260,
                 286,
                 318,
@@ -65,10 +66,11 @@
             "ticker": "CRT",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 260
+            "value": 280
         },
         {
             "history": [
+                52,
                 46,
                 60,
                 60,
@@ -130,10 +132,11 @@
             "ticker": "GEM",
             "timesWorked": 0,
             "unissued": 0,
-            "value": 46
+            "value": 52
         },
         {
             "history": [
+                12,
                 10,
                 9,
                 9,
@@ -195,10 +198,11 @@
             "ticker": "LMB",
             "timesWorked": 0,
             "unissued": 43,
-            "value": 10
+            "value": 12
         },
         {
             "history": [
+                47,
                 42,
                 37,
                 31,
@@ -260,10 +264,11 @@
             "ticker": "FSH",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 42
+            "value": 47
         },
         {
             "history": [
+                31,
                 42,
                 44,
                 53,
@@ -325,10 +330,11 @@
             "ticker": "SLY",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 42
+            "value": 31
         },
         {
             "history": [
+                123,
                 130,
                 143,
                 151,
@@ -390,10 +396,11 @@
             "ticker": "KNW",
             "timesWorked": 0,
             "unissued": 49,
-            "value": 130
+            "value": 123
         },
         {
             "history": [
+                101,
                 94,
                 77,
                 64,
@@ -455,10 +462,11 @@
             "ticker": "BRW",
             "timesWorked": 0,
             "unissued": 50,
-            "value": 94
+            "value": 101
         },
         {
             "history": [
+                47,
                 49,
                 60,
                 60,
@@ -520,7 +528,7 @@
             "ticker": "STK",
             "timesWorked": 0,
             "unissued": 0,
-            "value": 49
+            "value": 47
         }
     ]
 }

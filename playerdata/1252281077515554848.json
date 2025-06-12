@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "banned": true,
+        "banned": false,
         "bonzo_can_use": false,
         "bonzo_love": true,
         "implosion": false,
@@ -83,17 +83,17 @@
         "owner": 0,
         "players": []
     },
-    "fame": 5,
+    "fame": 0,
     "highdung": 3,
     "inv": [
-        7920,
+        10120,
         0,
-        100,
-        100,
+        0,
+        0,
         80,
         0,
         0,
-        129995630,
+        424,
         0,
         2,
         10,
@@ -115,12 +115,12 @@
         0,
         0,
         0,
-        0,
-        0,
+        1,
+        25,
         0
     ],
     "job": 7,
-    "lastWorked": 1749556289,
+    "lastWorked": 1749673018,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -129,8 +129,8 @@
         "scarf": 0,
         "theProfessor": 0,
         "thorn": 0,
-        "timesInStore": 13,
-        "timesWorked": 58
+        "timesInStore": 0,
+        "timesWorked": 39
     },
     "title": 3,
     "uuid": 1252281077515554848

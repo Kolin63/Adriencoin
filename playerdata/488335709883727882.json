@@ -91,14 +91,14 @@
     "fame": 2,
     "highdung": 3,
     "inv": [
-        2600,
+        3400,
         0,
         0,
         0,
         0,
+        100,
         0,
-        0,
-        70,
+        160,
         0,
         0,
         0,
@@ -125,7 +125,7 @@
         0
     ],
     "job": 7,
-    "lastWorked": 1749584555,
+    "lastWorked": 1749737918,
     "stats": {
         "bonzo": 0,
         "livid": 0,
@@ -135,7 +135,7 @@
         "theProfessor": 0,
         "thorn": 1,
         "timesInStore": 9,
-        "timesWorked": 63
+        "timesWorked": 67
     },
     "title": 3,
     "uuid": 488335709883727882
