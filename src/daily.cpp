@@ -1,4 +1,5 @@
 #include "item.h"
+#include "mayor.h"
 #include <iostream>
 #include <vector>
 #include "daily.h"
@@ -53,6 +54,8 @@ void adr::daily::doWeeklyTasks(dpp::cluster& bot)
       });
 
   doBankInterest();
+
+  Mayor::startElection();
 }
 
 void doTitleMoney()
