@@ -50,6 +50,8 @@ add_executable(${PROJECT_NAME}
     src/bank.h
     src/coop.cpp
     src/coop.h 
+    src/mayor.cpp 
+    src/mayor.h
 )
  
 # Find our pre-installed DPP package (using FindDPP.cmake).

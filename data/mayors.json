@@ -1,118 +1,162 @@
 {
   "specialMayorCounter": 0,
 
+  "current": "Aatrox",
+
+  "isElection": false,
+   
+  "candidates": [
+    0,
+    1,
+    2,
+    3,
+    4,
+  ],
+
+  "votes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+
   "mayors": [
 		{
 			"name": "Aatrox",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-				{ "rottenfleshPerWork": 300 },
-        { "dailyDungeonPass": 1 },
-        { "dungeonPriceMultiplier": 50 }
+			"perkAmt": 1,
+			"perkMax": 3
+			"perks": [
+				{ "rottenfleshPerWork": [300, 1] },
+        { "dailyDungeonPass": [1, 2] },
+        { "dungeonPriceMultiplier": [50, 3] }
 			]
 		},
 		{
 			"name": "Cole",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "gemstonePerWork": 25 }
+			"perkAmt": 1,
+			"perkMax": 1
+			"perks": [
+        { "gemstonePerWork": [25, 1] }
 			]
 		},
 		{
 			"name": "Diana",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "bankInterestOnElection": true }
+			"perkAmt": 1,
+			"perkMax": 1
+			"perks": [
+        { "bankInterestOnElection": [true, 1] }
 			]
 		},
 		{
 			"name": "Diaz",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "resourceExchangePrice": 7 },
-        { "stockStabilityCap": 80 },
-        { "titleMoneyMultiplier": 150 }
+			"perkAmt": 1,
+			"perkMax": 3
+			"perks": [
+        { "resourceExchangePrice": [7, 1] },
+        { "stockStabilityCap": [80, 2] },
+        { "titleMoneyMultiplier": [150, 3] }
 			]
 		},
 		{
 			"name": "Finnegan",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "carrotPerWork": 100 }
+			"perkAmt": 1,
+			"perkMax": 1
+			"perks": [
+        { "carrotPerWork": [100, 1] }
 			]
 		},
 		{
 			"name": "Foxy",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "workPresents": true },
-        { "dailyGiveaway": true }
+			"perkAmt": 1,
+			"perkMax": 2
+			"perks": [
+        { "workPresents": [true, 1] },
+        { "dailyGiveaway": [true, 2] }
 			]
 		},
 		{
 			"name": "Marina",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "fishPerWork": 150 },
-        { "animeGirls": true }
+			"perkAmt": 1,
+			"perkMax": 2
+			"perks": [
+        { "fishPerWork": [150, 1] },
+        { "animeGirls": [true, 2] }
 			]
 		},
 		{
 			"name": "Paul",
 			"image": "url",
 			"desc": "desc",
-			"feats": [
-        { "dungeonAdriresourceIncrease": 10 },
-        { "dungeonWinChanceIncrease": 10 },
-        { "dungeonDropChanceIncrease": 10 }
+			"perkAmt": 1,
+			"perkMax": 3
+			"perks": [
+        { "dungeonAdriresourceIncrease": [10, 1] },
+        { "dungeonWinChanceIncrease": [10, 2] },
+        { "dungeonDropChanceIncrease": [10, 3] }
 			]
 		},
 		{
 			"name": "Jerry",
 			"image": "url",
 			"desc": "desc",
+			"perkAmt": 1,
+			"perkMax": 3
       "isSpecial": true,
-			"feats": [
-        { "activateOtherPerks": true },
-        { "workCooldownChangeMinutes": -90 },
-        { "workPresents": true }
+			"perks": [
+        { "activateOtherPerks": [true, 1] },
+        { "workCooldownChangeMinutes": [-90, 2] },
+        { "workPresents": [true, 3] }
 			]
 		},
 		{
 			"name": "Derpy",
 			"image": "url",
 			"desc": "desc",
+			"perkAmt": 1,
+			"perkMax": 3
       "isSpecial": true,
-			"feats": [
-        { "allShopAdriencoinMultiplier": 200 },
-        { "workYieldMultiplier": 2 },
-        { "dungeonWinChanceIncrease": -15 }
+			"perks": [
+        { "allShopAdriencoinMultiplier": [200, 1] },
+        { "workYieldMultiplier": [2, 2] },
+        { "dungeonWinChanceIncrease": [-15, 3] }
 			]
 		},
 		{
 			"name": "Scorpius",
 			"image": "url",
 			"desc": "desc",
+			"perkAmt": 1,
+			"perkMax": 2
       "isSpecial": true,
-			"feats": [
-        { "bribe": 250 },
-        { "darkerAuctions": true }
+			"perks": [
+        { "bribe": [250, 1] },
+        { "darkerAuctions": [true, 2] }
 			]
 		},
 		{
 			"name": "Adrien",
 			"image": "url",
 			"desc": "desc",
+			"perkAmt": 1,
+			"perkMax": 1
       "isSpecial": true,
-			"feats": [
-        { "insurance": true }
+			"perks": [
+        { "insurance": [true, 1] }
 			]
 		}
   ]
