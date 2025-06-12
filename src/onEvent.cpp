@@ -521,6 +521,7 @@ void adr::doJob(const dpp::slashcommand_t& event)
 
   if (player.job() == adr::Job::MAX) {
     event.reply("You don't have a job!");
+    return;
   }
 
   player[job.item.id] += job.item.amount;
